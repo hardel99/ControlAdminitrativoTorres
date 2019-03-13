@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="533.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.FXMLController">
+    <children>
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+      <JFXButton layoutX="735.0" layoutY="459.0" prefHeight="30.0" prefWidth="90.0" ripplerFill="#a81515" style="-fx-background-color: #c62828;" text="Aceptar" textFill="WHITE" />
+      <JFXTreeTableView layoutX="210.0" layoutY="111.0" prefHeight="295.0" prefWidth="615.0" />
+      <JFXButton cancelButton="true" layoutX="601.0" layoutY="459.0" prefHeight="30.0" prefWidth="108.0" style="-fx-background-color: #ddd;" text="Cancelar" />
+      <JFXTextField layoutX="518.0" layoutY="69.0" prefHeight="25.0" prefWidth="237.0" />
+    </children>
+</AnchorPane>
