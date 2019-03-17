@@ -2,13 +2,14 @@ package Entitys;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,24 +34,23 @@ public class torre implements Serializable {
     @Column(name="Cotizacion")
     private String cotizacion;
     
-    @OneToOne(mappedBy="torre", cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy="torre", fetch = FetchType.LAZY)
     private sitio localidad;
     
-//    @ManyToOne(fetch= FetchType.LAZY)
-//    @JoinColumn(name="id_antena")
-//    private antena antena;
-    
-    @OneToOne(mappedBy="torreC", fetch = FetchType.LAZY)
-    private cliente clienteT;
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="id_antena")
+    private antena antenaT;
     
     public torre(){
         //TODO
     }
 
-    public torre(Long id, float alturaPedida, String cotizacion) {
+    public torre(Long id, float alturaPedida, String cotizacion, sitio localidad, antena antenaT) {
         this.id = id;
         this.alturaPedida = alturaPedida;
         this.cotizacion = cotizacion;
+        this.localidad = localidad;
+        this.antenaT = antenaT;
     }
 
     public Long getId() {
@@ -85,13 +85,21 @@ public class torre implements Serializable {
         this.localidad = localidad;
     }
 
-    public cliente getClienteT() {
-        return clienteT;
+    public antena getAntenaT() {
+        return antenaT;
     }
 
-    public void setClienteT(cliente clienteT) {
-        this.clienteT = clienteT;
+    public void setAntenaT(antena antenaT) {
+        this.antenaT = antenaT;
     }
+
+//    public cliente getClienteT() {
+//        return clienteT;
+//    }
+//
+//    public void setClienteT(cliente clienteT) {
+//        this.clienteT = clienteT;
+//    }
 
     @Override
     public int hashCode() {
@@ -100,7 +108,6 @@ public class torre implements Serializable {
         hash = 37 * hash + Float.floatToIntBits(this.alturaPedida);
         hash = 37 * hash + Objects.hashCode(this.cotizacion);
         hash = 37 * hash + Objects.hashCode(this.localidad);
-        hash = 37 * hash + Objects.hashCode(this.clienteT);
         return hash;
     }
 
@@ -128,14 +135,11 @@ public class torre implements Serializable {
         if (!Objects.equals(this.localidad, other.localidad)) {
             return false;
         }
-        if (!Objects.equals(this.clienteT, other.clienteT)) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "torre{" + "id=" + id + ", alturaPedida=" + alturaPedida + ", cotizacion=" + cotizacion + ", localidad=" + localidad + ", clienteT=" + clienteT.getId() + '}';
+        return "torre{" + "id=" + id + ", alturaPedida=" + alturaPedida + ", cotizacion=" + cotizacion + ", localidad=" + localidad + ", antenaT=" + antenaT + '}';
     }
 }

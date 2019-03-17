@@ -1,16 +1,13 @@
 package com.interfazsv.cat;
 
-import Entitys.sitio;
-import java.util.List;
+//import Entitys.sitio;
+//import java.util.List;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 
 public class MainApp extends Application {
@@ -25,13 +22,6 @@ public class MainApp extends Application {
         stage.setTitle("Control Administrativo de Torres - CAT");
         stage.setScene(scene);
         stage.show();
-        
-        //testing that all is working correctly
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
-        EntityManager em = emf.createEntityManager();
-        List<sitio> sitios = (List<sitio>) em.createQuery("FROM sitio").getResultList();
-        System.out.println("working" + sitios.size());
-        em.close();
     }
     
     
@@ -46,20 +36,5 @@ public class MainApp extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public void persist(Object object) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        try {
-            em.persist(object);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
-        }
     }
 }

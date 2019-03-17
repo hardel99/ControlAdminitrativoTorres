@@ -3,6 +3,7 @@ package Entitys;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,7 +44,8 @@ public class venta implements Serializable {
     @JoinColumn(name="id_cliente")
     private cliente clienteV;
     
-    @OneToOne(mappedBy = "ventaO", fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name="id_oferta")
     private oferta ofertaVenta;
     
     public venta(){

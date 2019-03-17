@@ -1,10 +1,12 @@
 Entitys\oferta.class
 Entitys\torre.class
+com\interfazsv\cat\FXMLController$MainOfferTable.class
 Entitys\llave.class
 Entitys\arrendamiento.class
 com\interfazsv\cat\FXMLController.class
 Entitys\sitio.class
 Entitys\cliente.class
 com\interfazsv\cat\MainApp.class
+Entitys\antena.class
 Entitys\venta.class
 Entitys\licencia.class
