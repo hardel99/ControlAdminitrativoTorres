@@ -1,21 +1,22 @@
 package com.interfazsv.cat;
 
 import Entitys.oferta;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -23,9 +24,24 @@ import javax.persistence.Persistence;
 public class FXMLController implements Initializable {
 
     @FXML
-    private JFXTreeTableView<MainOfferTable> mainTable;
+    private TableView<MainOfferTable> mainTable;
     
-    private ObservableList<MainOfferTable> data;
+    @FXML
+    private TableColumn<MainOfferTable, String> sitioCol;
+
+    @FXML
+    private TableColumn<MainOfferTable, String> clienteCol;
+
+    @FXML
+    private TableColumn<MainOfferTable, Float> alturaCol;
+
+    @FXML
+    private TableColumn<MainOfferTable, String> fechaCol;
+
+    @FXML
+    private TableColumn<MainOfferTable, String> imageCol;
+    
+    private ObservableList<MainOfferTable> data = FXCollections.observableArrayList();;
     private List<oferta> rows;
 
     
@@ -36,53 +52,63 @@ public class FXMLController implements Initializable {
     }
     
     private void fillColumns(){
-        JFXTreeTableColumn<MainOfferTable, String> sitioCol = new JFXTreeTableColumn<>("Sitio");
-        JFXTreeTableColumn<MainOfferTable, String> clienteCol = new JFXTreeTableColumn<>("Cliente");
-        JFXTreeTableColumn<MainOfferTable, String> alturaCol = new JFXTreeTableColumn<>("Altura");
-        JFXTreeTableColumn<MainOfferTable, String> fechaCol = new JFXTreeTableColumn<>("Fecha");
-        JFXTreeTableColumn<MainOfferTable, String> imageCol = new JFXTreeTableColumn<>("Imagen");
+        sitioCol.setCellValueFactory(new PropertyValueFactory<>("sitio"));
+        clienteCol.setCellValueFactory(new PropertyValueFactory<>("cliente"));
+        alturaCol.setCellValueFactory(new PropertyValueFactory<>("altura"));
+        fechaCol.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+        imageCol.setCellValueFactory(new PropertyValueFactory<>("imagePath"));
         
-        sitioCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<MainOfferTable, String> param) -> param.getValue().getValue().sitio);
-        clienteCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<MainOfferTable, String> param) -> param.getValue().getValue().cliente);
-        alturaCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<MainOfferTable, String> param) -> param.getValue().getValue().altura);
-        fechaCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<MainOfferTable, String> param) -> param.getValue().getValue().fecha);
-        imageCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<MainOfferTable, String> param) -> param.getValue().getValue().imagePath);
-        
-        mainTable.getColumns().addAll(sitioCol, clienteCol, alturaCol, fechaCol, imageCol);
+        mainTable.setItems(data);
     }
 
     private void getTheData() {
+        data.clear();
+        
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
         EntityManager em = emf.createEntityManager();
         rows = (List<oferta>) em.createQuery("FROM oferta").getResultList();
         
-        data = FXCollections.observableArrayList();
-        
         rows.forEach((cell)->{
-            data.add(new MainOfferTable(cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), "" + cell.getAlturaTorre(), cell.getFecha().toString(), cell.getImagenRuta()));
+            data.add(new MainOfferTable(cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/d/MM")), cell.getImagenRuta()));
         });
-        
-        final TreeItem<MainOfferTable> root = new RecursiveTreeItem<MainOfferTable>(data, RecursiveTreeObject::getChildren);
-        mainTable.setRoot(root);
-        mainTable.setShowRoot(false);
         
         em.close();
         emf.close();
     }
     
-    class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
-        StringProperty sitio;
-        StringProperty cliente;
-        StringProperty altura;
-        StringProperty fecha;
-        StringProperty imagePath;
+    public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
+        private final StringProperty sitio;
+        private final StringProperty cliente;
+        private final FloatProperty altura;
+        private final StringProperty fecha;
+        private final StringProperty imagePath;
 
-        public MainOfferTable(String sitio, String cliente, String altura, String fecha, String imagePath) {
+        public MainOfferTable(String sitio, String cliente, float altura, String fecha, String imagePath) {
             this.sitio = new SimpleStringProperty(sitio);
             this.cliente = new SimpleStringProperty(cliente);
-            this.altura = new SimpleStringProperty(altura);
+            this.altura = new SimpleFloatProperty(altura);
             this.fecha = new SimpleStringProperty(fecha);
             this.imagePath = new SimpleStringProperty(imagePath);
+        }
+
+        public String getSitio() {
+            return sitio.get();
+        }
+
+        public String getCliente() {
+            return cliente.get();
+        }
+
+        public Float getAltura() {
+            return altura.get();
+        }
+
+        public String getFecha() {
+            return fecha.get();
+        }
+
+        public String getImagePath() {
+            return imagePath.get();
         }
     }
 }
