@@ -43,7 +43,6 @@ public class cliente implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_antena")
     private antena antenaC;
-    //review this thing
     
     @OneToMany(mappedBy="clienteY", cascade = {CascadeType.ALL})
     private List<llave> llaveC = new ArrayList<llave>();

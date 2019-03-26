@@ -44,6 +44,14 @@
             <TableColumn fx:id="costosArrendSitioCol" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Costos Arrendamiento" />
          </columns>
       </TableView>
+      <TableView fx:id="clienteTable" layoutX="251.0" layoutY="120.0" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false">
+         <columns>
+            <TableColumn fx:id="nombreClienteCol" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Nombre" />
+            <TableColumn fx:id="torresClienteCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Torres" />
+            <TableColumn fx:id="ofertasClienteCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Ofertas" />
+            <TableColumn fx:id="llavesClienteCol" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Llaves" />
+         </columns>
+      </TableView>
       <VBox prefHeight="700.0" prefWidth="250.0" styleClass="sidebar" stylesheets="@../styles/Styles.css" AnchorPane.topAnchor="0.0">
          <children>
             <Label prefHeight="120.0" prefWidth="250.0" text="FillingSpace temporary" textAlignment="CENTER" textFill="WHITE" />
@@ -134,7 +142,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <HBox alignment="TOP_CENTER" focusTraversable="true" prefHeight="65.0" prefWidth="200.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox fx:id="clientBox" alignment="TOP_CENTER" focusTraversable="true" onMouseClicked="#showClient" prefHeight="65.0" prefWidth="200.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="USER" size="1.8em">
                      <HBox.margin>
