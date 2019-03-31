@@ -49,13 +49,25 @@
             <artifactId>fontawesomefx</artifactId>
             <version>8.9</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.14</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.github.dhorions</groupId>
+            <artifactId>boxable</artifactId>
+            <version>1.5</version>
+        </dependency>
     </dependencies>
 
     <name>CAT</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mainClass>com.interfazsv.cat.MainApp</mainClass>
+        <mainClass>com.interfazsv.cat.main.MainApp</mainClass>
     </properties>
 
     <organization>

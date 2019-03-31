@@ -9,22 +9,22 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" focusTraversable="true" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.FXMLController">
-    <children>
-      <JFXButton fx:id="btnDetalles" disable="true" layoutX="1057.0" layoutY="640.0" onAction="#openDetail" prefHeight="30.0" prefWidth="90.0" ripplerFill="#aba881" style="-fx-background-color: #FFEE58;" text="Detalles" textFill="#171717">
+<StackPane fx:id="canvas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.main.FXMLController">
+   <children>
+      <JFXButton fx:id="btnDetalles" disable="true" onAction="#openDetail" prefHeight="30.0" prefWidth="100.0" ripplerFill="#aba881" style="-fx-background-color: #FFEE58;" text="Detalles" textFill="#171717" StackPane.alignment="BOTTOM_RIGHT">
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></JFXButton>
-      <JFXTextField fx:id="searchBar" focusColor="#546e7a" layoutX="826.0" layoutY="75.0" onKeyReleased="#filterData" prefHeight="25.0" prefWidth="305.0" promptText="Buscar...">
-         <font>
-            <Font name="Calibri Light" size="12.0" />
-         </font></JFXTextField>
-      <TableView fx:id="mainTable" layoutX="251.0" layoutY="120.0" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css">
+         </cursor>
+         <StackPane.margin>
+            <Insets bottom="35.0" right="45.0" />
+         </StackPane.margin>
+      </JFXButton>
+      <TableView fx:id="mainTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_RIGHT">
         <columns>
           <TableColumn fx:id="sitioCol" maxWidth="230.0" minWidth="230.0" prefWidth="230.0" text="Sitio" />
           <TableColumn fx:id="clienteCol" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" text="Cliente" />
@@ -32,8 +32,11 @@
             <TableColumn fx:id="alturaDisCol" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="AlturaDisponible" />
             <TableColumn fx:id="fechaCol" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" text="Fecha" />
         </columns>
+         <StackPane.margin>
+            <Insets right="10.0" />
+         </StackPane.margin>
       </TableView>
-      <TableView fx:id="sitioTable" layoutX="251.0" layoutY="120.0" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false">
+      <TableView fx:id="sitioTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
          <columns>
             <TableColumn fx:id="nombreSitCol" maxWidth="210.0" minWidth="210.0" prefWidth="210.0" text="Nombre" />
             <TableColumn fx:id="latitudSitioCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Latitud" />
@@ -43,19 +46,25 @@
             <TableColumn fx:id="costosSitioCol" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Costos Alcaldía" />
             <TableColumn fx:id="costosArrendSitioCol" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Costos Arrendamiento" />
          </columns>
+         <StackPane.margin>
+            <Insets right="10.0" />
+         </StackPane.margin>
       </TableView>
-      <TableView fx:id="clienteTable" layoutX="251.0" layoutY="120.0" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false">
+      <TableView fx:id="clienteTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
          <columns>
             <TableColumn fx:id="nombreClienteCol" maxWidth="280.0" minWidth="280.0" prefWidth="280.0" text="Nombre" />
             <TableColumn fx:id="torresClienteCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Torres" />
             <TableColumn fx:id="ofertasClienteCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Ofertas" />
             <TableColumn fx:id="llavesClienteCol" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Llaves" />
          </columns>
+         <StackPane.margin>
+            <Insets right="10.0" />
+         </StackPane.margin>
       </TableView>
-      <VBox prefHeight="700.0" prefWidth="250.0" styleClass="sidebar" stylesheets="@../styles/Styles.css" AnchorPane.topAnchor="0.0">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="250.0" styleClass="sidebar" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_LEFT">
          <children>
             <Label prefHeight="120.0" prefWidth="250.0" text="FillingSpace temporary" textAlignment="CENTER" textFill="WHITE" />
-            <HBox fx:id="offerBox" alignment="TOP_CENTER" focusTraversable="true" onMouseClicked="#showMain" prefHeight="65.0" prefWidth="200.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox fx:id="offerBox" alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showMain" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="MONEY" size="1.8em">
                      <HBox.margin>
@@ -82,7 +91,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <HBox alignment="TOP_CENTER" focusTraversable="true" prefHeight="65.0" prefWidth="200.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="SIGNAL" size="1.8em">
                      <HBox.margin>
@@ -105,14 +114,11 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
                <padding>
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <HBox alignment="TOP_CENTER" focusTraversable="true" prefHeight="65.0" prefWidth="200.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="TAG" size="1.8em">
                      <HBox.margin>
@@ -142,7 +148,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="clientBox" alignment="TOP_CENTER" focusTraversable="true" onMouseClicked="#showClient" prefHeight="65.0" prefWidth="200.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox fx:id="clientBox" alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showClient" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="USER" size="1.8em">
                      <HBox.margin>
@@ -169,7 +175,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="sitiosBox" alignment="TOP_CENTER" focusTraversable="true" onMouseClicked="#showSitios" prefHeight="65.0" prefWidth="200.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox fx:id="sitiosBox" alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showSitios" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="MAP_MARKER" size="1.8em">
                      <HBox.margin>
@@ -196,7 +202,7 @@
                   <Insets left="10.0" />
                </padding>
             </HBox>
-            <VBox prefHeight="256.0" prefWidth="250.0" styleClass="bottomSection" stylesheets="@../styles/Styles.css" VBox.vgrow="ALWAYS">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="256.0" prefWidth="250.0" styleClass="bottomSection" stylesheets="@../styles/Styles.css">
                <children>
                   <Label alignment="CENTER" prefHeight="65.0" prefWidth="250.0" text="Acciones" textFill="WHITE">
                      <font>
@@ -225,7 +231,7 @@
                         <Font name="Calibri Light" size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton fx:id="btnPrintActualTable" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Exportar Tabla Actual" textFill="WHITE">
+                  <JFXButton fx:id="btnPrintActualTable" onAction="#exportTable" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Exportar Tabla Actual" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView glyphName="TABLE" size="1.5em" />
                      </graphic>
@@ -236,18 +242,22 @@
                         <Font name="Calibri Light" size="16.0" />
                      </font>
                   </JFXButton>
-               </children></VBox>
+               </children>
+            </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="cancel" layoutX="1130.0" layoutY="70.0" onAction="#backToNormalData" prefHeight="35.0" prefWidth="35.0" ripplerFill="#9a9a9a" style="-fx-border-radius: 2em;" text="X" textAlignment="CENTER" visible="false">
+      <JFXButton fx:id="cancel" onAction="#backToNormalData" prefHeight="35.0" prefWidth="35.0" ripplerFill="#9a9a9a" style="-fx-border-radius: 2em;" text="X" textAlignment="CENTER" visible="false" StackPane.alignment="TOP_RIGHT">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
          <font>
             <Font name="Calibri Bold" size="17.0" />
          </font>
+         <StackPane.margin>
+            <Insets right="60.0" top="70.0" />
+         </StackPane.margin>
       </JFXButton>
-      <Label fx:id="btnClose" alignment="CENTER" layoutX="1148.0" onMouseClicked="#closeWindow" prefHeight="30.0" prefWidth="45.0" styleClass="close" stylesheets="@../styles/Styles.css" text="x" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="btnClose" alignment="CENTER" onMouseClicked="#closeWindow" prefHeight="30.0" prefWidth="45.0" styleClass="close" stylesheets="@../styles/Styles.css" text="x" StackPane.alignment="TOP_RIGHT">
          <font>
             <Font name="SansSerif Bold" size="18.0" />
          </font>
@@ -255,13 +265,24 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Label fx:id="btnMInimize" alignment="CENTER" layoutX="1088.0" layoutY="10.0" onMouseClicked="#minimizeWindow" prefHeight="30.0" prefWidth="45.0" styleClass="min" stylesheets="@../styles/Styles.css" text="_" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="btnMInimize" alignment="CENTER" onMouseClicked="#minimizeWindow" prefHeight="30.0" prefWidth="45.0" styleClass="min" stylesheets="@../styles/Styles.css" text="_" StackPane.alignment="TOP_RIGHT">
          <font>
             <Font name="SansSerif Bold" size="16.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <StackPane.margin>
+            <Insets right="45.0" />
+         </StackPane.margin>
       </Label>
-    </children>
-</AnchorPane>
+      <JFXTextField fx:id="searchBar" focusColor="#546e7a" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyReleased="#filterData" prefHeight="25.0" prefWidth="305.0" promptText="Buscar..." StackPane.alignment="TOP_RIGHT">
+         <font>
+            <Font name="Calibri Light" size="12.0" />
+         </font>
+         <StackPane.margin>
+            <Insets right="100.0" top="75.0" />
+         </StackPane.margin>
+      </JFXTextField>
+   </children>
+</StackPane>

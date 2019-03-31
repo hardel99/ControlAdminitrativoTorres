@@ -6,10 +6,13 @@ import Entitys.sitio;
 import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
+import com.interfazsv.cat.util.CATUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -30,12 +33,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class FXMLController implements Initializable {
+    
+    @FXML
+    private StackPane canvas;
     
     @FXML
     private JFXButton btnDetalles;
@@ -349,6 +356,91 @@ public class FXMLController implements Initializable {
     private void clearSelections(){
         mainTable.getSelectionModel().clearSelection();
         sitioTable.getSelectionModel().clearSelection();
+    }
+    
+    @FXML
+    void exportTable(ActionEvent event) {
+        List<List> dataToPrint = new ArrayList();
+        List<String> headers = new ArrayList();
+        TableView<?> actualTable = null;
+        
+        if(mainTable.isVisible()){
+            headers.add("         Sitio         ");
+            headers.add("         Cliente         ");
+            headers.add(" Altura Solicitada ");
+            headers.add(" Altura Disponible ");
+            headers.add("    Fecha    ");
+            
+            actualTable = mainTable;
+        } else if(sitioTable.isVisible()){
+            headers.add("         Nombre         ");
+            headers.add("  Latitud  ");
+            headers.add("  Longitud  ");
+            headers.add(" Altura Disponible ");
+            headers.add(" Disponible ");
+            headers.add(" Costos Alcaldía ");
+            headers.add(" Costos Arrendamiento ");
+            
+            actualTable = clienteTable;
+        } else if(clienteTable.isVisible()){
+            headers.add("         Nombre        ");
+            headers.add("     Torres     ");
+            headers.add("   Ofertas   ");
+            headers.add("   Llaves   ");
+            
+            actualTable = sitioTable;
+        }
+        
+        dataToPrint = mapDataToPrint(headers);
+        
+        CATUtil.initPDFExport(canvas, actualTable, (Stage) actualTable.getScene().getWindow(), dataToPrint);
+        headers.clear();
+    }
+    
+    private List<List> mapDataToPrint(List<String> headers){
+        List<List> allRows = new ArrayList();
+        allRows.add(headers);
+        
+        if(mainTable.isVisible()){
+            data.stream().map((mot) -> {
+            List<String> row = new ArrayList();
+            row.add(mot.getSitio());
+            row.add(mot.getCliente());
+            row.add(mot.getAltura().toString());
+            row.add(mot.getAlturaDis().toString());
+            row.add(mot.getFecha());
+            return row;            
+            }).forEachOrdered((row) -> {
+                allRows.add(row);
+            });
+        } else if(clienteTable.isVisible()){
+            dataClient.stream().map((mot) -> {
+            List<String> row = new ArrayList();
+            row.add(mot.getNombre());
+            row.add(mot.getCantidadAntenas().toString());
+            row.add(mot.getCantidadOfertas().toString());
+            row.add(mot.getCantidadLlaves().toString());
+            return row;            
+            }).forEachOrdered((row) -> {
+                allRows.add(row);
+            });
+        } else if(sitioTable.isVisible()){
+            dataSit.stream().map((mot) -> {
+            List<String> row = new ArrayList();
+            row.add(mot.getNombre());
+            row.add(mot.getLatitud().toString());
+            row.add(mot.getLongitud().toString());
+            row.add(mot.getAlturaDisponible().toString());
+            row.add(mot.getDisponible());
+            row.add(mot.getCostosAlcadia().toString());
+            row.add(mot.getCostosArrendamiento().toString());
+            return row;            
+            }).forEachOrdered((row) -> {
+                allRows.add(row);
+            });
+        }
+        
+        return allRows;
     }
     
     @FXML
