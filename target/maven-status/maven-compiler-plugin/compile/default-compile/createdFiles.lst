@@ -3,6 +3,7 @@ com\interfazsv\cat\util\CATUtil.class
 Entitys\torre.class
 com\interfazsv\cat\main\MainApp.class
 Entitys\llave.class
+com\interfazsv\cat\util\ControllerDataComunication.class
 Entitys\sitio.class
 com\interfazsv\cat\util\ListToPDF.class
 TableData\MainOfferTable.class

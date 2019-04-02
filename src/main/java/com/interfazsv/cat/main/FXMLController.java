@@ -6,16 +6,20 @@ import Entitys.sitio;
 import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
+import com.interfazsv.cat.detail.DetailController;
 import com.interfazsv.cat.util.CATUtil;
+import com.interfazsv.cat.util.ControllerDataComunication;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,6 +28,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
@@ -445,6 +450,6 @@ public class FXMLController implements Initializable {
     
     @FXML
     void openDetail(ActionEvent event) {
-        //Open detail window
+        CATUtil.loadWindow(getClass().getResource("/fxml/Detail.fxml"), "Detalles", null, selected, "main");
     }
 }

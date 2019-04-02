@@ -2,8 +2,12 @@
   -fx-background-color: #415660;
 }
 
+.close{
+  -fx-text-fill: black;
+}
+
 .close:hover{
-  -fx-background-color: #aa2626;
+  -fx-background-color: #D73a49;
   -fx-text-fill: white;
 }
 

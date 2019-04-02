@@ -1,5 +1,6 @@
 package com.interfazsv.cat.main;
         
+import com.interfazsv.cat.util.CATUtil;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,7 @@ public class MainApp extends Application {
         stage.setTitle("Control Administrativo de Torres - CAT");
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
+        CATUtil.setStageIcon(stage);
         stage.show();
     }
     

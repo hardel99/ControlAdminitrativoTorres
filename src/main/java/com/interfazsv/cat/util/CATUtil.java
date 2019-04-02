@@ -1,5 +1,6 @@
 package com.interfazsv.cat.util;
 
+import com.interfazsv.cat.detail.DetailController;
 import com.interfazsv.cat.main.MainApp;
 import com.jfoenix.controls.JFXButton;
 import java.awt.Desktop;
@@ -26,7 +27,9 @@ import javafx.stage.StageStyle;
  * @author hardel
  */
 public class CATUtil {
-    public static final String ICON_PATH = "/resources/icons/icon.png";
+    public static final String ICON_PATH = "/icons/icon.png";
+    private static double _x, _y;
+    private static Stage stage = null;
     
     public static void setStageIcon(Stage stage){
         stage.getIcons().add(new Image(ICON_PATH));
@@ -34,26 +37,55 @@ public class CATUtil {
     
     public static Object loadWindow(URL url, String title, Stage parentStage){
         Object controller = null;
-        try{
+        try {
+            
             FXMLLoader loader = new FXMLLoader(url);
             Parent parent = loader.load();
             controller = loader.getController();
-            Stage stage = null;
             
-            if(parentStage != null){
-                stage = parentStage;
-            } else{
-                stage = new Stage(StageStyle.UNDECORATED);
-            }
-            
-            stage.setTitle(title);
-            stage.setScene(new Scene(parent));
-            stage.show();
-            setStageIcon(stage);
-        } catch(IOException e){
-            Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, e);
+            starConfigs(parentStage, parent, title, loader);
+        } catch (IOException ex) {
+            Logger.getLogger(CATUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return controller;
+    }
+    
+    public static Object loadWindow(URL url, String title, Stage parentStage, long id, String tableName){
+        ControllerDataComunication cdc = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(url);
+            
+            Parent parent = loader.load();
+            cdc = loader.getController();
+            cdc.initData(id, tableName);
+            
+            starConfigs(parentStage, parent, title, loader);
+        } catch (IOException ex) {
+            Logger.getLogger(CATUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cdc;
+    }
+    
+    private static void starConfigs(Stage parentStage, Parent parent, String title, FXMLLoader loader) {
+        if(parentStage != null){
+            stage = parentStage;
+        } else{
+            stage = new Stage(StageStyle.UNDECORATED);
+        }
+        
+        stage.setTitle(title);
+        stage.setScene(new Scene(parent));
+        stage.show();
+        setStageIcon(stage);
+        stage.getScene().setOnMousePressed(event -> {
+            _x = event.getSceneX();
+            _y = event.getSceneY();
+        });
+        stage.getScene().setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - _x);
+            stage.setY(event.getScreenY() - _y);
+        });
     }
     
     public static void openFileOnDesktop(File file){
