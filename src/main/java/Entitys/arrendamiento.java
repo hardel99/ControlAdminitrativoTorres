@@ -38,18 +38,22 @@ public class arrendamiento implements Serializable {
     @Column(name="DUI")
     private String DUI;
     
+    @Column(name="Documento")
+    private String documentPath;
+    
     @OneToOne(mappedBy="arrendamiento", fetch = FetchType.LAZY)
     private sitio sitioArrendado;
 
     public arrendamiento() {
     }
 
-    public arrendamiento(Long id, float costo, String nombreArrendatario, String NIT, String DUI, sitio sitioArrendado) {
+    public arrendamiento(Long id, float costo, String nombreArrendatario, String NIT, String DUI, String document, sitio sitioArrendado) {
         this.id = id;
         this.costo = costo;
         this.nombreArrendatario = nombreArrendatario;
         this.NIT = NIT;
         this.DUI = DUI;
+        this.documentPath = document;
         this.sitioArrendado = sitioArrendado;
     }
 
@@ -79,6 +83,10 @@ public class arrendamiento implements Serializable {
 
     public sitio getSitioArrendado() {
         return sitioArrendado;
+    }
+
+    public String getDocumentPath() {
+        return documentPath;
     }
 
     public void setCosto(float costo) {

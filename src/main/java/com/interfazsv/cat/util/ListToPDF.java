@@ -21,9 +21,7 @@ public class ListToPDF {
             if(saveItHere == null){
                 return false;
             }
-            if(!saveItHere.getName().endsWith(".pfd")){
-                saveItHere = new File(saveItHere.getAbsolutePath() + ".pdf");
-            }
+            
             //Init the PDF File
             PDDocument doc = new PDDocument();
             PDPage page = new PDPage();

@@ -6,20 +6,15 @@ import Entitys.sitio;
 import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
-import com.interfazsv.cat.detail.DetailController;
 import com.interfazsv.cat.util.CATUtil;
-import com.interfazsv.cat.util.ControllerDataComunication;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -28,7 +23,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
@@ -206,7 +200,7 @@ public class FXMLController implements Initializable {
                 if(clienteTable.getSelectionModel().getSelectedItem() != null){
                     btnDetalles.setDisable(false);
                     
-                    selected = sitioTable.getSelectionModel().getSelectedItem().getId();
+                    selected = clienteTable.getSelectionModel().getSelectedItem().getId();
                     System.out.print(selected);
                 }else {
                     btnDetalles.setDisable(true);
@@ -245,13 +239,13 @@ public class FXMLController implements Initializable {
         List<oferta> rows = (List<oferta>) em.createQuery("FROM oferta").getResultList();
         
         rows.forEach((cell)->{
-            data.add(new MainOfferTable(cell.getId(), cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/d/MM")), cell.getLocacion().getTorre().getAlturaPedida()));
+            data.add(new MainOfferTable(cell.getId(), cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida()));
         });
         
         List<sitio> sitRow = (List<sitio>) em.createQuery("FROM sitio").getResultList();
         
         sitRow.forEach((cell)->{
-            dataSit.add(new SitiosTable(cell.getId(), cell.getNombre(), cell.getLatitud(), cell.getLongitud(), cell.getTorre().getAlturaPedida(), "NO", cell.getLicencia().getMonto(), cell.getArrendamiento().getCosto()));
+            dataSit.add(new SitiosTable(cell.getId(), cell.getNombre(), cell.getLatitud(), cell.getLongitud(), cell.getTorre().getAlturaPedida(), "NO", cell.getLicencia().getMonto(), cell.getLicencia().getDocumentPath(), cell.getArrendamiento().getCosto(), cell.getArrendamiento().getDocumentPath(), cell.getComent()));
         });
         
         List<cliente> clientRow = (List<cliente>) em.createQuery("FROM cliente").getResultList();
@@ -364,7 +358,7 @@ public class FXMLController implements Initializable {
     }
     
     @FXML
-    void exportTable(ActionEvent event) {
+    private void exportTable(ActionEvent event) {
         List<List> dataToPrint = new ArrayList();
         List<String> headers = new ArrayList();
         TableView<?> actualTable = null;
@@ -449,7 +443,23 @@ public class FXMLController implements Initializable {
     }
     
     @FXML
-    void openDetail(ActionEvent event) {
-        CATUtil.loadWindow(getClass().getResource("/fxml/Detail.fxml"), "Detalles", null, selected, "main");
+    private void openDetail(ActionEvent event) {
+        Object cebo = null;
+        String tableName = "";
+        if(mainTable.isVisible()){
+            MainOfferTable offer = data.stream().filter(oferta -> selected == oferta.getIdOferta()).findAny().orElse(null);
+            cebo = offer;
+            tableName = "Oferta";
+        } else if(sitioTable.isVisible()){
+            SitiosTable sit = dataSit.stream().filter(sitio -> selected == sitio.getId()).findAny().orElse(null);
+            cebo = sit;
+            tableName = "Sitio";
+        } else if(clienteTable.isVisible()){
+            ClientesTable client = dataClient.stream().filter(cliente -> selected == cliente.getId()).findAny().orElse(null);
+            cebo = client;
+            tableName = "Cliente";
+        }
+        
+        CATUtil.loadWindow(getClass().getResource("/fxml/Detail.fxml"), "Detalles", null, cebo, tableName);
     }
 }

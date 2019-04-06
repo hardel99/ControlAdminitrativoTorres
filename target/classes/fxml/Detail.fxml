@@ -1,23 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1200.0" style="-fx-border-color: #000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
    <children>
-      <AnchorPane prefHeight="750.0" prefWidth="700.0" StackPane.alignment="CENTER">
+      <AnchorPane fx:id="sitioPane" focusTraversable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_LEFT">
          <children>
-            <Label layoutX="50.0" layoutY="44.0" text="Detalles">
+            <GridPane layoutX="50.0" layoutY="77.0" prefHeight="379.0" prefWidth="542.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="114.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="428.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Nombre">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Latitud" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Comentario" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets top="25.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Longitud" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextArea fx:id="comentarioSitio" focusColor="#546e7a" prefHeight="87.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="longitudSitio" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXTextField fx:id="latitudSitio" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="nombreSitio" focusColor="#546e7a" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <GridPane layoutX="644.0" layoutY="250.0" prefHeight="206.0" prefWidth="500.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="183.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="347.0" minWidth="10.0" prefWidth="317.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Costo Total">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Costo Alacaldia" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Costo Arrendamiento" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="totalCostSitio" focusColor="#546e7a" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" />
+                     </GridPane.margin></JFXTextField>
+                  <JFXTextField fx:id="costoAlcaldiaSitio" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="costoArrendamientoSitio" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Hyperlink onAction="#openAlcaldia" text="Abrir Documento Alcaldía" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Hyperlink onAction="#openArrendamiento" text="Abrir Documento Arrendamiento" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Hyperlink text="Cambiar Documento" GridPane.rowIndex="2" />
+                  <Hyperlink text="Cambiar Documento" GridPane.rowIndex="4" />
+               </children>
+            </GridPane>
+            <Label layoutX="644.0" layoutY="25.0" text="Imagen[es]">
+               <font>
+                  <Font name="Calibri Bold" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="imageDisplay" fitHeight="206.0" fitWidth="317.0" layoutX="831.0" layoutY="25.0" onMouseClicked="#openImage" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Hyperlink layoutX="644.0" layoutY="66.0" onAction="#openImageFolder" text="Modificar Imagenes" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="ofertaPane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <GridPane layoutX="50.0" layoutY="77.0" prefHeight="379.0" prefWidth="542.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="144.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="398.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Cliente que Oferta">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Sitio que Oferta" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Altura Solicitada" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="alturaSolicOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXTextField fx:id="sitioOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="clienteOferta" focusColor="#546e7a" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <GridPane layoutX="632.0" layoutY="140.0" prefHeight="253.0" prefWidth="500.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="183.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="347.0" minWidth="10.0" prefWidth="317.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Altura Dispoible">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Fecha de Oferta" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="alturaDisOferta" focusColor="#546e7a" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" />
+                     </GridPane.margin>
+                  </JFXTextField>
+                  <Hyperlink onAction="#openOferta" text="Abrir Documento de Oferta" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Hyperlink text="Cambiar Documento de Oferta" GridPane.rowIndex="2" />
+                  <JFXDatePicker fx:id="fechaOferta" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXDatePicker>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane focusTraversable="true" maxHeight="-Infinity" prefHeight="100.0" prefWidth="1200.0" StackPane.alignment="TOP_LEFT">
+         <children>
+            <Label layoutX="50.0" layoutY="45.0" text="Detalles">
                <font>
                   <Font name="Calibri Bold" size="46.0" />
                </font>
             </Label>
-            <Label fx:id="idDisplay" layoutX="154.0" layoutY="176.0" text="ID del registro" />
-            <Label fx:id="tableDisplay" layoutX="154.0" layoutY="211.0" text="Tabla" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="606.0" layoutY="44.0" onMouseClicked="#closeThis" prefHeight="30.0" prefWidth="45.0" styleClass="close" stylesheets="@../styles/detail.css" text="x" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Label fx:id="tableDisplay" layoutX="230.0" layoutY="45.0" text="Tabla">
+               <font>
+                  <Font name="Calibri" size="46.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#closeThis" prefHeight="30.0" prefWidth="45.0" styleClass="close" stylesheets="@../styles/detail.css" text="x" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="SansSerif Bold" size="18.0" />
                </font>
@@ -25,7 +209,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
-            <Label alignment="CENTER" layoutX="605.0" layoutY="21.0" onMouseClicked="#minimizeThis" prefHeight="30.0" prefWidth="45.0" styleClass="min" stylesheets="@../styles/detail.css" text="_" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="0.0">
+            <Label alignment="CENTER" onMouseClicked="#minimizeThis" prefHeight="30.0" prefWidth="45.0" styleClass="min" stylesheets="@../styles/detail.css" text="_" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="SansSerif Bold" size="18.0" />
                </font>
@@ -35,5 +219,21 @@
             </Label>
          </children>
       </AnchorPane>
+      <JFXButton prefHeight="30.0" prefWidth="100.0" ripplerFill="#aba881" style="-fx-background-color: #FFEE58;" text="Guardar" textFill="#171717" StackPane.alignment="BOTTOM_RIGHT">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <StackPane.margin>
+            <Insets bottom="30.0" right="50.0" />
+         </StackPane.margin>
+      </JFXButton>
+      <JFXButton cancelButton="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: gray;" text="Cancelar" textFill="WHITE" StackPane.alignment="BOTTOM_RIGHT">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <StackPane.margin>
+            <Insets bottom="30.0" right="170.0" />
+         </StackPane.margin>
+      </JFXButton>
    </children>
 </StackPane>

@@ -1,7 +1,8 @@
 package com.interfazsv.cat.util;
 
-import com.interfazsv.cat.detail.DetailController;
-import com.interfazsv.cat.main.MainApp;
+import TableData.ClientesTable;
+import TableData.MainOfferTable;
+import TableData.SitiosTable;
 import com.jfoenix.controls.JFXButton;
 import java.awt.Desktop;
 import java.io.File;
@@ -51,14 +52,21 @@ public class CATUtil {
         return controller;
     }
     
-    public static Object loadWindow(URL url, String title, Stage parentStage, long id, String tableName){
+    public static Object loadWindow(URL url, String title, Stage parentStage, Object rto, String tableName){
         ControllerDataComunication cdc = null;
         try {
             FXMLLoader loader = new FXMLLoader(url);
             
             Parent parent = loader.load();
             cdc = loader.getController();
-            cdc.initData(id, tableName);
+            
+            if(tableName.equalsIgnoreCase("oferta")){
+                cdc.initDataOffer((MainOfferTable) rto, tableName);
+            } else if(tableName.equalsIgnoreCase("sitio")){
+                cdc.initDataSitio((SitiosTable) rto, tableName);
+            } else if(tableName.equalsIgnoreCase("cliente")){
+                cdc.initDataClient((ClientesTable) rto, tableName);
+            }
             
             starConfigs(parentStage, parent, title, loader);
         } catch (IOException ex) {
@@ -71,9 +79,9 @@ public class CATUtil {
         if(parentStage != null){
             stage = parentStage;
         } else{
-            stage = new Stage(StageStyle.UNDECORATED);
+            stage = new Stage(StageStyle.DECORATED);
         }
-        
+         
         stage.setTitle(title);
         stage.setScene(new Scene(parent));
         stage.show();
@@ -112,7 +120,7 @@ public class CATUtil {
         openBtn.setOnAction((ActionEvent event1) -> {
             try {
                 if(saveLoc.exists()){
-                    Desktop.getDesktop().open(saveLoc.getCanonicalFile());
+                    Desktop.getDesktop().open(saveLoc);
                 } else{
                     Desktop.getDesktop().open(saveLoc.getParentFile());
                     System.out.println("nigga wtf!!");

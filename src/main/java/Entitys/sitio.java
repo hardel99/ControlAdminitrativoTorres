@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -38,6 +39,10 @@ public class sitio implements Serializable {
     
     @Column(name="Longitud")
     private float longitud;
+    
+    @Lob
+    @Column(name = "Comentario")
+    private String coment;
     
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="ID_Torre")
@@ -106,6 +111,14 @@ public class sitio implements Serializable {
 
     public void setTorre(torre torre) {
         this.torre = torre;
+    }
+
+    public String getComent() {
+        return coment;
+    }
+
+    public void setComent(String coment) {
+        this.coment = coment;
     }
 
     public arrendamiento getArrendamiento() {

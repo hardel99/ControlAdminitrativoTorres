@@ -1,25 +1,16 @@
 package com.interfazsv.cat.util;
 
+import TableData.ClientesTable;
+import TableData.MainOfferTable;
+import TableData.SitiosTable;
+
 /**
  *
  * @author hardel
  */
 public abstract class ControllerDataComunication {
-    public long receivedID;
-    public String receivedTable;
-
-    /*public ControllerDataComunication(long receivedID, String receivedTable) {
-        this.receivedID = receivedID;
-        this.receivedTable = receivedTable;
-    }*/
     
-    public abstract void initData(long id, String table);
-
-    public long getReceivedID() {
-        return receivedID;
-    }
-
-    public String getReceivedTable() {
-        return receivedTable;
-    }
+    public abstract void initDataOffer(MainOfferTable rto, String table);
+    public abstract void initDataClient(ClientesTable rto, String table);
+    public abstract void initDataSitio(SitiosTable rto, String table);
 }
