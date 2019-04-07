@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1200.0" style="-fx-border-color: #000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
    <children>
       <AnchorPane fx:id="sitioPane" focusTraversable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_LEFT">
          <children>
@@ -191,49 +192,37 @@
       </AnchorPane>
       <AnchorPane fx:id="clientePane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
          <children>
-            <GridPane layoutX="50.0" layoutY="77.0" prefHeight="379.0" prefWidth="542.0">
+            <GridPane layoutX="35.0" layoutY="30.0" prefHeight="485.0" prefWidth="542.0">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="144.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="398.0" />
                </columnConstraints>
                <rowConstraints>
+                  <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Cliente que Oferta">
+                  <Label text="Nombre Cliente">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Sitio que Oferta" GridPane.rowIndex="1">
+                  <Label text="Torres" GridPane.rowIndex="1">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Altura Solicitada" GridPane.rowIndex="2">
+                  <Label text="Llaves" GridPane.rowIndex="2">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="alturaSolicOferta1" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <JFXTextField fx:id="sitioOferta1" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXTextField fx:id="clienteOferta1" focusColor="#546e7a" GridPane.columnIndex="1" />
-               </children>
-            </GridPane>
-            <GridPane layoutX="632.0" layoutY="140.0" prefHeight="253.0" prefWidth="500.0">
-               <columnConstraints>
-                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="183.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="347.0" minWidth="10.0" prefWidth="317.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Label text="Altura Dispoible">
+                  <JFXTextField fx:id="nombreCliente" focusColor="#546e7a" GridPane.columnIndex="1" />
+                  <JFXListView fx:id="torresList" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXListView fx:id="llavesList" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Ofertas" GridPane.rowIndex="3">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
@@ -241,23 +230,7 @@
                         <Insets bottom="10.0" />
                      </padding>
                   </Label>
-                  <Label text="Fecha de Oferta" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Calibri Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="alturaDisOferta1" focusColor="#546e7a" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" />
-                     </GridPane.margin>
-                  </JFXTextField>
-                  <Hyperlink onAction="#openOferta" text="Abrir Documento de Oferta" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Hyperlink text="Cambiar Documento de Oferta" GridPane.rowIndex="2" />
-                  <JFXDatePicker fx:id="fechaOferta1" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </JFXDatePicker>
+                  <JFXListView fx:id="ofertasList" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>

@@ -1,17 +1,22 @@
 package com.interfazsv.cat.detail;
 
+import Entitys.llave;
+import Entitys.oferta;
+import Entitys.torre;
 import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
 import com.interfazsv.cat.util.CATUtil;
 import com.interfazsv.cat.util.ControllerDataComunication;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,6 +83,18 @@ public class DetailController extends ControllerDataComunication implements Init
     @FXML
     private JFXDatePicker fechaOferta;
     
+    @FXML
+    private JFXTextField nombreCliente;
+    
+    @FXML
+    private JFXListView<?> torresList;
+
+    @FXML
+    private JFXListView<?> llavesList;
+
+    @FXML
+    private JFXListView<?> ofertasList;
+    
     private String pathToAlcaldia, pathToArrendamiento;
     private final String DEFAULT_IMAGE_PATH = "C:\\Users\\hardel\\Pictures\\prub.jpg";
     private final File temporary = new File(DEFAULT_IMAGE_PATH);
@@ -105,7 +122,10 @@ public class DetailController extends ControllerDataComunication implements Init
         tableDisplay.setText(table);
         clientePane.setVisible(true);
         
-        //
+        nombreCliente.setText(rto.getNombre());
+        addItemsFromList(rto.getOfertas(), ofertasList);
+        addItemsFromList(rto.getLlaves(), llavesList);
+        addItemsFromList(rto.getTorres(), torresList);
     }
 
     @Override
@@ -128,6 +148,29 @@ public class DetailController extends ControllerDataComunication implements Init
         
         pathToAlcaldia = rto.getDocumentoAlcaldia();
         pathToArrendamiento = rto.getDocumentoArrendamiento();
+    }
+    
+    private void addItemsFromList(List list, JFXListView jfx){
+        if(!list.isEmpty()){
+            Object typing = list.get(0);
+            if(typing instanceof llave){
+                for(int i=0; i<= list.size(); i++){
+                    jfx.getItems().add(((llave) typing).getId());
+                }
+            } else if(typing instanceof oferta){
+                for(int i=0; i<= list.size(); i++){
+                    jfx.getItems().add(((oferta) typing).getLocacion());
+                }
+            } else if(typing instanceof torre){
+                for(int i=0; i<= list.size(); i++){
+                    jfx.getItems().add(((torre) typing).getLocalidad());
+                }
+            }
+        }
+        
+        list.forEach((item)->{
+            jfx.getItems().add(item);
+        });
     }
     
     @FXML

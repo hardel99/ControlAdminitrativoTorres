@@ -29,7 +29,6 @@ import javafx.stage.StageStyle;
  */
 public class CATUtil {
     public static final String ICON_PATH = "/icons/icon.png";
-    private static double _x, _y;
     private static Stage stage = null;
     
     public static void setStageIcon(Stage stage){
@@ -86,14 +85,6 @@ public class CATUtil {
         stage.setScene(new Scene(parent));
         stage.show();
         setStageIcon(stage);
-        stage.getScene().setOnMousePressed(event -> {
-            _x = event.getSceneX();
-            _y = event.getSceneY();
-        });
-        stage.getScene().setOnMouseDragged(event -> {
-            stage.setX(event.getScreenX() - _x);
-            stage.setY(event.getScreenY() - _y);
-        });
     }
     
     public static void openFileOnDesktop(File file){
@@ -116,23 +107,29 @@ public class CATUtil {
         
         boolean flag = ltp.printIt(data, saveLoc);
         JFXButton okayBtn = new JFXButton("Ok");
-        JFXButton openBtn = new JFXButton("Abrir Carpeta");
+        JFXButton openBtn = new JFXButton("Abrir");
         openBtn.setOnAction((ActionEvent event1) -> {
             try {
                 if(saveLoc.exists()){
                     Desktop.getDesktop().open(saveLoc);
-                } else{
-                    Desktop.getDesktop().open(saveLoc.getParentFile());
-                    System.out.println("nigga wtf!!");
                 }
-                
             } catch (Exception exp) {
                 System.out.println(exp);
                 AlertFactory.showErrorMessage("No se puede abrir el archivo", "Un error ha ocurrido no se puede abrir el archivo");
             }
         });
+        JFXButton openFolderBtn = new JFXButton("Abrir Carpeta");
+        openFolderBtn.setOnAction((ActionEvent event2) -> {
+            try {
+                Desktop.getDesktop().open(saveLoc.getParentFile());
+            } catch (Exception exp) {
+                System.out.println(exp);
+                AlertFactory.showErrorMessage("No se puede abrir el directorio", "Un error ha ocurrido no se puede abrir el archivo");
+            }
+        });
+        
         if (flag) {
-            AlertFactory.showDialog(rootPane, contentPane, Arrays.asList(okayBtn, openBtn), "Completado", "Los datos han sido exportados satisfactoriamente");
+            AlertFactory.showDialog(rootPane, contentPane, Arrays.asList(okayBtn, openBtn, openFolderBtn), "Completado", "Los datos han sido exportados satisfactoriamente");
         }
     }
 }

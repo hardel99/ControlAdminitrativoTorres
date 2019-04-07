@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1200.0" style="-fx-border-color: #000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
    <children>
       <AnchorPane fx:id="sitioPane" focusTraversable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_LEFT">
          <children>
@@ -189,6 +190,51 @@
             </GridPane>
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="clientePane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <GridPane layoutX="35.0" layoutY="30.0" prefHeight="485.0" prefWidth="542.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="144.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="398.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Nombre Cliente">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Torres" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Llaves" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="nombreCliente" focusColor="#546e7a" GridPane.columnIndex="1" />
+                  <JFXListView fx:id="torresList" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXListView fx:id="llavesList" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Ofertas" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </Label>
+                  <JFXListView fx:id="ofertasList" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
       <AnchorPane focusTraversable="true" maxHeight="-Infinity" prefHeight="100.0" prefWidth="1200.0" StackPane.alignment="TOP_LEFT">
          <children>
             <Label layoutX="50.0" layoutY="45.0" text="Detalles">
@@ -200,22 +246,6 @@
                <font>
                   <Font name="Calibri" size="46.0" />
                </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#closeThis" prefHeight="30.0" prefWidth="45.0" styleClass="close" stylesheets="@../styles/detail.css" text="x" textFill="WHITE" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <font>
-                  <Font name="SansSerif Bold" size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Label>
-            <Label alignment="CENTER" onMouseClicked="#minimizeThis" prefHeight="30.0" prefWidth="45.0" styleClass="min" stylesheets="@../styles/detail.css" text="_" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="0.0">
-               <font>
-                  <Font name="SansSerif Bold" size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
             </Label>
          </children>
       </AnchorPane>

@@ -62,6 +62,12 @@ public class FXMLController implements Initializable {
     private TableView<SitiosTable> sitioTable;
     
     @FXML
+    private TableView<ClientesTable> clienteTable;
+    
+    @FXML
+    private TableColumn<MainOfferTable, String> estadoCol;
+    
+    @FXML
     private TableColumn<MainOfferTable, String> sitioCol;
 
     @FXML
@@ -97,9 +103,6 @@ public class FXMLController implements Initializable {
     @FXML
     private TableColumn<SitiosTable, Float> costosArrendSitioCol;
     
-    @FXML
-    private TableView<ClientesTable> clienteTable;
-
     @FXML
     private TableColumn<ClientesTable, String> nombreClienteCol;
 
@@ -215,6 +218,7 @@ public class FXMLController implements Initializable {
         alturaCol.setCellValueFactory(new PropertyValueFactory<>("altura"));
         fechaCol.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         alturaDisCol.setCellValueFactory(new PropertyValueFactory<>("alturaDis"));
+        estadoCol.setCellValueFactory(new PropertyValueFactory<>("estado"));
         
         nombreSitCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         alturaDisSitioCol.setCellValueFactory(new PropertyValueFactory<>("alturaDisponible"));
@@ -239,7 +243,7 @@ public class FXMLController implements Initializable {
         List<oferta> rows = (List<oferta>) em.createQuery("FROM oferta").getResultList();
         
         rows.forEach((cell)->{
-            data.add(new MainOfferTable(cell.getId(), cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida()));
+            data.add(new MainOfferTable(cell.getId(), cell.getEstado(),cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida()));
         });
         
         List<sitio> sitRow = (List<sitio>) em.createQuery("FROM sitio").getResultList();
@@ -251,7 +255,7 @@ public class FXMLController implements Initializable {
         List<cliente> clientRow = (List<cliente>) em.createQuery("FROM cliente").getResultList();
         
         clientRow.forEach((cell)->{
-            dataClient.add(new ClientesTable(cell.getId(), cell.getNombre(), cell.getAntenaC().getClienteAn().size(), cell.getOfertaC().size(), cell.getLlaveC().size()));
+            dataClient.add(new ClientesTable(cell.getId(), cell.getNombre(), cell.getAntenaC().getClienteAn().size(), cell.getOfertaC().size(), cell.getLlaveC().size(), cell.getLlaveC(), cell.getOfertaC(), cell.getAntenaC().getTorreAn()));
         });
         
         em.close();
@@ -364,6 +368,7 @@ public class FXMLController implements Initializable {
         TableView<?> actualTable = null;
         
         if(mainTable.isVisible()){
+            headers.add("     Estado     ");
             headers.add("         Sitio         ");
             headers.add("         Cliente         ");
             headers.add(" Altura Solicitada ");
@@ -403,6 +408,7 @@ public class FXMLController implements Initializable {
         if(mainTable.isVisible()){
             data.stream().map((mot) -> {
             List<String> row = new ArrayList();
+            row.add(mot.getEstado());
             row.add(mot.getSitio());
             row.add(mot.getCliente());
             row.add(mot.getAltura().toString());
