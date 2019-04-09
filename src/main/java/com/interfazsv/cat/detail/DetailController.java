@@ -8,6 +8,7 @@ import TableData.MainOfferTable;
 import TableData.SitiosTable;
 import com.interfazsv.cat.util.CATUtil;
 import com.interfazsv.cat.util.ControllerDataComunication;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
@@ -45,7 +46,7 @@ public class DetailController extends ControllerDataComunication implements Init
     private AnchorPane clientePane;
     
     @FXML
-    private ImageView imageDisplay;
+    private ImageView imageDisplaySitio;
     
     @FXML
     private JFXTextArea comentarioSitio;
@@ -70,6 +71,9 @@ public class DetailController extends ControllerDataComunication implements Init
     
     @FXML
     private JFXTextField sitioOferta;
+    
+    @FXML
+    private JFXComboBox<String> estadoComboBox;
 
     @FXML
     private JFXTextField clienteOferta;
@@ -79,6 +83,9 @@ public class DetailController extends ControllerDataComunication implements Init
     
     @FXML
     private JFXTextField alturaSolicOferta;
+    
+    @FXML
+    private ImageView imageDisplayOferta;
 
     @FXML
     private JFXDatePicker fechaOferta;
@@ -87,13 +94,13 @@ public class DetailController extends ControllerDataComunication implements Init
     private JFXTextField nombreCliente;
     
     @FXML
-    private JFXListView<?> torresList;
+    private JFXListView<String> torresList;
 
     @FXML
-    private JFXListView<?> llavesList;
+    private JFXListView<String> llavesList;
 
     @FXML
-    private JFXListView<?> ofertasList;
+    private JFXListView<String> ofertasList;
     
     private String pathToAlcaldia, pathToArrendamiento;
     private final String DEFAULT_IMAGE_PATH = "C:\\Users\\hardel\\Pictures\\prub.jpg";
@@ -108,11 +115,16 @@ public class DetailController extends ControllerDataComunication implements Init
     public void initDataOffer(MainOfferTable rto, String table) {
         tableDisplay.setText(table);
         ofertaPane.setVisible(true);
+        estadoComboBox.getItems().addAll("Completado", "Incompleto", "Pendiente");
         
+        estadoComboBox.setValue(rto.getEstado());
         sitioOferta.setText(rto.getSitio());
         clienteOferta.setText(rto.getCliente());
         alturaDisOferta.setText(rto.getAlturaDis().toString());
         alturaSolicOferta.setText(rto.getAltura().toString());
+        
+        /*imageDisplayOferta.setImage(new Image(rto.getImagePath()));<----ON REAL DATA USE THIS*/
+        imageDisplayOferta.setImage(new Image(temporary.toURI().toString()));
         
         fechaOferta.setValue(LocalDate.parse(rto.getFecha(), DateTimeFormatter.ofPattern("uuuu/MM/d")));
     }
@@ -144,7 +156,7 @@ public class DetailController extends ControllerDataComunication implements Init
         costoArrendamientoSitio.setText(rto.getCostosArrendamiento().toString());
         
         
-        imageDisplay.setImage(new Image(temporary.toURI().toString()));
+        imageDisplaySitio.setImage(new Image(temporary.toURI().toString()));
         
         pathToAlcaldia = rto.getDocumentoAlcaldia();
         pathToArrendamiento = rto.getDocumentoArrendamiento();
@@ -154,23 +166,22 @@ public class DetailController extends ControllerDataComunication implements Init
         if(!list.isEmpty()){
             Object typing = list.get(0);
             if(typing instanceof llave){
-                for(int i=0; i<= list.size(); i++){
-                    jfx.getItems().add(((llave) typing).getId());
+                List<llave> realList = list;
+                for(int i=0; i< list.size(); i++){
+                    jfx.getItems().add(realList.get(i).getId());
                 }
             } else if(typing instanceof oferta){
-                for(int i=0; i<= list.size(); i++){
-                    jfx.getItems().add(((oferta) typing).getLocacion());
+                List<oferta> realList = list;
+                for(int i=0; i< list.size(); i++){
+                    jfx.getItems().add(realList.get(i).getLocacion());
                 }
             } else if(typing instanceof torre){
-                for(int i=0; i<= list.size(); i++){
-                    jfx.getItems().add(((torre) typing).getLocalidad());
+                List<torre> realList = list;
+                for(int i=0; i< list.size(); i++){
+                    jfx.getItems().add(realList.get(i).getLocalidad());
                 }
             }
         }
-        
-        list.forEach((item)->{
-            jfx.getItems().add(item);
-        });
     }
     
     @FXML

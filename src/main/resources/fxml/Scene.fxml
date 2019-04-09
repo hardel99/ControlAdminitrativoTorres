@@ -31,7 +31,7 @@
           <TableColumn fx:id="clienteCol" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" text="Cliente" />
             <TableColumn fx:id="alturaCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="Altura Solicitada" />
             <TableColumn fx:id="alturaDisCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="AlturaDisponible" />
-            <TableColumn fx:id="fechaCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Fecha" />
+            <TableColumn fx:id="fechaCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Fecha Oferta" />
         </columns>
          <StackPane.margin>
             <Insets right="10.0" />

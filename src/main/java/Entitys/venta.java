@@ -155,6 +155,6 @@ public class venta implements Serializable {
 
     @Override
     public String toString() {
-        return "venta{" + "id=" + id + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", sitioV=" + sitioV.getId() + ", clienteV=" + clienteV.getId() + ", ofertaVenta=" + ofertaVenta + '}';
+        return "venta{" + "id=" + id + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", sitioV=" + sitioV.getId() + ", clienteV=" + clienteV.getId() + ", ofertaVenta=" + ofertaVenta.getId() + '}';
     }
 }

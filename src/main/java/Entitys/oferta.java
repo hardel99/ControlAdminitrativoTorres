@@ -181,6 +181,6 @@ public class oferta implements Serializable {
 
     @Override
     public String toString() {
-        return "oferta{" + "id=" + id + ", alturaTorre=" + alturaTorre + ", Fecha=" + Fecha + ", imagenRuta=" + imagenRuta + ", locacion=" + locacion.getId() + ", clienteOf=" + clienteOf.getId() + ", ventaO=" + ventaO + '}';
+        return "oferta{" + "id=" + id + ", alturaTorre=" + alturaTorre + ", Fecha=" + Fecha + ", imagenRuta=" + imagenRuta + ", locacion=" + locacion.getId() + ", clienteOf=" + clienteOf.getId() + ", ventaO=" + ventaO.getId() + '}';
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
@@ -110,7 +111,7 @@
                   <Font name="Calibri Bold" size="18.0" />
                </font>
             </Label>
-            <ImageView fx:id="imageDisplay" fitHeight="206.0" fitWidth="317.0" layoutX="831.0" layoutY="25.0" onMouseClicked="#openImage" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imageDisplaySitio" fitHeight="206.0" fitWidth="317.0" layoutX="831.0" layoutY="25.0" onMouseClicked="#openImage" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -122,36 +123,47 @@
          <children>
             <GridPane layoutX="50.0" layoutY="77.0" prefHeight="379.0" prefWidth="542.0">
                <columnConstraints>
-                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="144.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="398.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="168.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="374.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Cliente que Oferta">
+                  <Label text="Cliente que Oferta" GridPane.rowIndex="1">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Sitio que Oferta" GridPane.rowIndex="1">
+                  <Label text="Sitio que Oferta" GridPane.rowIndex="2">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Altura Solicitada" GridPane.rowIndex="2">
+                  <Label text="Altura Solicitada" GridPane.rowIndex="3">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="alturaSolicOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <JFXTextField fx:id="sitioOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXTextField fx:id="clienteOferta" focusColor="#546e7a" GridPane.columnIndex="1" />
+                  <JFXTextField fx:id="alturaSolicOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="sitioOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXTextField fx:id="clienteOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Estado">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox fx:id="estadoComboBox" focusColor="#546e7a" prefHeight="25.0" prefWidth="195.0" GridPane.columnIndex="1">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXComboBox>
                </children>
             </GridPane>
-            <GridPane layoutX="632.0" layoutY="140.0" prefHeight="253.0" prefWidth="500.0">
+            <GridPane layoutX="632.0" layoutY="231.0" prefHeight="206.0" prefWidth="500.0">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="183.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="347.0" minWidth="10.0" prefWidth="317.0" />
@@ -188,6 +200,16 @@
                      </cursor></JFXDatePicker>
                </children>
             </GridPane>
+            <ImageView fx:id="imageDisplayOferta" fitHeight="206.0" fitWidth="317.0" layoutX="831.0" layoutY="25.0" onMouseClicked="#openImage" pickOnBounds="true" preserveRatio="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Label layoutX="644.0" layoutY="25.0" text="Imagen[es]">
+               <font>
+                  <Font name="Calibri Bold" size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="clientePane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">

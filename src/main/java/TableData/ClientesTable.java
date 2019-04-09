@@ -1,5 +1,8 @@
 package TableData;
 
+import Entitys.llave;
+import Entitys.oferta;
+import Entitys.torre;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
@@ -17,11 +20,11 @@ public class ClientesTable extends RecursiveTreeObject<ClientesTable> {
     private final IntegerProperty cantidadAntenas;
     private final IntegerProperty cantidadOfertas;
     private final IntegerProperty cantidadLlaves;
-    private final List llaves;
-    private final List torres;
-    private final List ofertas;
+    private final List<llave> llaves;
+    private final List<torre> torres;
+    private final List<oferta> ofertas;
 
-    public ClientesTable(long id, String nombre, int cantidadAntenas, int cantidadOfertas, int cantidadLlaves, List llaves, List torres, List ofertas) {
+    public ClientesTable(long id, String nombre, int cantidadAntenas, int cantidadOfertas, int cantidadLlaves, List<llave> llaves, List<torre> torres, List<oferta> ofertas) {
         this.id = id;
         this.nombre = new SimpleStringProperty(nombre);
         this.cantidadAntenas = new SimpleIntegerProperty(cantidadAntenas);
@@ -53,15 +56,15 @@ public class ClientesTable extends RecursiveTreeObject<ClientesTable> {
         return cantidadLlaves.get();
     }
 
-    public List getLlaves() {
+    public List<llave> getLlaves() {
         return llaves;
     }
 
-    public List getTorres() {
+    public List<torre> getTorres() {
         return torres;
     }
 
-    public List getOfertas() {
+    public List<oferta> getOfertas() {
         return ofertas;
     }
 }

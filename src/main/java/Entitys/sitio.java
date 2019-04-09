@@ -212,6 +212,6 @@ public class sitio implements Serializable {
 
     @Override
     public String toString() {
-        return "sitio{" + "id=" + id + ", nombre=" + nombre + ", latitud=" + latitud + ", longitud=" + longitud + ", torre=" + torre + ", arrendamiento=" + arrendamiento + ", licencia=" + licencia + '}';
+        return "sitio{" + "id=" + id + ", nombre=" + nombre + ", latitud=" + latitud + ", longitud=" + longitud + ", torre=" + torre.getId() + ", arrendamiento=" + arrendamiento + ", licencia=" + licencia + '}';
     }
 }

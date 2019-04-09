@@ -243,7 +243,7 @@ public class FXMLController implements Initializable {
         List<oferta> rows = (List<oferta>) em.createQuery("FROM oferta").getResultList();
         
         rows.forEach((cell)->{
-            data.add(new MainOfferTable(cell.getId(), cell.getEstado(),cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida()));
+            data.add(new MainOfferTable(cell.getId(), cell.getEstado(),cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida(), cell.getImagenRuta()));
         });
         
         List<sitio> sitRow = (List<sitio>) em.createQuery("FROM sitio").getResultList();
@@ -255,7 +255,7 @@ public class FXMLController implements Initializable {
         List<cliente> clientRow = (List<cliente>) em.createQuery("FROM cliente").getResultList();
         
         clientRow.forEach((cell)->{
-            dataClient.add(new ClientesTable(cell.getId(), cell.getNombre(), cell.getAntenaC().getClienteAn().size(), cell.getOfertaC().size(), cell.getLlaveC().size(), cell.getLlaveC(), cell.getOfertaC(), cell.getAntenaC().getTorreAn()));
+            dataClient.add(new ClientesTable(cell.getId(), cell.getNombre(), cell.getTorreC().size(), cell.getOfertaC().size(), cell.getLlaveC().size(), cell.getLlaveC(), cell.getTorreC(), cell.getOfertaC()));
         });
         
         em.close();
@@ -373,7 +373,7 @@ public class FXMLController implements Initializable {
             headers.add("         Cliente         ");
             headers.add(" Altura Solicitada ");
             headers.add(" Altura Disponible ");
-            headers.add("    Fecha    ");
+            headers.add("    Fecha Oferta   ");
             
             actualTable = mainTable;
         } else if(sitioTable.isVisible()){

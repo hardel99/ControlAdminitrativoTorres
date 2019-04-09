@@ -18,14 +18,16 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
     private final FloatProperty altura;
     private final StringProperty fecha;
     private final FloatProperty alturaDis;
+    private final String imagePath;
 
-    public MainOfferTable(long idOferta, char estado, String sitio, String cliente, float altura, String fecha, float alturaDis) {
+    public MainOfferTable(long idOferta, char estado, String sitio, String cliente, float altura, String fecha, float alturaDis, String path) {
         this.idOferta = idOferta;
         this.sitio = new SimpleStringProperty(sitio);
         this.cliente = new SimpleStringProperty(cliente);
         this.altura = new SimpleFloatProperty(altura);
         this.fecha = new SimpleStringProperty(fecha);
         this.alturaDis = new SimpleFloatProperty(alturaDis);
+        this.imagePath = path;
         
         switch (estado) {
             case 'I':
@@ -68,5 +70,9 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
 
     public String getEstado() {
         return estado.get();
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 }
