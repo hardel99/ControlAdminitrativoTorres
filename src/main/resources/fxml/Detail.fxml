@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
@@ -214,16 +215,15 @@
       </AnchorPane>
       <AnchorPane fx:id="clientePane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
          <children>
-            <GridPane layoutX="35.0" layoutY="30.0" prefHeight="485.0" prefWidth="542.0">
+            <GridPane layoutX="35.0" layoutY="30.0" prefHeight="390.0" prefWidth="500.0">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="144.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="398.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="246.0" minHeight="10.0" prefHeight="177.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="176.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label text="Nombre Cliente">
@@ -236,15 +236,49 @@
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Llaves" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Calibri Bold" size="18.0" />
-                     </font>
-                  </Label>
                   <JFXTextField fx:id="nombreCliente" focusColor="#546e7a" GridPane.columnIndex="1" />
-                  <JFXListView fx:id="torresList" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXListView fx:id="llavesList" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="Ofertas" GridPane.rowIndex="3">
+                  <JFXListView fx:id="torresList" prefHeight="187.0" prefWidth="398.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <JFXTextField fx:id="addTorre" prefHeight="25.0" prefWidth="210.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton buttonType="RAISED" onAction="#addToTorreList" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Agregar">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                        <JFXButton fx:id="eliminarTorre" buttonType="RAISED" disable="true" onAction="#deleteTorre" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Eliminar">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                     <padding>
+                        <Insets top="15.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </GridPane>
+            <GridPane layoutX="607.0" layoutY="37.0" prefHeight="372.0" prefWidth="512.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.0" minWidth="10.0" prefWidth="130.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.0" minWidth="10.0" prefWidth="382.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="132.0" minHeight="10.0" prefHeight="129.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="102.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXListView fx:id="ofertasList" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Ofertas" GridPane.rowIndex="2">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
@@ -252,7 +286,62 @@
                         <Insets bottom="10.0" />
                      </padding>
                   </Label>
-                  <JFXListView fx:id="ofertasList" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Llaves">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXListView fx:id="llavesList" prefHeight="161.0" prefWidth="288.0" GridPane.columnIndex="1" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <JFXTextField fx:id="addLlave" prefHeight="25.0" prefWidth="210.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton buttonType="RAISED" onAction="#addToLlavesList" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Agregar">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                        <JFXButton fx:id="eliminarLlave" buttonType="RAISED" disable="true" onAction="#deleteLlave" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Eliminar">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                     <padding>
+                        <Insets top="15.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <JFXTextField fx:id="addOferta" prefHeight="25.0" prefWidth="210.0">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </JFXTextField>
+                        <JFXButton buttonType="RAISED" onAction="#addToOfferList" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Agregar">
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                        <JFXButton fx:id="eliminarOferta" buttonType="RAISED" disable="true" onAction="#deleteOferta" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Eliminar">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXButton>
+                     </children>
+                     <padding>
+                        <Insets top="15.0" />
+                     </padding>
+                  </HBox>
                </children>
             </GridPane>
          </children>
@@ -271,7 +360,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXButton prefHeight="30.0" prefWidth="100.0" ripplerFill="#aba881" style="-fx-background-color: #FFEE58;" text="Guardar" textFill="#171717" StackPane.alignment="BOTTOM_RIGHT">
+      <JFXButton buttonType="RAISED" prefHeight="30.0" prefWidth="100.0" ripplerFill="#aba881" style="-fx-background-color: #FFEE58;" text="Guardar" textFill="#171717" StackPane.alignment="BOTTOM_RIGHT">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -279,7 +368,7 @@
             <Insets bottom="30.0" right="50.0" />
          </StackPane.margin>
       </JFXButton>
-      <JFXButton cancelButton="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: gray;" text="Cancelar" textFill="WHITE" StackPane.alignment="BOTTOM_RIGHT">
+      <JFXButton buttonType="RAISED" cancelButton="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: gray;" text="Cancelar" textFill="WHITE" StackPane.alignment="BOTTOM_RIGHT">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

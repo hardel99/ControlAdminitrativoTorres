@@ -6,8 +6,10 @@ import Entitys.torre;
 import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
+import com.interfazsv.cat.util.AlertFactory;
 import com.interfazsv.cat.util.CATUtil;
 import com.interfazsv.cat.util.ControllerDataComunication;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
@@ -19,6 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,6 +37,12 @@ import javafx.scene.layout.AnchorPane;
  * @author hardel
  */
 public class DetailController extends ControllerDataComunication implements Initializable{
+    /*
+    *TO-DO:
+    *Validate to add something
+    *Save the currentLists
+    *Modify image on ofertaPane
+    */
     @FXML
     private Label tableDisplay;
     
@@ -102,6 +112,24 @@ public class DetailController extends ControllerDataComunication implements Init
     @FXML
     private JFXListView<String> ofertasList;
     
+    @FXML
+    private JFXTextField addOferta;
+    
+    @FXML
+    private JFXButton eliminarOferta;
+    
+    @FXML
+    private JFXTextField addLlave;
+    
+    @FXML
+    private JFXButton eliminarLlave;
+    
+    @FXML
+    private JFXTextField addTorre;
+    
+    @FXML
+    private JFXButton eliminarTorre;
+    
     private String pathToAlcaldia, pathToArrendamiento;
     private final String DEFAULT_IMAGE_PATH = "C:\\Users\\hardel\\Pictures\\prub.jpg";
     private final File temporary = new File(DEFAULT_IMAGE_PATH);
@@ -123,7 +151,7 @@ public class DetailController extends ControllerDataComunication implements Init
         alturaDisOferta.setText(rto.getAlturaDis().toString());
         alturaSolicOferta.setText(rto.getAltura().toString());
         
-        /*imageDisplayOferta.setImage(new Image(rto.getImagePath()));<----ON REAL DATA USE THIS*/
+        /*imageDisplayOferta.setImage(new Image(rto.getImagePath()));<----ON REAL DATA USE THIS!!!*/
         imageDisplayOferta.setImage(new Image(temporary.toURI().toString()));
         
         fechaOferta.setValue(LocalDate.parse(rto.getFecha(), DateTimeFormatter.ofPattern("uuuu/MM/d")));
@@ -138,6 +166,23 @@ public class DetailController extends ControllerDataComunication implements Init
         addItemsFromList(rto.getOfertas(), ofertasList);
         addItemsFromList(rto.getLlaves(), llavesList);
         addItemsFromList(rto.getTorres(), torresList);
+        
+        setSelectionConfigs(ofertasList, eliminarOferta);
+        setSelectionConfigs(llavesList, eliminarLlave);
+        setSelectionConfigs(torresList, eliminarTorre);
+    }
+    
+    private void setSelectionConfigs(JFXListView lv, JFXButton button){
+        lv.getSelectionModel().selectedItemProperty().addListener(new ChangeListener(){
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                if(lv.getSelectionModel().getSelectedItem() != null){
+                    button.setDisable(false);
+                }else{
+                    button.setDisable(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -173,7 +218,7 @@ public class DetailController extends ControllerDataComunication implements Init
             } else if(typing instanceof oferta){
                 List<oferta> realList = list;
                 for(int i=0; i< list.size(); i++){
-                    jfx.getItems().add(realList.get(i).getLocacion());
+                    jfx.getItems().add(realList.get(i).getLocacion().getNombre());
                 }
             } else if(typing instanceof torre){
                 List<torre> realList = list;
@@ -182,6 +227,19 @@ public class DetailController extends ControllerDataComunication implements Init
                 }
             }
         }
+    }
+    
+    private void addItemManually(JFXTextField textField, JFXListView listView){
+        if(textField.getText() != null && !textField.getText().isEmpty()){
+            listView.getItems().add(textField.getText());
+        } else{
+            AlertFactory.showInfoMessage("Campo en blanco", "El regitro esta vacio, por favor completar");
+        }
+    }
+    
+    private void deleteItem(JFXListView list){
+        int selectedIndex = list.getSelectionModel().getSelectedIndex();
+        list.getItems().remove(selectedIndex);
     }
     
     @FXML
@@ -207,5 +265,35 @@ public class DetailController extends ControllerDataComunication implements Init
     @FXML
     void openImageFolder(ActionEvent event) {
         CATUtil.openFileOnDesktop(temporary.getParentFile());
+    }
+    
+    @FXML
+    void addToLlavesList(ActionEvent event) {
+        addItemManually(addLlave, llavesList);
+    }
+
+    @FXML
+    void addToOfferList(ActionEvent event) {
+        addItemManually(addOferta, ofertasList);
+    }
+
+    @FXML
+    void addToTorreList(ActionEvent event) {
+        addItemManually(addTorre, torresList);
+    }
+    
+    @FXML
+    void deleteLlave(ActionEvent event) {
+        deleteItem(llavesList);
+    }
+
+    @FXML
+    void deleteOferta(ActionEvent event) {
+        deleteItem(ofertasList);
+    }
+
+    @FXML
+    void deleteTorre(ActionEvent event) {
+        deleteItem(torresList);
     }
 }

@@ -4,13 +4,14 @@ Entitys\torre.class
 com\interfazsv\cat\main\MainApp.class
 Entitys\llave.class
 com\interfazsv\cat\util\ControllerDataComunication.class
+com\interfazsv\cat\detail\DetailController$1.class
 Entitys\sitio.class
+com\interfazsv\cat\custom\CustomExportController.class
 com\interfazsv\cat\util\ListToPDF.class
 TableData\MainOfferTable.class
 com\interfazsv\cat\util\AlertFactory.class
 Entitys\venta.class
 TableData\ClientesTable.class
-com\interfazsv\cat\main\FXMLController$2.class
 Entitys\oferta.class
 com\interfazsv\cat\detail\DetailController.class
 com\interfazsv\cat\detail\DetailLoader.class
@@ -18,5 +19,4 @@ Entitys\arrendamiento.class
 com\interfazsv\cat\main\FXMLController.class
 Entitys\cliente.class
 com\interfazsv\cat\main\FXMLController$1.class
-com\interfazsv\cat\main\FXMLController$3.class
 Entitys\licencia.class

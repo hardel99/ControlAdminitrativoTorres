@@ -39,6 +39,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class FXMLController implements Initializable {
+    /*
+    *TO-DO:
+    *Canones!
+    */
     
     @FXML
     private StackPane canvas;
@@ -166,45 +170,26 @@ public class FXMLController implements Initializable {
     }
     
     private void quickConfigs(){
-        mainTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        mainTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener(){
+        selectionConf(mainTable);
+        selectionConf(sitioTable);
+        selectionConf(clienteTable);
+    }
+    
+    private void selectionConf(TableView tv){
+        tv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tv.getSelectionModel().selectedItemProperty().addListener(new ChangeListener(){
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if(mainTable.getSelectionModel().getSelectedItem() != null){
+                if(tv.getSelectionModel().getSelectedItem() != null){
                     btnDetalles.setDisable(false);
                     
-                    selected = mainTable.getSelectionModel().getSelectedItem().getIdOferta();
-                    System.out.print(selected);
-                }else {
-                    btnDetalles.setDisable(true);
-                }
-            }
-        });
-        
-        sitioTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        sitioTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener(){
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if(sitioTable.getSelectionModel().getSelectedItem() != null){
-                    btnDetalles.setDisable(false);
-                    
-                    selected = sitioTable.getSelectionModel().getSelectedItem().getId();
-                    System.out.print(selected);
-                }else {
-                    btnDetalles.setDisable(true);
-                }
-            }
-        });
-        
-        clienteTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        clienteTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener(){
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if(clienteTable.getSelectionModel().getSelectedItem() != null){
-                    btnDetalles.setDisable(false);
-                    
-                    selected = clienteTable.getSelectionModel().getSelectedItem().getId();
-                    System.out.print(selected);
+                    if(tv == sitioTable){
+                        selected = sitioTable.getSelectionModel().getSelectedItem().getId();
+                    } else if(tv == clienteTable){
+                        selected = clienteTable.getSelectionModel().getSelectedItem().getId();
+                    } else if(tv == mainTable){
+                        selected = mainTable.getSelectionModel().getSelectedItem().getIdOferta();
+                    }
                 }else {
                     btnDetalles.setDisable(true);
                 }
@@ -249,7 +234,7 @@ public class FXMLController implements Initializable {
         List<sitio> sitRow = (List<sitio>) em.createQuery("FROM sitio").getResultList();
         
         sitRow.forEach((cell)->{
-            dataSit.add(new SitiosTable(cell.getId(), cell.getNombre(), cell.getLatitud(), cell.getLongitud(), cell.getTorre().getAlturaPedida(), "NO", cell.getLicencia().getMonto(), cell.getLicencia().getDocumentPath(), cell.getArrendamiento().getCosto(), cell.getArrendamiento().getDocumentPath(), cell.getComent()));
+            dataSit.add(new SitiosTable(cell.getId(), cell.getNombre(), cell.getLatitud(), cell.getLongitud(), cell.getTorre().getAlturaPedida(), itsDisponible(cell.getTorre().getClienteT().size()), cell.getLicencia().getMonto(), cell.getLicencia().getDocumentPath(), cell.getArrendamiento().getCosto(), cell.getArrendamiento().getDocumentPath(), cell.getComent()));
         });
         
         List<cliente> clientRow = (List<cliente>) em.createQuery("FROM cliente").getResultList();
@@ -286,6 +271,12 @@ public class FXMLController implements Initializable {
         mainTable.setVisible(false);
         sitioTable.setVisible(false);
         clienteTable.setVisible(false);
+    }
+    
+    private String itsDisponible(int torres){
+        String disponible;
+        disponible = (torres < 3)?"Si":"No";
+        return disponible;
     }
     
     @FXML
@@ -467,5 +458,10 @@ public class FXMLController implements Initializable {
         }
         
         CATUtil.loadWindow(getClass().getResource("/fxml/Detail.fxml"), "Detalles", null, cebo, tableName);
+    }
+    
+    @FXML
+    private void openDocumentWindow(ActionEvent event) {
+        CATUtil.loadWindow(getClass().getResource("/fxml/CustomExport.fxml"), "Generar Documento", null);
     }
 }
