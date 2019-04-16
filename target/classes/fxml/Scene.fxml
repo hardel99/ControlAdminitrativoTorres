@@ -27,8 +27,9 @@
       <TableView fx:id="mainTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_RIGHT">
         <columns>
             <TableColumn fx:id="estadoCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Estado" />
-          <TableColumn fx:id="sitioCol" maxWidth="230.0" minWidth="230.0" prefWidth="230.0" text="Sitio" />
-          <TableColumn fx:id="clienteCol" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" text="Cliente" />
+          <TableColumn fx:id="sitioCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Sitio" />
+          <TableColumn fx:id="clienteCol" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" text="Cliente" />
+            <TableColumn fx:id="montoCol" maxWidth="80.0" minWidth="80.0" text="Monto" />
             <TableColumn fx:id="alturaCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="Altura Solicitada" />
             <TableColumn fx:id="alturaDisCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="AlturaDisponible" />
             <TableColumn fx:id="fechaCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Fecha Oferta" />

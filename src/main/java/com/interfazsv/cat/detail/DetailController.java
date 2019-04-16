@@ -87,6 +87,9 @@ public class DetailController extends ControllerDataComunication implements Init
 
     @FXML
     private JFXTextField clienteOferta;
+    
+    @FXML
+    private JFXTextField montoOferta;
 
     @FXML
     private JFXTextField alturaDisOferta;
@@ -148,6 +151,7 @@ public class DetailController extends ControllerDataComunication implements Init
         estadoComboBox.setValue(rto.getEstado());
         sitioOferta.setText(rto.getSitio());
         clienteOferta.setText(rto.getCliente());
+        montoOferta.setText(rto.getMonto().toString());
         alturaDisOferta.setText(rto.getAlturaDis().toString());
         alturaSolicOferta.setText(rto.getAltura().toString());
         

@@ -2,6 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXChipView?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import java.net.URL?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
@@ -9,32 +11,61 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.custom.CustomExportController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="577.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.custom.CustomExportController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
+      <AnchorPane prefHeight="579.0" prefWidth="900.0" StackPane.alignment="CENTER">
          <children>
-            <JFXChipView fx:id="chipView" layoutX="206.0" layoutY="65.0" minWidth="650.0" prefWidth="650.0" style="-fx-background-color: #ddd;" />
-            <Label layoutX="44.0" layoutY="65.0" text="Agregar campos:">
+            <JFXChipView fx:id="chipView" layoutX="206.0" layoutY="118.0" minWidth="650.0" prefWidth="650.0" style="-fx-background-color: #ddd;" />
+            <Label layoutX="44.0" layoutY="118.0" text="Agregar campos:">
                <font>
                   <Font name="Calibri Light" size="20.0" />
                </font>
             </Label>
-            <TableView fx:id="customTable" layoutX="53.0" layoutY="285.0" prefHeight="200.0" prefWidth="802.0" stylesheets="@../styles/Styles.css" />
-            <Label layoutX="386.0" layoutY="239.0" text="Previsualizacion">
+            <TableView fx:id="customTable" layoutX="53.0" layoutY="309.0" prefHeight="194.0" prefWidth="802.0">
+               <stylesheets>
+                  <URL value="@../styles/Styles.css" />
+                  <URL value="@../styles/customexport.css" />
+               </stylesheets></TableView>
+            <Label layoutX="386.0" layoutY="276.0" text="Previsualizacion">
                <font>
                   <Font name="Calibri Light" size="20.0" />
                </font>
             </Label>
-            <JFXButton buttonType="RAISED" layoutX="776.0" layoutY="181.0" onAction="#addFields" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #546E7A;" text="Agregar" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="776.0" layoutY="234.0" onAction="#addFields" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #546E7A;" text="Agregar" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="678.0" layoutY="181.0" onAction="#clearFields" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #616161;" text="Limpiar" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="678.0" layoutY="234.0" onAction="#clearFields" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #616161;" text="Limpiar" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="776.0" layoutY="525.0" onAction="#exportIt" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #FFEE58;" text="Generar" textFill="#545454">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <Label layoutX="93.0" layoutY="44.0" text="Desde:">
+               <font>
+                  <Font name="Calibri Light" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="514.0" layoutY="44.0" text="Hasta:">
+               <font>
+                  <Font name="Calibri Light" size="20.0" />
+               </font>
+            </Label>
+            <JFXDatePicker fx:id="fromDP" defaultColor="#546e7a" layoutX="156.0" layoutY="43.0" prefHeight="25.0" prefWidth="243.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXDatePicker>
+            <JFXDatePicker fx:id="toDP" defaultColor="#546e7a" layoutX="572.0" layoutY="43.0" prefHeight="25.0" prefWidth="243.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXDatePicker>
          </children>
       </AnchorPane>
    </children>

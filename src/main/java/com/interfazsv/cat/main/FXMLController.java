@@ -76,6 +76,9 @@ public class FXMLController implements Initializable {
 
     @FXML
     private TableColumn<MainOfferTable, String> clienteCol;
+    
+    @FXML
+    private TableColumn<MainOfferTable, Float> montoCol;
 
     @FXML
     private TableColumn<MainOfferTable, Float> alturaCol;
@@ -201,6 +204,7 @@ public class FXMLController implements Initializable {
         sitioCol.setCellValueFactory(new PropertyValueFactory<>("sitio"));
         clienteCol.setCellValueFactory(new PropertyValueFactory<>("cliente"));
         alturaCol.setCellValueFactory(new PropertyValueFactory<>("altura"));
+        montoCol.setCellValueFactory(new PropertyValueFactory<>("monto"));
         fechaCol.setCellValueFactory(new PropertyValueFactory<>("fecha"));
         alturaDisCol.setCellValueFactory(new PropertyValueFactory<>("alturaDis"));
         estadoCol.setCellValueFactory(new PropertyValueFactory<>("estado"));
@@ -228,7 +232,7 @@ public class FXMLController implements Initializable {
         List<oferta> rows = (List<oferta>) em.createQuery("FROM oferta").getResultList();
         
         rows.forEach((cell)->{
-            data.add(new MainOfferTable(cell.getId(), cell.getEstado(),cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida(), cell.getImagenRuta()));
+            data.add(new MainOfferTable(cell.getId(), cell.getEstado(),cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getMonto(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida(), cell.getImagenRuta()));
         });
         
         List<sitio> sitRow = (List<sitio>) em.createQuery("FROM sitio").getResultList();
@@ -362,6 +366,7 @@ public class FXMLController implements Initializable {
             headers.add("     Estado     ");
             headers.add("         Sitio         ");
             headers.add("         Cliente         ");
+            headers.add("    Monto   ");
             headers.add(" Altura Solicitada ");
             headers.add(" Altura Disponible ");
             headers.add("    Fecha Oferta   ");
@@ -402,6 +407,7 @@ public class FXMLController implements Initializable {
             row.add(mot.getEstado());
             row.add(mot.getSitio());
             row.add(mot.getCliente());
+            row.add(mot.getMonto().toString());
             row.add(mot.getAltura().toString());
             row.add(mot.getAlturaDis().toString());
             row.add(mot.getFecha());

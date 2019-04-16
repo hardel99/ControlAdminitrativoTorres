@@ -41,6 +41,9 @@ public class oferta implements Serializable {
     @Column(name="Estado")
     private char estado;
     
+    @Column(name="Monto")
+    private float monto;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_sitio")
     private sitio locacion;
@@ -56,10 +59,11 @@ public class oferta implements Serializable {
         //TODO
     }
 
-    public oferta(Long id, float alturaTorre, LocalDate Fecha, String imagenRuta, char estado, sitio locacion, cliente clienteOf) {
+    public oferta(Long id, float alturaTorre, LocalDate Fecha, String imagenRuta, float monto, char estado, sitio locacion, cliente clienteOf) {
         this.id = id;
         this.alturaTorre = alturaTorre;
         this.Fecha = Fecha;
+        this.monto = monto;
         this.imagenRuta = imagenRuta;
         this.estado = estado;
         this.locacion = locacion;
@@ -128,6 +132,14 @@ public class oferta implements Serializable {
 
     public void setEstado(char estado) {
         this.estado = estado;
+    }
+
+    public float getMonto() {
+        return monto;
+    }
+
+    public void setMonto(float monto) {
+        this.monto = monto;
     }
 
     @Override
