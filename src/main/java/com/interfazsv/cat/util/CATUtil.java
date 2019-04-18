@@ -3,6 +3,7 @@ package com.interfazsv.cat.util;
 import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
+import TableData.VentasTable;
 import com.jfoenix.controls.JFXButton;
 import java.awt.Desktop;
 import java.io.File;
@@ -65,6 +66,8 @@ public class CATUtil {
                 cdc.initDataSitio((SitiosTable) rto, tableName);
             } else if(tableName.equalsIgnoreCase("cliente")){
                 cdc.initDataClient((ClientesTable) rto, tableName);
+            } else if(tableName.equalsIgnoreCase("venta")){
+                cdc.initDataVenta((VentasTable) rto, tableName);
             }
             
             starConfigs(parentStage, parent, title, loader);
@@ -113,7 +116,7 @@ public class CATUtil {
                 if(saveLoc.exists()){
                     Desktop.getDesktop().open(saveLoc);
                 }
-            } catch (Exception exp) {
+            } catch (IOException exp) {
                 System.out.println(exp);
                 AlertFactory.showErrorMessage("No se puede abrir el archivo", "Un error ha ocurrido no se puede abrir el archivo");
             }
@@ -122,7 +125,7 @@ public class CATUtil {
         openFolderBtn.setOnAction((ActionEvent event2) -> {
             try {
                 Desktop.getDesktop().open(saveLoc.getParentFile());
-            } catch (Exception exp) {
+            } catch (IOException exp) {
                 System.out.println(exp);
                 AlertFactory.showErrorMessage("No se puede abrir el directorio", "Un error ha ocurrido no se puede abrir el archivo");
             }

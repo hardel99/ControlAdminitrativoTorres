@@ -63,9 +63,23 @@
             <Insets right="10.0" />
          </StackPane.margin>
       </TableView>
+      <TableView fx:id="ventasTable" layoutX="260.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
+         <columns>
+            <TableColumn fx:id="sitioVentasCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Sitio" />
+            <TableColumn fx:id="clienteVentasCol" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" text="Cliente" />
+            <TableColumn fx:id="montoVentasCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Monto" />
+            <TableColumn fx:id="alturaVentasCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Altura Solicitada" />
+            <TableColumn fx:id="fechaInicioVentasCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Fecha Inicio" />
+            <TableColumn fx:id="fechaFinVentasCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Fecha Final" />
+            <TableColumn fx:id="canonActualVentasCol" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="Canon Anual Actual" />
+         </columns>
+         <StackPane.margin>
+            <Insets right="10.0" />
+         </StackPane.margin>
+      </TableView>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="250.0" styleClass="sidebar" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_LEFT">
          <children>
-            <Label prefHeight="120.0" prefWidth="250.0" text="FillingSpace temporary" textAlignment="CENTER" textFill="WHITE" />
+            <Label prefHeight="120.0" prefWidth="250.0" textAlignment="CENTER" textFill="WHITE" />
             <HBox fx:id="offerBox" alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showMain" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="MONEY" size="1.8em">
@@ -93,7 +107,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <HBox alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox fx:id="ventasBox" alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showVentas" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
                   <FontAwesomeIconView glyphName="TAG" size="1.8em">
                      <HBox.margin>

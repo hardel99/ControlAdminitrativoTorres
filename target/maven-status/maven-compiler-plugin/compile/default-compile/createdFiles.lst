@@ -4,6 +4,7 @@ com\interfazsv\cat\util\CATUtil.class
 Entitys\torre.class
 com\interfazsv\cat\main\MainApp.class
 Entitys\llave.class
+com\interfazsv\cat\detail\DetailController$DateSetters.class
 com\interfazsv\cat\util\ControllerDataComunication.class
 com\interfazsv\cat\detail\DetailController$1.class
 Entitys\sitio.class
@@ -20,4 +21,5 @@ Entitys\arrendamiento.class
 com\interfazsv\cat\main\FXMLController.class
 Entitys\cliente.class
 com\interfazsv\cat\main\FXMLController$1.class
+TableData\VentasTable.class
 Entitys\licencia.class

@@ -32,7 +32,6 @@ public class AlertFactory {
         alert.setTitle("Error!");
         alert.setHeaderText(title);
         alert.setContentText(message);
-        //method for style alert
         alert.showAndWait();
     }
     
