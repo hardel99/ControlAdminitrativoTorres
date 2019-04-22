@@ -52,8 +52,7 @@ public class venta implements Serializable {
         //TODO
     }
 
-    public venta(Long id, LocalDate fechaInicio, LocalDate fechaFin, sitio sitioV, cliente clienteV) {
-        this.id = id;
+    public venta(LocalDate fechaInicio, LocalDate fechaFin, sitio sitioV, cliente clienteV) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.sitioV = sitioV;

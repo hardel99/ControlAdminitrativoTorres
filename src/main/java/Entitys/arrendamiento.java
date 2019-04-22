@@ -47,14 +47,12 @@ public class arrendamiento implements Serializable {
     public arrendamiento() {
     }
 
-    public arrendamiento(Long id, float costo, String nombreArrendatario, String NIT, String DUI, String document, sitio sitioArrendado) {
-        this.id = id;
+    public arrendamiento(float costo, String nombreArrendatario, String NIT, String DUI, String document) {
         this.costo = costo;
         this.nombreArrendatario = nombreArrendatario;
         this.NIT = NIT;
         this.DUI = DUI;
         this.documentPath = document;
-        this.sitioArrendado = sitioArrendado;
     }
 
     public Long getId() {
@@ -107,6 +105,10 @@ public class arrendamiento implements Serializable {
 
     public void setSitioArrendado(sitio sitioArrendado) {
         this.sitioArrendado = sitioArrendado;
+    }
+
+    public void setDocumentPath(String documentPath) {
+        this.documentPath = documentPath;
     }
 
     @Override

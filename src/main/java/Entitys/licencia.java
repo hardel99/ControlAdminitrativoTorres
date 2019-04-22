@@ -39,8 +39,7 @@ public class licencia implements Serializable {
         //TODO
     }
 
-    public licencia(Long id, float monto, String documentPath) {
-        this.id = id;
+    public licencia( float monto, String documentPath) {
         this.monto = monto;
         this.documentPath = documentPath;
     }

@@ -424,6 +424,8 @@ public class FXMLController implements Initializable {
     private void clearSelections(){
         mainTable.getSelectionModel().clearSelection();
         sitioTable.getSelectionModel().clearSelection();
+        clienteTable.getSelectionModel().clearSelection();
+        ventasTable.getSelectionModel().clearSelection();
     }
     
     @FXML
@@ -567,5 +569,10 @@ public class FXMLController implements Initializable {
     @FXML
     private void openDocumentWindow(ActionEvent event) {
         CATUtil.loadWindow(getClass().getResource("/fxml/CustomExport.fxml"), "Generar Documento", null);
+    }
+    
+    @FXML
+    private void agregarRegistro(ActionEvent event) {
+        CATUtil.loadWindow(getClass().getResource("/fxml/CreateRegister.fxml"), "Crear Nuevo Registro", null);
     }
 }

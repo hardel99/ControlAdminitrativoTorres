@@ -59,8 +59,7 @@ public class oferta implements Serializable {
         //TODO
     }
 
-    public oferta(Long id, float alturaTorre, LocalDate Fecha, String imagenRuta, float monto, char estado, sitio locacion, cliente clienteOf) {
-        this.id = id;
+    public oferta(float alturaTorre, LocalDate Fecha, String imagenRuta, float monto, char estado, sitio locacion, cliente clienteOf) {
         this.alturaTorre = alturaTorre;
         this.Fecha = Fecha;
         this.monto = monto;

@@ -60,11 +60,9 @@ public class torre implements Serializable {
         //this.antenaT = antenaT;
     }*/
     
-    public torre(Long id, float alturaPedida, String cotizacion, sitio localidad) {
-        this.id = id;
+    public torre(float alturaPedida, String cotizacion) {
         this.alturaPedida = alturaPedida;
         this.cotizacion = cotizacion;
-        this.localidad = localidad;
     }
 
     public Long getId() {
@@ -154,6 +152,6 @@ public class torre implements Serializable {
 
     @Override
     public String toString() {
-        return "torre{" + "id=" + id + ", alturaPedida=" + alturaPedida + ", cotizacion=" + cotizacion + ", localidad=" + localidad + '}';
+        return "torre{" + "id=" + id + ", alturaPedida=" + alturaPedida + ", localidad=" + localidad + '}';
     }
 }

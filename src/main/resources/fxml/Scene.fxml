@@ -198,7 +198,7 @@
                         <Font name="Calibri Bold" size="24.0" />
                      </font>
                   </Label>
-                  <JFXButton fx:id="btnAddRegister" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Agregar Registro" textFill="WHITE">
+                  <JFXButton fx:id="btnAddRegister" onAction="#agregarRegistro" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Agregar Registro" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView glyphName="PLUS_CIRCLE" size="1.5em" />
                      </graphic>

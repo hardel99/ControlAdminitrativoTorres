@@ -51,8 +51,7 @@ public class llave implements Serializable {
         //TODO
     }
 
-    public llave(Long id, String nombreP, String telefono, String DUI, LocalDate fechaRetiro, LocalDate fechaDevolucion) {
-        this.id = id;
+    public llave(String nombreP, String telefono, String DUI, LocalDate fechaRetiro, LocalDate fechaDevolucion) {
         this.nombreP = nombreP;
         this.telefono = telefono;
         this.DUI = DUI;

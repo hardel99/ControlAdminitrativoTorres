@@ -62,8 +62,17 @@ public class sitio implements Serializable {
     @OneToMany(mappedBy = "locacion", cascade = {CascadeType.ALL})
     private List<oferta> idOferta = new ArrayList<oferta>();
 
-    public sitio(Long id, String nombre, float latitud, float longitud) {
+    public sitio(Long id, String nombre, float latitud, float longitud, licencia licencia, torre torre, arrendamiento arrendamiento) {
         this.id = id;
+        this.nombre = nombre;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.licencia = licencia;
+        this.arrendamiento = arrendamiento;
+        this.torre = torre;
+    }
+    
+    public sitio(String nombre, float latitud, float longitud) {
         this.nombre = nombre;
         this.latitud = latitud;
         this.longitud = longitud;
@@ -212,6 +221,6 @@ public class sitio implements Serializable {
 
     @Override
     public String toString() {
-        return "sitio{" + "id=" + id + ", nombre=" + nombre + ", latitud=" + latitud + ", longitud=" + longitud + ", torre=" + torre.getId() + ", arrendamiento=" + arrendamiento + ", licencia=" + licencia + '}';
+        return "sitio{" + "id=" + id + ", nombre=" + nombre + ", latitud=" + latitud + ", longitud=" + longitud + ", torre=" + torre.getId() + ", arrendamiento=" + arrendamiento.getId() + ", licencia=" + licencia.getId() + '}';
     }
 }
