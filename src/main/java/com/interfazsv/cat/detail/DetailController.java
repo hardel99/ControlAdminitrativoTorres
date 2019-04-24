@@ -7,6 +7,7 @@ import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
 import TableData.VentasTable;
+import callback.DataReturnCallback;
 import com.interfazsv.cat.util.AlertFactory;
 import com.interfazsv.cat.util.CATUtil;
 import com.interfazsv.cat.util.ControllerDataComunication;
@@ -167,10 +168,15 @@ public class DetailController extends ControllerDataComunication implements Init
     //When change anything
     private String estado;
     private boolean isChanged;
+    private DataReturnCallback callback;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //dude idk
+    }
+
+    public void setCallback(DataReturnCallback callback) {
+        this.callback = callback;
     }
 
     @Override

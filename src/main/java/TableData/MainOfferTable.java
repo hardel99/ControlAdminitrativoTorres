@@ -1,5 +1,6 @@
 package TableData;
 
+import Entitys.oferta;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
@@ -32,6 +33,31 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
         this.imagePath = path;
         
         switch (estado) {
+            case 'I':
+                this.estado = new SimpleStringProperty("Incompleto");
+                break;
+            case 'P':
+                this.estado = new SimpleStringProperty("Pendiente");
+                break;
+            case 'C':
+                this.estado = new SimpleStringProperty("Completado");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public MainOfferTable(oferta oferta) {
+        this.idOferta = oferta.getId();
+        this.sitio = new SimpleStringProperty(oferta.getLocacion().getNombre());
+        this.cliente = new SimpleStringProperty(oferta.getClienteOf().getNombre());
+        this.monto = new SimpleFloatProperty(oferta.getMonto());
+        this.altura = new SimpleFloatProperty(oferta.getAlturaTorre());
+        this.fecha = new SimpleStringProperty(oferta.getFecha().toString());
+        this.alturaDis = new SimpleFloatProperty(oferta.getLocacion().getTorre().getAlturaPedida());
+        this.imagePath = oferta.getImagenRuta();
+        
+        switch (oferta.getEstado()) {
             case 'I':
                 this.estado = new SimpleStringProperty("Incompleto");
                 break;

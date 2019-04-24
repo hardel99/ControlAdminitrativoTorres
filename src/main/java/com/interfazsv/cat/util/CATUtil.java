@@ -5,6 +5,7 @@ import TableData.MainOfferTable;
 import TableData.SitiosTable;
 import TableData.VentasTable;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -134,5 +135,11 @@ public class CATUtil {
         if (flag) {
             AlertFactory.showDialog(rootPane, contentPane, Arrays.asList(okayBtn, openBtn, openFolderBtn), "Completado", "Los datos han sido exportados satisfactoriamente");
         }
+    }
+    
+    public static void clearFields(List<JFXTextField> fields) {
+        fields.forEach(field -> {
+            field.setText("");
+        });
     }
 }

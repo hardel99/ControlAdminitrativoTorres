@@ -44,6 +44,9 @@ public class sitio implements Serializable {
     @Column(name = "Comentario")
     private String coment;
     
+    @Column(name = "Image_Path")
+    private String imagePath;
+    
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="ID_Torre")
     private torre torre;
@@ -160,6 +163,14 @@ public class sitio implements Serializable {
 
     public void setIdOferta(List<oferta> idOferta) {
         this.idOferta = idOferta;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override

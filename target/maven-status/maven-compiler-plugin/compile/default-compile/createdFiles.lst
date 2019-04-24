@@ -25,3 +25,4 @@ Entitys\cliente.class
 com\interfazsv\cat\main\FXMLController$1.class
 TableData\VentasTable.class
 Entitys\licencia.class
+callback\DataReturnCallback.class

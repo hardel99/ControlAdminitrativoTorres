@@ -8,6 +8,9 @@ import TableData.ClientesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
 import TableData.VentasTable;
+import callback.DataReturnCallback;
+import com.interfazsv.cat.createRegister.CreateRegisterController;
+import com.interfazsv.cat.detail.DetailController;
 import com.interfazsv.cat.util.CATUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -40,7 +43,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class FXMLController implements Initializable {
+public class FXMLController implements Initializable, DataReturnCallback {
     /**
      * TO-DO:
      * Canones
@@ -563,7 +566,11 @@ public class FXMLController implements Initializable {
             tableName = "Venta";
         }
         
-        CATUtil.loadWindow(getClass().getResource("/fxml/Detail.fxml"), "Detalles", null, cebo, tableName);
+        Object modifying = CATUtil.loadWindow(getClass().getResource("/fxml/Detail.fxml"), "Detalles", null, cebo, tableName);
+        if(modifying != null) {
+            DetailController detail = (DetailController) modifying;
+            detail.setCallback(this);
+        }
     }
     
     @FXML
@@ -573,6 +580,26 @@ public class FXMLController implements Initializable {
     
     @FXML
     private void agregarRegistro(ActionEvent event) {
-        CATUtil.loadWindow(getClass().getResource("/fxml/CreateRegister.fxml"), "Crear Nuevo Registro", null);
+        Object addRegister = CATUtil.loadWindow(getClass().getResource("/fxml/CreateRegister.fxml"), "Crear Nuevo Registro", null);
+        if(addRegister != null){
+            CreateRegisterController crc = (CreateRegisterController) addRegister;
+            crc.setCallback(this);
+            crc.prepareFromClose();
+        }
+    }
+
+    @Override
+    public void refreshMainData(MainOfferTable mot) {
+        data.add(mot);
+    }
+
+    @Override
+    public void refreshSitioData(SitiosTable st) {
+        dataSit.add(st);
+    }
+
+    @Override
+    public void refreshClienteData(ClientesTable ct) {
+        dataClient.add(ct);
     }
 }

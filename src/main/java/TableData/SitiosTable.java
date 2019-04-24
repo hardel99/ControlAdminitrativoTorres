@@ -1,5 +1,6 @@
 package TableData;
 
+import Entitys.sitio;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
@@ -35,6 +36,20 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
         this.coment = comentario;
         this.documentoAlcaldia = docAlcaldia;
         this.documentoArrendamiento = docArrendamiento;
+    }
+
+    public SitiosTable(sitio sitio) {
+        this.id = sitio.getId();
+        this.nombre = new SimpleStringProperty(sitio.getNombre());
+        this.latitud = new SimpleFloatProperty(sitio.getLatitud());
+        this.longitud = new SimpleFloatProperty(sitio.getLongitud());
+        this.alturaDisponible = new SimpleFloatProperty(sitio.getTorre().getAlturaPedida());
+        this.disponible = new SimpleStringProperty("Si");
+        this.costosAlcadia = new SimpleFloatProperty(sitio.getLicencia().getMonto());
+        this.costosArrendamiento = new SimpleFloatProperty(sitio.getArrendamiento().getCosto());
+        this.coment = sitio.getComent();
+        this.documentoAlcaldia = sitio.getLicencia().getDocumentPath();
+        this.documentoArrendamiento = sitio.getArrendamiento().getDocumentPath();
     }
 
     public String getNombre() {
