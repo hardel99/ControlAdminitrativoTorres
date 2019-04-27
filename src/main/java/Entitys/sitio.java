@@ -64,6 +64,9 @@ public class sitio implements Serializable {
     
     @OneToMany(mappedBy = "locacion", cascade = {CascadeType.ALL})
     private List<oferta> idOferta = new ArrayList<oferta>();
+    
+    @OneToMany(mappedBy = "sitioY", cascade = {CascadeType.ALL})
+    private List<llave> llave;
 
     public sitio(Long id, String nombre, float latitud, float longitud, licencia licencia, torre torre, arrendamiento arrendamiento) {
         this.id = id;
@@ -171,6 +174,14 @@ public class sitio implements Serializable {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public List<llave> getLlave() {
+        return llave;
+    }
+
+    public void setLlave(List<llave> llave) {
+        this.llave = llave;
     }
 
     @Override

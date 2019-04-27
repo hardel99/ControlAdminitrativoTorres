@@ -1,6 +1,7 @@
 package Entitys;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,18 +42,26 @@ public class arrendamiento implements Serializable {
     @Column(name="Documento")
     private String documentPath;
     
+    @Column(name = "Fecha_Inicio_Arrendamiento")
+    private LocalDate fechaInicioArrendamiento;
+    
+    @Column(name = "Fecha_Fin_Arrendamiento")
+    private LocalDate fechaFinArrendamiento;
+    
     @OneToOne(mappedBy="arrendamiento", fetch = FetchType.LAZY)
     private sitio sitioArrendado;
 
     public arrendamiento() {
     }
 
-    public arrendamiento(float costo, String nombreArrendatario, String NIT, String DUI, String document) {
+    public arrendamiento(float costo, String nombreArrendatario, String NIT, String DUI, String document, LocalDate inicio, LocalDate fin) {
         this.costo = costo;
         this.nombreArrendatario = nombreArrendatario;
         this.NIT = NIT;
         this.DUI = DUI;
         this.documentPath = document;
+        this.fechaInicioArrendamiento = inicio;
+        this.fechaFinArrendamiento = fin;
     }
 
     public Long getId() {
@@ -87,6 +96,14 @@ public class arrendamiento implements Serializable {
         return documentPath;
     }
 
+    public LocalDate getFechaInicioArrendamiento() {
+        return fechaInicioArrendamiento;
+    }
+
+    public LocalDate getFechaFinArrendamiento() {
+        return fechaFinArrendamiento;
+    }
+
     public void setCosto(float costo) {
         this.costo = costo;
     }
@@ -109,6 +126,14 @@ public class arrendamiento implements Serializable {
 
     public void setDocumentPath(String documentPath) {
         this.documentPath = documentPath;
+    }
+
+    public void setFechaInicioArrendamiento(LocalDate fechaInicioArrendamiento) {
+        this.fechaInicioArrendamiento = fechaInicioArrendamiento;
+    }
+
+    public void setFechaFinArrendamiento(LocalDate fechaFinArrendamiento) {
+        this.fechaFinArrendamiento = fechaFinArrendamiento;
     }
 
     @Override

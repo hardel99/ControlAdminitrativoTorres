@@ -39,10 +39,6 @@ public class cliente implements Serializable {
     @OneToMany(mappedBy="clienteOf", cascade = {CascadeType.ALL})
     private List<oferta> ofertaC = new ArrayList<oferta>();
     
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_antena")
-    private antena antenaC;*/
-    
     @OneToMany(mappedBy="clienteY", cascade = {CascadeType.ALL})
     private List<llave> llaveC = new ArrayList<llave>();
     
@@ -53,12 +49,6 @@ public class cliente implements Serializable {
     public cliente(){
         //TODO
     }
-
-    /*public cliente(Long id, String nombre, antena antenaC) {
-        this.id = id;
-        this.nombre = nombre;
-        //this.antenaC = antenaC;
-    }*/
     
     public cliente(String nombre) {
         this.nombre = nombre;
@@ -103,16 +93,7 @@ public class cliente implements Serializable {
     public void setLlaveC(List<llave> llaveC) {
         this.llaveC = llaveC;
     }
-
-    /*public antena getAntenaC() {
-        return antenaC;
-    }
-
-    public void setAntenaC(antena antenaC) {
-        this.antenaC = antenaC;
-    }*/
     
-    //ToString method screws up on many to many have to fix that
     public List<torre> getTorreC() {
         return torreC;
     }

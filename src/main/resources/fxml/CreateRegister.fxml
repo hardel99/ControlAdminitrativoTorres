@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.createRegister.CreateRegisterController">
@@ -30,7 +31,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <GridPane layoutX="44.0" layoutY="39.0" prefHeight="387.0" prefWidth="505.0">
+                              <GridPane layoutX="44.0" layoutY="39.0" prefHeight="389.0" prefWidth="505.0">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="112.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="10.0" prefWidth="333.0" />
@@ -69,10 +70,13 @@
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Arrendamiento" GridPane.rowIndex="5">
+                                    <Label alignment="CENTER" text="Arrendamiento" GridPane.rowIndex="5">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
+                                       <GridPane.margin>
+                                          <Insets top="10.0" />
+                                       </GridPane.margin>
                                     </Label>
                                     <JFXTextField fx:id="nombreSitio" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" />
                                     <JFXTextField fx:id="latitud" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -111,56 +115,93 @@
                                           </JFXButton>
                                        </children>
                                     </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <children>
-                                          <Label text="Monto">
-                                             <font>
-                                                <Font name="Calibri" size="14.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets right="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <JFXTextField fx:id="montoArrendamiento" focusColor="#536872" prefHeight="25.0" prefWidth="60.0" unFocusColor="#546e7a" />
-                                          <Label text="Documento*">
-                                             <font>
-                                                <Font name="Calibri" size="14.0" />
-                                             </font>
-                                             <HBox.margin>
-                                                <Insets left="20.0" right="10.0" />
-                                             </HBox.margin>
-                                          </Label>
-                                          <JFXTextField fx:id="documentoArrendamientoSitio" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="110.0" unFocusColor="#546e7a" />
-                                          <JFXButton fx:id="openArrendamiento" onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
-                                             <graphic>
-                                                <FontAwesomeIconView glyphName="FILE" size="1.2em" />
-                                             </graphic>
-                                             <padding>
-                                                <Insets bottom="7.0" left="7.0" right="2.0" top="7.0" />
-                                             </padding>
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
-                                          </JFXButton>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label text="Monto">
+                                                   <font>
+                                                      <Font name="Calibri" size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <JFXTextField fx:id="montoArrendamiento" focusColor="#536872" prefHeight="25.0" prefWidth="60.0" unFocusColor="#546e7a" />
+                                                <Label text="Documento*">
+                                                   <font>
+                                                      <Font name="Calibri" size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" right="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <JFXTextField fx:id="documentoArrendamientoSitio" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="110.0" unFocusColor="#546e7a" />
+                                                <JFXButton fx:id="openArrendamiento" onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
+                                                   <graphic>
+                                                      <FontAwesomeIconView glyphName="FILE" size="1.2em" />
+                                                   </graphic>
+                                                   <padding>
+                                                      <Insets bottom="7.0" left="7.0" right="2.0" top="7.0" />
+                                                   </padding>
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor>
+                                                </JFXButton>
+                                             </children>
+                                          </HBox>
+                                          <!--HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label text="Nombre Arrendatario">
+                                                   <font>
+                                                      <Font name="Calibri" size="14.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <JFXTextField fx:id="montoArrendamiento1" focusColor="#536872" prefHeight="25.0" prefWidth="215.0" unFocusColor="#546e7a" />
+                                             </children>
+                                          </HBox-->
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                               </GridPane>
-                              <Label layoutX="591.0" layoutY="64.0" text="Imagenes*">
+                              <Label layoutX="593.0" layoutY="161.0" text="Imagenes*">
                                  <font>
                                     <Font name="Calibri" size="16.0" />
                                  </font>
                               </Label>
-                              <ScrollPane fx:id="scrollSitio" layoutX="688.0" layoutY="50.0" prefHeight="365.0" prefWidth="485.0" stylesheets="@../styles/customexport.css" visible="false">
+                              <ScrollPane fx:id="scrollSitio" layoutX="688.0" layoutY="161.0" prefHeight="250.0" prefWidth="485.0" stylesheets="@../styles/customexport.css" visible="false">
                                  <content>
-                                    <JFXMasonryPane fx:id="imagesPaneSitio" prefHeight="365.0" prefWidth="481.0" />
+                                    <JFXMasonryPane fx:id="imagesPaneSitio" prefHeight="250.0" prefWidth="481.0" />
                                  </content>
                               </ScrollPane>
-                              <JFXButton fx:id="selectImageSitio" buttonType="RAISED" layoutX="865.0" layoutY="195.0" onAction="#agregarImagenes" prefHeight="35.0" prefWidth="180.0" ripplerFill="#4683bc" style="-fx-background-color: #546E7A;" text="Seleccionar Imagen(es)" textFill="WHITE">
+                              <JFXButton fx:id="selectImageSitio" buttonType="RAISED" layoutX="841.0" layoutY="269.0" onAction="#agregarImagenes" prefHeight="35.0" prefWidth="180.0" ripplerFill="#4683bc" style="-fx-background-color: #546E7A;" text="Seleccionar Imagen(es)" textFill="WHITE">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </JFXButton>
+                              <JFXDatePicker fx:id="fechaInicioArrendamiento" defaultColor="#546e7a" layoutX="786.0" layoutY="61.0" prefHeight="25.0" prefWidth="224.0">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </JFXDatePicker>
+                              <Label layoutX="593.0" layoutY="64.0" text="Fecha Inicio Arrendamiento">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="593.0" layoutY="113.0" text="Fecha Fin Arrendamiento">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <JFXDatePicker fx:id="fechaFinArrendamiento" defaultColor="#546e7a" layoutX="786.0" layoutY="109.0" prefHeight="25.0" prefWidth="224.0">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </JFXDatePicker>
                            </children>
                         </AnchorPane>
                     </content>
@@ -171,10 +212,11 @@
                            <children>
                               <GridPane layoutX="61.0" layoutY="39.0" prefHeight="387.0" prefWidth="481.0">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="145.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="10.0" prefWidth="300.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="177.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="10.0" prefWidth="304.0" />
                                  </columnConstraints>
                                  <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -200,26 +242,26 @@
                                     </Label>
                                     <JFXTextField fx:id="alturaSolicitadaOferta" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <JFXTextField fx:id="montoOferta" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Monto" GridPane.rowIndex="3">
+                                    <Label text="Monto Base" GridPane.rowIndex="3">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Fecha de la Oferta" GridPane.rowIndex="4">
+                                    <Label text="Fecha de la Oferta" GridPane.rowIndex="5">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <JFXDatePicker fx:id="fechaOferta" defaultColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <JFXDatePicker fx:id="fechaOferta" defaultColor="#546e7a" prefHeight="25.0" prefWidth="224.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor></JFXDatePicker>
-                                    <Label text="Agregar Documento*" GridPane.rowIndex="5">
+                                    <Label text="Agregar Documento*" GridPane.rowIndex="6">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                                        <children>
                                           <JFXTextField fx:id="documentoOferta" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="226.0" unFocusColor="#546e7a" />
                                           <JFXButton onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
@@ -246,19 +288,25 @@
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor></JFXComboBox>
+                                    <Label text="Canon Anual a Aplicar (%)" GridPane.rowIndex="4">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXTextField fx:id="canonAnualOferta" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                  </children>
                               </GridPane>
-                              <Label layoutX="600.0" layoutY="72.0" text="Imagenes">
+                              <Label layoutX="600.0" layoutY="66.0" text="Imagenes">
                                  <font>
                                     <Font name="Calibri" size="16.0" />
                                  </font>
                               </Label>
-                              <ScrollPane fx:id="scrollOferta" layoutX="687.0" layoutY="61.0" prefHeight="365.0" prefWidth="485.0" stylesheets="@../styles/customexport.css" visible="false">
+                              <ScrollPane fx:id="scrollOferta" layoutX="688.0" layoutY="64.0" prefHeight="350.0" prefWidth="485.0" stylesheets="@../styles/customexport.css" visible="false">
                                  <content>
-                                    <JFXMasonryPane fx:id="imagesPaneOferta" prefHeight="365.0" prefWidth="481.0" />
+                                    <JFXMasonryPane fx:id="imagesPaneOferta" prefHeight="360.0" prefWidth="481.0" />
                                  </content>
                               </ScrollPane>
-                              <JFXButton fx:id="selectImageOferta" buttonType="RAISED" layoutX="822.0" layoutY="215.0" onAction="#agregarImagenes" prefHeight="35.0" prefWidth="180.0" ripplerFill="#4683bc" style="-fx-background-color: #546E7A;" text="Seleccionar Imagen(es)" textFill="WHITE">
+                              <JFXButton fx:id="selectImageOferta" buttonType="RAISED" layoutX="840.0" layoutY="204.0" onAction="#agregarImagenes" prefHeight="35.0" prefWidth="180.0" ripplerFill="#4683bc" style="-fx-background-color: #546E7A;" text="Seleccionar Imagen(es)" textFill="WHITE">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
@@ -266,61 +314,17 @@
                            </children></AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Cliente">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <GridPane layoutX="85.0" layoutY="31.0" prefHeight="387.0" prefWidth="527.0">
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="136.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="414.0" minWidth="10.0" prefWidth="391.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Label text="Nombre Empresa">
-                                       <font>
-                                          <Font name="Calibri" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Canon a Aplicar" GridPane.rowIndex="1">
-                                       <font>
-                                          <Font name="Calibri" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Telefono" GridPane.rowIndex="2">
-                                       <font>
-                                          <Font name="Calibri" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Correo Electronico" GridPane.rowIndex="3">
-                                       <font>
-                                          <Font name="Calibri" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <JFXTextField fx:id="nombreEmpresaCLiente" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" />
-                                    <JFXTextField fx:id="canonCliente" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <JFXTextField fx:id="telefonoCliente" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <JFXTextField fx:id="correoCliente" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                 </children>
-                              </GridPane>
-                           </children></AnchorPane>
-                    </content>
-                  </Tab>
                   <Tab text="Retiro de Llaves">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <GridPane layoutX="56.0" layoutY="39.0" prefHeight="387.0" prefWidth="494.0">
+                              <GridPane layoutX="56.0" layoutY="39.0" prefHeight="406.0" prefWidth="494.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="216.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="10.0" prefWidth="278.0" />
                                  </columnConstraints>
                                  <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -338,42 +342,61 @@
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Contrata la Llave" GridPane.rowIndex="2">
+                                    <Label text="Cantidad de Llaves Entregadas" GridPane.rowIndex="3">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <JFXTextField focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" />
-                                    <JFXTextField focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <JFXTextField focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Fecha de Devolucion de Llaves" GridPane.rowIndex="4">
+                                    <JFXTextField fx:id="cantidadLlaves" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Fecha de Devolucion de Llaves" GridPane.rowIndex="5">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Fecha de Retiro de Llaves" GridPane.rowIndex="3">
+                                    <Label text="Fecha de Retiro de Llaves" GridPane.rowIndex="4">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
-                                    <JFXDatePicker fx:id="fechaRetiroLlaves" defaultColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <JFXDatePicker fx:id="fechaRetiroLlaves" defaultColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </JFXDatePicker>
-                                    <JFXDatePicker fx:id="fechaDevolucionLlaves" defaultColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <JFXDatePicker fx:id="fechaDevolucionLlaves" defaultColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </JFXDatePicker>
+                                    <JFXComboBox fx:id="nombreClienteComboBoxLlave" prefHeight="25.0" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </JFXComboBox>
+                                    <JFXComboBox fx:id="nombreSitioComboBoxLlave" prefHeight="25.0" prefWidth="320.0" GridPane.columnIndex="1">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </JFXComboBox>
+                                    <Label text="Sub-Empresa" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXComboBox fx:id="nombreSubordinadoComboBoxLlave" prefHeight="25.0" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </JFXComboBox>
                                  </children>
                               </GridPane>
-                              <GridPane layoutX="577.0" layoutY="39.0" prefHeight="327.0" prefWidth="570.0">
+                              <GridPane layoutX="577.0" layoutY="39.0" prefHeight="340.0" prefWidth="570.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="247.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="10.0" prefWidth="271.0" />
                                  </columnConstraints>
                                  <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -404,6 +427,31 @@
                                        </font>
                                     </Label>
                                     <JFXTextField fx:id="duiLlave" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Imagen Documento*" GridPane.rowIndex="4">
+                                       <font>
+                                          <Font name="Calibri" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <children>
+                                          <JFXTextField fx:id="documentoPersonalLlave" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="253.0" unFocusColor="#546e7a">
+                                             <HBox.margin>
+                                                <Insets right="10.0" />
+                                             </HBox.margin>
+                                          </JFXTextField>
+                                          <JFXButton fx:id="openDUILlave" onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
+                                             <graphic>
+                                                <FontAwesomeIconView glyphName="FILE" size="1.2em" />
+                                             </graphic>
+                                             <padding>
+                                                <Insets bottom="7.0" left="7.0" right="2.0" top="7.0" />
+                                             </padding>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </JFXButton>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </GridPane>
                            </children></AnchorPane>

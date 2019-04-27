@@ -43,20 +43,41 @@ public class llave implements Serializable {
     @Column(name="Fecha_Devolucion")
     private LocalDate fechaDevolucion;
     
+    @Column(name = "DUI_Path")
+    private String documentPath;
+    
+    @Column(name = "Subempresa")
+    private String subempresa;
+    
+    @Column(name = "Nombre_Persona_Responsable")
+    private String personaResponsable;
+    
+    @Column(name = "Cantidad_Llaves")
+    private int cantidadLlaves;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_cliente")
     private cliente clienteY;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id_sitio")
+    private sitio sitioY;
 
     public llave() {
         //TODO
     }
 
-    public llave(String nombreP, String telefono, String DUI, LocalDate fechaRetiro, LocalDate fechaDevolucion) {
+    public llave(String nombreP, String personaResponsable, String telefono, String subempresa, int cantidadLlaves, String DUI, LocalDate fechaRetiro, LocalDate fechaDevolucion, cliente clienteY, sitio sitioY) {
         this.nombreP = nombreP;
         this.telefono = telefono;
+        this.subempresa = subempresa;
+        this.personaResponsable = personaResponsable;
         this.DUI = DUI;
         this.fechaRetiro = fechaRetiro;
         this.fechaDevolucion = fechaDevolucion;
+        this.clienteY = clienteY;
+        this.sitioY = sitioY;
+        this.cantidadLlaves = cantidadLlaves;
     }
 
     public Long getId() {
@@ -113,6 +134,46 @@ public class llave implements Serializable {
 
     public void setClienteY(cliente clienteY) {
         this.clienteY = clienteY;
+    }
+
+    public sitio getSitioY() {
+        return sitioY;
+    }
+
+    public void setSitioY(sitio sitioY) {
+        this.sitioY = sitioY;
+    }
+
+    public String getDocumentPath() {
+        return documentPath;
+    }
+
+    public void setDocumentPath(String documentPath) {
+        this.documentPath = documentPath;
+    }
+
+    public String getSubempresa() {
+        return subempresa;
+    }
+
+    public String getPersonaResponsable() {
+        return personaResponsable;
+    }
+
+    public void setSubempresa(String subempresa) {
+        this.subempresa = subempresa;
+    }
+
+    public void setPersonaResponsable(String personaResponsable) {
+        this.personaResponsable = personaResponsable;
+    }
+
+    public void setCantidadLlaves(int cantidadLlaves) {
+        this.cantidadLlaves = cantidadLlaves;
+    }
+
+    public int getCantidadLlaves() {
+        return cantidadLlaves;
     }
 
     @Override

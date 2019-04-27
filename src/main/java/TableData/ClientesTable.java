@@ -1,5 +1,6 @@
 package TableData;
 
+import Entitys.cliente;
 import Entitys.llave;
 import Entitys.oferta;
 import Entitys.torre;
@@ -34,6 +35,18 @@ public class ClientesTable extends RecursiveTreeObject<ClientesTable> {
         this.llaves = llaves;
         this.torres = torres;
         this.ofertas = ofertas;
+    }
+
+    public ClientesTable(cliente cliente) {
+        this.id = cliente.getId();
+        this.nombre = new SimpleStringProperty(cliente.getNombre());
+        this.cantidadAntenas = new SimpleIntegerProperty(0); //0 caus its new
+        this.cantidadOfertas = new SimpleIntegerProperty(0);
+        this.cantidadLlaves = new SimpleIntegerProperty(0);
+        
+        this.llaves = cliente.getLlaveC();
+        this.torres = cliente.getTorreC();
+        this.ofertas = cliente.getOfertaC();
     }
 
     public long getId() {
