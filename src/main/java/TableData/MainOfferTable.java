@@ -18,11 +18,13 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
     private final StringProperty cliente;
     private final FloatProperty altura;
     private final FloatProperty monto;
+    private final FloatProperty canon;
     private final StringProperty fecha;
     private final FloatProperty alturaDis;
     private final String imagePath;
+    private final String documentPath;
 
-    public MainOfferTable(long idOferta, char estado, String sitio, String cliente, float altura, float monto, String fecha, float alturaDis, String path) {
+    public MainOfferTable(long idOferta, char estado, String sitio, String cliente, float altura, float monto, String fecha, float alturaDis, String path, float canon, String documentPath) {
         this.idOferta = idOferta;
         this.sitio = new SimpleStringProperty(sitio);
         this.cliente = new SimpleStringProperty(cliente);
@@ -31,6 +33,8 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
         this.fecha = new SimpleStringProperty(fecha);
         this.alturaDis = new SimpleFloatProperty(alturaDis);
         this.imagePath = path;
+        this.canon = new SimpleFloatProperty(canon);
+        this.documentPath = documentPath;
         
         switch (estado) {
             case 'I':
@@ -56,6 +60,8 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
         this.fecha = new SimpleStringProperty(oferta.getFecha().toString());
         this.alturaDis = new SimpleFloatProperty(oferta.getLocacion().getTorre().getAlturaPedida());
         this.imagePath = oferta.getImagenRuta();
+        this.canon = new SimpleFloatProperty(oferta.getCanon());
+        this.documentPath = oferta.getDocumentPath();
         
         switch (oferta.getEstado()) {
             case 'I':
@@ -106,5 +112,13 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
 
     public Float getMonto() {
         return monto.get();
+    }
+
+    public Float getCanon() {
+        return canon.get();
+    }
+
+    public String getDocumentPath() {
+        return documentPath;
     }
 }

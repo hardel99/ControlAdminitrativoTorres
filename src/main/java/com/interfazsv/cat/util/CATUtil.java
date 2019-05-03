@@ -1,9 +1,9 @@
 package com.interfazsv.cat.util;
 
 import TableData.ClientesTable;
+import TableData.LlavesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
-import TableData.VentasTable;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.awt.Desktop;
@@ -67,8 +67,8 @@ public class CATUtil {
                 cdc.initDataSitio((SitiosTable) rto, tableName);
             } else if(tableName.equalsIgnoreCase("cliente")){
                 cdc.initDataClient((ClientesTable) rto, tableName);
-            } else if(tableName.equalsIgnoreCase("venta")){
-                cdc.initDataVenta((VentasTable) rto, tableName);
+            } else if(tableName.equalsIgnoreCase("llave")){
+                cdc.initDataLlave((LlavesTable) rto, tableName);
             }
             
             starConfigs(parentStage, parent, title, loader);
@@ -133,6 +133,44 @@ public class CATUtil {
         });
         
         if (flag) {
+            AlertFactory.showDialog(rootPane, contentPane, Arrays.asList(okayBtn, openBtn, openFolderBtn), "Completado", "Los datos han sido exportados satisfactoriamente");
+        }
+    }
+    
+    public static void initExcelExport(StackPane rootPane, Node contentPane, Stage stage, List<List> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar como Archivo Excel");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Documents"));
+        File saveLoc = fileChooser.showSaveDialog(stage);
+        ListToPDF ltp = new ListToPDF();
+        
+        boolean signal = ltp.printAsXSSL(data, saveLoc);
+        
+        JFXButton okayBtn = new JFXButton("Ok");
+        JFXButton openBtn = new JFXButton("Abrir");
+        openBtn.setOnAction((ActionEvent event1) -> {
+            try {
+                if(saveLoc.exists()){
+                    Desktop.getDesktop().open(saveLoc);
+                }
+            } catch (IOException exp) {
+                System.out.println(exp);
+                AlertFactory.showErrorMessage("No se puede abrir el archivo", "Un error ha ocurrido no se puede abrir el archivo");
+            }
+        });
+        JFXButton openFolderBtn = new JFXButton("Abrir Carpeta");
+        openFolderBtn.setOnAction((ActionEvent event2) -> {
+            try {
+                Desktop.getDesktop().open(saveLoc.getParentFile());
+            } catch (IOException exp) {
+                System.out.println(exp);
+                AlertFactory.showErrorMessage("No se puede abrir el directorio", "Un error ha ocurrido no se puede abrir el archivo");
+            }
+        });
+        
+        if(signal) {
             AlertFactory.showDialog(rootPane, contentPane, Arrays.asList(okayBtn, openBtn, openFolderBtn), "Completado", "Los datos han sido exportados satisfactoriamente");
         }
     }

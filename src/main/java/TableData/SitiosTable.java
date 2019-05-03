@@ -23,8 +23,9 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
     private final FloatProperty costosArrendamiento;
     private final String documentoArrendamiento;
     private final String coment;
+    private final String imagePath;
 
-    public SitiosTable(long id, String nombre, float latitud, float longitud, float alturaDisponible, String disponible, float costosAlcadia, String docAlcaldia, float costosArrendamiento, String docArrendamiento, String comentario) {
+    public SitiosTable(long id, String nombre, float latitud, float longitud, float alturaDisponible, String disponible, float costosAlcadia, String docAlcaldia, float costosArrendamiento, String docArrendamiento, String comentario, String imagePath) {
         this.id = id;
         this.nombre = new SimpleStringProperty(nombre);
         this.latitud = new SimpleFloatProperty(latitud);
@@ -36,6 +37,7 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
         this.coment = comentario;
         this.documentoAlcaldia = docAlcaldia;
         this.documentoArrendamiento = docArrendamiento;
+        this.imagePath = imagePath;
     }
 
     public SitiosTable(sitio sitio) {
@@ -50,6 +52,7 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
         this.coment = sitio.getComent();
         this.documentoAlcaldia = sitio.getLicencia().getDocumentPath();
         this.documentoArrendamiento = sitio.getArrendamiento().getDocumentPath();
+        this.imagePath = sitio.getImagePath();
     }
 
     public String getNombre() {
@@ -94,5 +97,9 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
 
     public String getDocumentoArrendamiento() {
         return documentoArrendamiento;
+    }
+
+    public String getImagePath() {
+        return imagePath;
     }
 }

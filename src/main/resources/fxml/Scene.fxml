@@ -63,15 +63,15 @@
             <Insets right="10.0" />
          </StackPane.margin>
       </TableView>
-      <TableView fx:id="ventasTable" layoutX="260.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
+      <TableView fx:id="llavesTable" layoutX="260.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
          <columns>
-            <TableColumn fx:id="sitioVentasCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Sitio" />
-            <TableColumn fx:id="clienteVentasCol" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" text="Cliente" />
-            <TableColumn fx:id="montoVentasCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Monto" />
-            <TableColumn fx:id="alturaVentasCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Altura Solicitada" />
-            <TableColumn fx:id="fechaInicioVentasCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Fecha Inicio" />
-            <TableColumn fx:id="fechaFinVentasCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Fecha Final" />
-            <TableColumn fx:id="canonActualVentasCol" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="Canon Anual Actual" />
+            <TableColumn fx:id="clienteLlavesCol" maxWidth="105.0" minWidth="105.0" prefWidth="105.0" text="Cliente" />
+            <TableColumn fx:id="subempresaLlavesCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Sub-Empresa" />
+            <TableColumn fx:id="sitioLlavesCol" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" text="Sitio" />
+            <TableColumn fx:id="personaLlavesCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Retirada por" />
+            <TableColumn fx:id="cantidadLlavesCol" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="Llaves Retiradas" />
+            <TableColumn fx:id="fechaRetiroLlavesCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Fecha Retiro" />
+            <TableColumn fx:id="fechaDevolucionLlavesCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Fecha Devolucion" />
          </columns>
          <StackPane.margin>
             <Insets right="10.0" />
@@ -107,14 +107,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <HBox fx:id="ventasBox" alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showVentas" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
+            <HBox fx:id="llavesBox" alignment="TOP_CENTER" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showLlaves" prefHeight="65.0" prefWidth="250.0" styleClass="dashOptions" stylesheets="@../styles/Styles.css">
                <children>
-                  <FontAwesomeIconView glyphName="TAG" size="1.8em">
+                  <FontAwesomeIconView glyphName="KEY" size="1.8em">
                      <HBox.margin>
                         <Insets top="20.0" />
                      </HBox.margin>
                   </FontAwesomeIconView>
-                  <Label prefHeight="65.0" prefWidth="100.0" stylesheets="@../styles/Styles.css" text="Ventas" textFill="WHITE">
+                  <Label prefHeight="65.0" prefWidth="100.0" stylesheets="@../styles/Styles.css" text="Llaves" textFill="WHITE">
                      <font>
                         <Font name="Calibri" size="19.0" />
                      </font>
@@ -209,17 +209,6 @@
                         <Font name="Calibri Light" size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton fx:id="btnPrintActualTable1" layoutX="10.0" layoutY="196.0" onAction="#exportTable" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Ver Canones" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView glyphName="PERCENT" size="1.5em" />
-                     </graphic>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font name="Calibri Light" size="16.0" />
-                     </font>
-                  </JFXButton>
                   <JFXButton fx:id="btnOpenGenerator" onAction="#openDocumentWindow" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="   Generar Documento" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView glyphName="FILE" size="1.5em" />
@@ -231,9 +220,20 @@
                         <Font name="Calibri Light" size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton fx:id="btnPrintActualTable" onAction="#exportTable" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Exportar Tabla Actual" textFill="WHITE">
+                  <JFXButton fx:id="btnPrintActualTableExcel" layoutX="10.0" layoutY="196.0" onAction="#exportTable" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Exportar Tabla Actual (EXCEL)" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView glyphName="TABLE" size="1.5em" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font name="Calibri Light" size="16.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnPrintActualTable" onAction="#exportTable" prefHeight="60.0" prefWidth="250.0" ripplerFill="#19282e" text="    Exportar Tabla Actual (PDF)" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="FILE_ALT" size="1.5em" />
                      </graphic>
                      <cursor>
                         <Cursor fx:constant="HAND" />

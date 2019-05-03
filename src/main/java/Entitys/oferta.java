@@ -47,6 +47,9 @@ public class oferta implements Serializable {
     @Column(name="Canon")
     private float canon;
     
+    @Column(name="documentPath")
+    private String documentPath;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_sitio")
     private sitio locacion;
@@ -62,7 +65,7 @@ public class oferta implements Serializable {
         //TODO
     }
 
-    public oferta(float alturaTorre, LocalDate Fecha, String imagenRuta, float monto, float canon, char estado, sitio locacion, cliente clienteOf) {
+    public oferta(float alturaTorre, LocalDate Fecha, String imagenRuta, float monto, float canon, char estado, String documentPath, sitio locacion, cliente clienteOf) {
         this.alturaTorre = alturaTorre;
         this.Fecha = Fecha;
         this.monto = monto;
@@ -71,6 +74,7 @@ public class oferta implements Serializable {
         this.locacion = locacion;
         this.clienteOf = clienteOf;
         this.canon = canon;
+        this.documentPath = documentPath;
     }
 
     public Long getId() {
@@ -151,6 +155,14 @@ public class oferta implements Serializable {
 
     public void setCanon(float canon) {
         this.canon = canon;
+    }
+
+    public String getDocumentPath() {
+        return documentPath;
+    }
+
+    public void setDocumentPath(String documentPath) {
+        this.documentPath = documentPath;
     }
 
     @Override

@@ -4,13 +4,14 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXMasonryPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -19,7 +20,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.interfazsv.cat.detail.DetailController">
    <children>
       <AnchorPane fx:id="sitioPane" focusTraversable="true" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_LEFT">
          <children>
@@ -112,12 +113,12 @@
                   <Font name="Calibri Bold" size="18.0" />
                </font>
             </Label>
-            <ImageView fx:id="imageDisplaySitio" fitHeight="206.0" fitWidth="317.0" layoutX="831.0" layoutY="25.0" onMouseClicked="#openImage" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
             <Hyperlink layoutX="644.0" layoutY="66.0" onAction="#openImageFolder" text="Modificar Imagenes" />
+            <ScrollPane fx:id="scrollSitio" layoutX="831.0" layoutY="28.0" prefHeight="206.0" prefWidth="317.0">
+               <content>
+                  <JFXMasonryPane fx:id="imageDisplaySitio" prefHeight="250.0" prefWidth="315.0" />
+               </content>
+            </ScrollPane>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="ofertaPane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
@@ -128,6 +129,7 @@
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="10.0" prefWidth="374.0" />
                </columnConstraints>
                <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -145,33 +147,47 @@
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label text="Altura Solicitada" GridPane.rowIndex="4">
+                  <Label text="Altura Solicitada" GridPane.rowIndex="5">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="alturaSolicOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <JFXTextField fx:id="sitioOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <JFXTextField fx:id="clienteOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="alturaSolicOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <Label text="Estado">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="estadoComboBox" focusColor="#546e7a" prefHeight="25.0" prefWidth="195.0" GridPane.columnIndex="1">
+                  <JFXComboBox fx:id="estadoComboBox" focusColor="#546e7a" prefHeight="25.0" prefWidth="247.0" GridPane.columnIndex="1">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXComboBox>
-                  <Label text="Monto" GridPane.rowIndex="3">
+                  <Label text="Monto" GridPane.rowIndex="4">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="montoOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="montoOferta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="Canon Anual" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="canonActualVenta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXComboBox fx:id="sitioOferta" focusColor="#546e7a" prefHeight="25.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXComboBox>
+                  <JFXComboBox fx:id="clienteOferta" focusColor="#546e7a" prefHeight="25.0" prefWidth="248.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXComboBox>
                </children>
             </GridPane>
-            <GridPane fx:id="ofertaGrid" layoutX="632.0" layoutY="216.0" prefHeight="206.0" prefWidth="500.0">
+            <GridPane fx:id="ofertaGrid" layoutX="632.0" layoutY="245.0" prefHeight="177.0" prefWidth="500.0">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="183.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="347.0" minWidth="10.0" prefWidth="317.0" />
@@ -201,14 +217,14 @@
                      </GridPane.margin>
                   </JFXTextField>
                   <Hyperlink onAction="#openOferta" text="Abrir Documento de Oferta" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Hyperlink text="Cambiar Documento de Oferta" GridPane.rowIndex="2" />
+                  <Hyperlink onAction="#changedDocument" text="Cambiar Documento de Oferta" GridPane.rowIndex="2" />
                   <JFXDatePicker fx:id="fechaOferta" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></JFXDatePicker>
                </children>
             </GridPane>
-            <GridPane fx:id="ventaGrid" layoutX="632.0" layoutY="216.0" prefHeight="206.0" prefWidth="500.0" visible="false">
+            <GridPane fx:id="ventaGrid" layoutX="632.0" layoutY="256.0" prefHeight="166.0" prefWidth="500.0" visible="false">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.0" minWidth="10.0" prefWidth="183.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="347.0" minWidth="10.0" prefWidth="317.0" />
@@ -216,7 +232,6 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label text="Fecha Inicio Contrato">
@@ -238,24 +253,18 @@
                      </cursor>
                   </JFXDatePicker>
                   <JFXDatePicker fx:id="fechaInicioVenta" GridPane.columnIndex="1" />
-                  <Label text="Canon Anual Actual" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Calibri Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="canonActualVenta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
-            <ImageView fx:id="imageDisplayOferta" fitHeight="206.0" fitWidth="317.0" layoutX="831.0" layoutY="25.0" onMouseClicked="#openImage" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
             <Label layoutX="644.0" layoutY="25.0" text="Imagen[es]">
                <font>
                   <Font name="Calibri Bold" size="18.0" />
                </font>
             </Label>
+            <ScrollPane fx:id="scrollOferta" layoutX="815.0" layoutY="25.0" prefHeight="206.0" prefWidth="317.0">
+               <content>
+                  <JFXMasonryPane fx:id="imageDisplayOferta" prefHeight="250.0" prefWidth="315.0" />
+               </content>
+            </ScrollPane>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="clientePane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
@@ -285,11 +294,11 @@
                   <JFXListView fx:id="torresList" prefHeight="187.0" prefWidth="398.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <JFXTextField fx:id="addTorre" prefHeight="25.0" prefWidth="210.0">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </JFXTextField>
+                        <JFXComboBox fx:id="addTorre" focusColor="#546e7a" prefHeight="25.0" prefWidth="248.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXComboBox>
                         <JFXButton buttonType="RAISED" onAction="#addToTorreList" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Agregar">
                            <HBox.margin>
                               <Insets right="5.0" />
@@ -339,11 +348,11 @@
                   <JFXListView fx:id="llavesList" prefHeight="161.0" prefWidth="288.0" GridPane.columnIndex="1" />
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <JFXTextField fx:id="addLlave" prefHeight="25.0" prefWidth="210.0">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </JFXTextField>
+                        <JFXComboBox fx:id="addLlave" focusColor="#546e7a" prefHeight="25.0" prefWidth="248.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXComboBox>
                         <JFXButton buttonType="RAISED" onAction="#addToLlavesList" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Agregar">
                            <HBox.margin>
                               <Insets right="5.0" />
@@ -364,11 +373,11 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>
-                        <JFXTextField fx:id="addOferta" prefHeight="25.0" prefWidth="210.0">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </JFXTextField>
+                        <JFXComboBox fx:id="addOferta" focusColor="#546e7a" prefHeight="25.0" prefWidth="248.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </JFXComboBox>
                         <JFXButton buttonType="RAISED" onAction="#addToOfferList" prefWidth="75.0" style="-fx-text-fill: white; -fx-background-color: #546E7A;" text="Agregar">
                            <HBox.margin>
                               <Insets right="5.0" />
@@ -414,6 +423,14 @@
          </StackPane.margin>
       </JFXButton>
       <JFXButton buttonType="RAISED" cancelButton="true" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: gray;" text="Cancelar" textFill="WHITE" StackPane.alignment="BOTTOM_RIGHT">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <StackPane.margin>
+            <Insets bottom="30.0" right="290.0" />
+         </StackPane.margin>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" cancelButton="true" layoutX="940.0" layoutY="600.0" onAction="#deleteThis" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #ef8383;" text="Eliminar" textFill="WHITE" StackPane.alignment="BOTTOM_RIGHT">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

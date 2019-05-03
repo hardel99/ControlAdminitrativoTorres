@@ -7,6 +7,7 @@ import Entitys.llave;
 import Entitys.oferta;
 import Entitys.sitio;
 import Entitys.torre;
+import TableData.LlavesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
 import callback.DataReturnCallback;
@@ -548,7 +549,8 @@ public class CreateRegisterController implements Initializable {
                     
                     oferta ofertaRegister = new oferta(Float.parseFloat(alturaSolicitadaOferta.getText()), fechaOferta.getValue(), 
                                                        saveLocationImage.getAbsolutePath(), Float.parseFloat(montoOferta.getText()),
-                                                       Float.parseFloat(canonAnualOferta.getText()), 'P', (sitio) findElement(nombreSitioComboBoxOferta.getValue(), sitio.class), 
+                                                       Float.parseFloat(canonAnualOferta.getText()), 'P', documentoOferta.getText(), 
+                                                        (sitio) findElement(nombreSitioComboBoxOferta.getValue(), sitio.class), 
                                                         (cliente) findElement(nombreClienteComboBoxOferta.getValue(), cliente.class));
                     
                     persist(ofertaRegister);
@@ -578,6 +580,8 @@ public class CreateRegisterController implements Initializable {
                     moveDocuments(documentoPersonalLlave, llaveRegister, saveLocationDocument);
                     
                     persist(llaveRegister);
+                    
+                    callback.refreshLlaveData(new LlavesTable(llaveRegister));
                     
                     AlertFactory.showDialog(root, tabPane, Arrays.asList(ok), "Guardado Exitosamente", "Se ha guardado el registro exitosamente!");
                     

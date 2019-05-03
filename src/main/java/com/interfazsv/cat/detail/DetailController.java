@@ -1,12 +1,15 @@
 package com.interfazsv.cat.detail;
 
+import Entitys.cliente;
 import Entitys.llave;
 import Entitys.oferta;
+import Entitys.sitio;
 import Entitys.torre;
+import Entitys.venta;
 import TableData.ClientesTable;
+import TableData.LlavesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
-import TableData.VentasTable;
 import callback.DataReturnCallback;
 import com.interfazsv.cat.util.AlertFactory;
 import com.interfazsv.cat.util.CATUtil;
@@ -15,14 +18,26 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -30,18 +45,22 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -50,12 +69,12 @@ import javafx.stage.Stage;
 public class DetailController extends ControllerDataComunication implements Initializable{
     /*
     *TO-DO:
-    *Validate to add something
-    *Save the currentLists
-    *Modify image on ofertaPane
-    *Make the user add fecha init and fin when complete the offer
-    *Basically anithyng related to move a file
-    */
+    *validate fields
+    *LlavesPane
+    **/
+    @FXML
+    private StackPane root;
+    
     @FXML
     private Label tableDisplay;
     
@@ -75,7 +94,10 @@ public class DetailController extends ControllerDataComunication implements Init
     private GridPane ventaGrid;
     
     @FXML
-    private ImageView imageDisplaySitio;
+    private ScrollPane scrollSitio;
+
+    @FXML
+    private JFXMasonryPane imageDisplaySitio;
     
     @FXML
     private JFXTextArea comentarioSitio;
@@ -99,13 +121,13 @@ public class DetailController extends ControllerDataComunication implements Init
     private JFXTextField costoArrendamientoSitio;
     
     @FXML
-    private JFXTextField sitioOferta;
-    
-    @FXML
     private JFXComboBox<String> estadoComboBox;
 
     @FXML
-    private JFXTextField clienteOferta;
+    private JFXComboBox<String> sitioOferta;
+
+    @FXML
+    private JFXComboBox<String> clienteOferta;
     
     @FXML
     private JFXTextField montoOferta;
@@ -117,7 +139,10 @@ public class DetailController extends ControllerDataComunication implements Init
     private JFXTextField alturaSolicOferta;
     
     @FXML
-    private ImageView imageDisplayOferta;
+    private ScrollPane scrollOferta;
+
+    @FXML
+    private JFXMasonryPane imageDisplayOferta;
 
     @FXML
     private JFXDatePicker fechaOferta;
@@ -135,19 +160,19 @@ public class DetailController extends ControllerDataComunication implements Init
     private JFXListView<String> ofertasList;
     
     @FXML
-    private JFXTextField addOferta;
+    private JFXComboBox<String> addOferta;
     
     @FXML
     private JFXButton eliminarOferta;
     
     @FXML
-    private JFXTextField addLlave;
+    private JFXComboBox<String> addLlave;
     
     @FXML
     private JFXButton eliminarLlave;
     
     @FXML
-    private JFXTextField addTorre;
+    private JFXComboBox<String> addTorre;
     
     @FXML
     private JFXButton eliminarTorre;
@@ -157,13 +182,22 @@ public class DetailController extends ControllerDataComunication implements Init
 
     @FXML
     private JFXDatePicker fechaInicioVenta;
-
+    
     @FXML
     private JFXTextField canonActualVenta;
     
-    private String pathToAlcaldia, pathToArrendamiento;
-    private final String DEFAULT_IMAGE_PATH = "C:\\Users\\hardel\\Pictures\\prub.jpg";
-    private final File temporary = new File(DEFAULT_IMAGE_PATH);
+    private String pathToAlcaldia, pathToArrendamiento, pathToOferta;
+    private File imageFolder;
+    
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
+    private long idSelected;
+    
+    private final Pattern validEditingState = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+    private final UnaryOperator<TextFormatter.Change> filter = (TextFormatter.Change t) -> {
+        String text = t.getControlNewText();
+        
+        return (validEditingState.matcher(text).matches())?t:null;
+    };
     
     //When change anything
     private String estado;
@@ -183,18 +217,25 @@ public class DetailController extends ControllerDataComunication implements Init
     public void initDataOffer(MainOfferTable rto, String table) {
         tableDisplay.setText(table);
         ofertaPane.setVisible(true);
+        idSelected = rto.getIdOferta();
         estadoComboBox.getItems().addAll("Completado", "Incompleto", "Pendiente");
         
         estadoComboBox.setValue(rto.getEstado());
         estado = rto.getEstado();
-        sitioOferta.setText(rto.getSitio());
-        clienteOferta.setText(rto.getCliente());
-        montoOferta.setText(rto.getMonto().toString());
-        alturaDisOferta.setText(rto.getAlturaDis().toString());
-        alturaSolicOferta.setText(rto.getAltura().toString());
         
-        /*imageDisplayOferta.setImage(new Image(rto.getImagePath()));<----ON REAL DATA USE THIS!!!*/
-        imageDisplayOferta.setImage(new Image(temporary.toURI().toString()));
+        fillComboBox();
+        montoOferta.setText(rto.getMonto().toString());
+        montoOferta.setTextFormatter(new TextFormatter<>(filter));
+        alturaDisOferta.setText(rto.getAlturaDis().toString());
+        alturaDisOferta.setTextFormatter(new TextFormatter<>(filter));
+        alturaSolicOferta.setText(rto.getAltura().toString());
+        alturaSolicOferta.setTextFormatter(new TextFormatter<>(filter));
+        canonActualVenta.setText(rto.getCanon().toString());
+        canonActualVenta.setTextFormatter(new TextFormatter<>(filter));
+        
+        addImageToPane(imageDisplayOferta, rto.getImagePath(), scrollOferta);
+        imageFolder = new File(rto.getImagePath());
+        pathToOferta = rto.getDocumentPath();
         
         fechaOferta.setValue(LocalDate.parse(rto.getFecha(), DateTimeFormatter.ofPattern("uuuu/MM/d")));
         
@@ -202,33 +243,38 @@ public class DetailController extends ControllerDataComunication implements Init
         ofertaGrid.setVisible(true);
     }
     
+    private void fillComboBox() {
+        EntityManager em = emf.createEntityManager();
+        
+        if(ofertaPane.isVisible()) {
+            List<String> sitios = em.createQuery("SELECT s.nombre FROM sitio s").getResultList();
+            List<String> clientes = em.createQuery("SELECT c.nombre FROM cliente").getResultList();
+
+            sitioOferta.getItems().addAll(sitios);
+            clienteOferta.getItems().addAll(clientes);
+        } else if(clientePane.isVisible()) {
+            List<String> llaves = em.createQuery("SELECT l.sitioY.nombre FROM llave l WHERE l.clienteY.nombre = '" + nombreCliente.getText() + "'").getResultList();
+            List<String> torres = em.createQuery("SELECT t.localidad.nombre FROM torre t WHERE t.clienteT.nombre = '" + nombreCliente.getText() + "'").getResultList();
+            List<String> ofertas = em.createQuery("SELECT o.locacion.nombre FROM oferta o WHERE o.clienteOf.nombre = '" + nombreCliente.getText() + "'").getResultList();
+            
+            addOferta.getItems().addAll(ofertas);
+            addTorre.getItems().addAll(torres);
+            addLlave.getItems().addAll(llaves);
+        }
+        
+        em.close();
+    }
+    
     @Override
-    public void initDataVenta(VentasTable rto, String table) {
+    public void initDataLlave(LlavesTable rto, String table) {
         tableDisplay.setText(table);
-        ofertaPane.setVisible(true);
-        estadoComboBox.getItems().addAll("Completado", "Incompleto", "Pendiente");
-        estadoComboBox.setValue(rto.getEstado());
-        estadoComboBox.setDisable(true);
-        
-        sitioOferta.setText(rto.getSitio());
-        clienteOferta.setText(rto.getCliente());
-        montoOferta.setText(rto.getMonto().toString());
-        alturaSolicOferta.setText(rto.getAlturaDis().toString());
-        
-        /*imageDisplayOferta.setImage(new Image(rto.getImagePath()));<----ON REAL DATA USE THIS!!!*/
-        imageDisplayOferta.setImage(new Image(temporary.toURI().toString()));
-        
-        fechaInicioVenta.setValue(rto.getFechaInicio());
-        fechaFinVenta.setValue(rto.getFechaFin());
-        canonActualVenta.setText(rto.getCanonActual().toString());
-        
-        ventaGrid.setVisible(true);
-        ofertaGrid.setVisible(false);
+        idSelected = rto.getId();
     }
 
     @Override
     public void initDataClient(ClientesTable rto, String table) {
         tableDisplay.setText(table);
+        idSelected = rto.getId();
         clientePane.setVisible(true);
         
         nombreCliente.setText(rto.getNombre());
@@ -257,23 +303,49 @@ public class DetailController extends ControllerDataComunication implements Init
     @Override
     public void initDataSitio(SitiosTable rto, String table) {
         tableDisplay.setText(table);
+        idSelected = rto.getId();
         sitioPane.setVisible(true);
         
         float costoTotal = rto.getCostosAlcadia() + rto.getCostosArrendamiento();
         
         nombreSitio.setText(rto.getNombre());
         latitudSitio.setText(rto.getLatitud().toString());
+        latitudSitio.setTextFormatter(new TextFormatter<>(filter));
         longitudSitio.setText(rto.getLongitud().toString());
+        longitudSitio.setTextFormatter(new TextFormatter<>(filter));
         comentarioSitio.setText(rto.getComent());
         totalCostSitio.setText(costoTotal + "");
         costoAlcaldiaSitio.setText(rto.getCostosAlcadia().toString());
+        costoAlcaldiaSitio.setTextFormatter(new TextFormatter<>(filter));
         costoArrendamientoSitio.setText(rto.getCostosArrendamiento().toString());
+        costoArrendamientoSitio.setTextFormatter(new TextFormatter<>(filter));
         
-        
-        imageDisplaySitio.setImage(new Image(temporary.toURI().toString()));
+        addImageToPane(imageDisplaySitio, rto.getImagePath(), scrollSitio);
+        imageFolder = new File(rto.getImagePath());
         
         pathToAlcaldia = rto.getDocumentoAlcaldia();
         pathToArrendamiento = rto.getDocumentoArrendamiento();
+    }
+    
+    private void addImageToPane(JFXMasonryPane pane, String imagePath, ScrollPane scroll) {
+        try {
+            Stream<Path> paths = Files.walk(Paths.get(imagePath));
+            paths.filter(Files::isRegularFile).forEach(image -> {
+                Label imagePort = new Label();
+                imagePort.setPrefSize(100, 100);
+                imagePort.setStyle("-fx-background-image: url('" + image.toUri().toString() + "');"
+                        + "-fx-background-size: 100%;"
+                        + "-fx-background-repeat: no-reapeat;");
+                
+                imagePort.setCursor(Cursor.HAND);
+                imagePort.setOnMouseClicked((event) -> {
+                    CATUtil.openFileOnDesktop(image.toFile());
+                });
+                pane.getChildren().add(imagePort);
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(DetailController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void addItemsFromList(List list, JFXListView jfx){
@@ -298,9 +370,9 @@ public class DetailController extends ControllerDataComunication implements Init
         }
     }
     
-    private void addItemManually(JFXTextField textField, JFXListView listView){
-        if(textField.getText() != null && !textField.getText().isEmpty()){
-            listView.getItems().add(textField.getText());
+    private void addItemManually(JFXComboBox<String> comboBox, JFXListView listView){
+        if(comboBox.getValue() != null){
+            listView.getItems().add(comboBox.getValue());
         } else{
             AlertFactory.showInfoMessage("Campo en blanco", "El regitro esta vacio, por favor completar");
         }
@@ -323,17 +395,12 @@ public class DetailController extends ControllerDataComunication implements Init
     
     @FXML
     void openOferta(ActionEvent event) {
-        CATUtil.openFileOnDesktop(new File("wait until i set this"));
-    }
-    
-    @FXML
-    void openImage(MouseEvent event) {
-        CATUtil.openFileOnDesktop(new File(DEFAULT_IMAGE_PATH));
+        CATUtil.openFileOnDesktop(new File(pathToOferta));
     }
     
     @FXML
     void openImageFolder(ActionEvent event) {
-        CATUtil.openFileOnDesktop(temporary.getParentFile());
+        CATUtil.openFileOnDesktop(imageFolder);
     }
     
     @FXML
@@ -368,27 +435,63 @@ public class DetailController extends ControllerDataComunication implements Init
     
     @FXML
     void saveChanges(ActionEvent event) {
+        JFXButton ok = new JFXButton("Ok");
         if(ofertaPane.isVisible()){
             if(ofertaGrid.isVisible()){
-                if(!estado.equals(estadoComboBox.getSelectionModel().getSelectedItem())){
-                    if(estadoComboBox.getValue().equals("Completado")){
+                oferta ofer = (oferta) findInDB(oferta.class, idSelected);
+                
+                if(estadoComboBox.getValue().equals("Completado")){
+                    if(!estado.equals(estadoComboBox.getSelectionModel().getSelectedItem())){
                         showConfirmDialog();
                         if(isChanged){
-                            System.out.println("Awebo lo hizo broder");
+                            venta vent = new venta(fechaInicioVenta.getValue(), fechaFinVenta.getValue(), (sitio) findInDB(sitio.class, sitioOferta.getValue()), (cliente) findInDB(cliente.class, clienteOferta.getValue()));
+                            vent.setOfertaVenta(ofer);
+                            
+                            persist(vent);
+                            
+                            AlertFactory.showDialog(root, ofertaPane, Arrays.asList(ok), "Guardado Exitosamente", "Se han guardado los cambios exitosamente");
                         } else{
-                            System.out.println("Detectado no cambio nada despues de su dialogo >:(");
+                            AlertFactory.showDialog(root, ofertaPane, Arrays.asList(ok), "Cancelado", "Se han cancelado los cambios que estaba efectuando");
                         }
                     } else{
-                        System.out.println("Cambio pero no a completado!");
+                        ofer.getVentaO().setFechaInicio(fechaInicioVenta.getValue());
+                        ofer.getVentaO().setFechaFin(fechaFinVenta.getValue());
                     }
-                } else{
-                    System.out.println("No cambio nada broder");
                 }
-            } 
+                
+                //doesnt change the value of oferta state
+                ofer.setClienteOf((cliente) findInDB(cliente.class, clienteOferta.getValue()));
+                ofer.setLocacion((sitio) findInDB(sitio.class, sitioOferta.getValue()));
+                ofer.setCanon(Float.parseFloat(canonActualVenta.getText()));
+                ofer.setMonto(Float.parseFloat(montoOferta.getText()));
+                ofer.setAlturaTorre(Float.parseFloat(alturaSolicOferta.getText()));
+                ofer.getLocacion().getTorre().setAlturaPedida(Float.parseFloat(alturaDisOferta.getText()));
+                ofer.setFecha(fechaOferta.getValue());
+                
+                persist(ofer);
+                
+                AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
+        } 
         } else if(clientePane.isVisible()){
-            //clientePane stuffs
+            cliente client = (cliente) findInDB(cliente.class, idSelected);
+            client.setNombre(nombreCliente.getText());
+            client.setLlaveC(llavesList.getItems().stream().collect(Collectors.toList()));
+            client.setTorreC(torresList.getItems().stream().collect(Collectors.toList()));
+            client.setOfertaC(ofertasList.getItems().stream().collect(Collectors.toList()));
+            
+            persist(client);
+            AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
         } else if(sitioPane.isVisible()){
-            //sitioPane stuffs
+            sitio sit = (sitio) findInDB(sitio.class, idSelected);
+            sit.setNombre(nombreSitio.getText());
+            sit.setLatitud(Float.parseFloat(latitudSitio.getText()));
+            sit.setLongitud(Float.parseFloat(longitudSitio.getText()));
+            sit.getArrendamiento().setCosto(Float.parseFloat(costoArrendamientoSitio.getText()));
+            sit.getLicencia().setMonto(Float.parseFloat(costoAlcaldiaSitio.getText()));
+            sit.setComent(comentarioSitio.getText());
+            
+            persist(sit);
+            AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
         }
     }
 
@@ -435,6 +538,93 @@ public class DetailController extends ControllerDataComunication implements Init
         Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         okButton.addEventFilter(ActionEvent.ACTION, filter);
         dialog.showAndWait();
+    }
+    
+    @FXML
+    void changedDocument(ActionEvent event) {
+        if(ofertaPane.isVisible()) {
+            CATUtil.openFileOnDesktop(new File(pathToOferta));
+        } /*else if(sitioPane.isVisible()) {
+            if(event.getSource() == )
+            CATUtil.openFileOnDesktop(new File(pathToAlcaldia));
+            CATUtil.openFileOnDesktop(new File(pathToArrendamiento));
+        }*/
+    }
+    
+    @FXML
+    void deleteThis(ActionEvent event) {
+        JFXButton ok = new JFXButton("No");
+        JFXButton cancel = new JFXButton("Si");
+        
+        ok.setOnAction(ae -> {
+            if(ofertaPane.isVisible()) {
+                oferta er = (oferta) findInDB(oferta.class, idSelected);
+                delete(er);
+            } else if(sitioPane.isVisible()) {
+                sitio si = (sitio) findInDB(sitio.class, idSelected);
+                delete(si);
+            } else if(clientePane.isVisible()) {
+                cliente cl = (cliente) findInDB(sitio.class, idSelected);
+                delete(cl);
+            }
+            AlertFactory.showInfoMessage("Registro Eliminado", "El registro ha sido completamente eliminado");
+            
+            Stage actual = (Stage) root.getScene().getWindow();
+            actual.close();
+        });
+        
+        AlertFactory.showDialog(root, root, Arrays.asList(ok, cancel), "Eliminar Registro", "¿Esta seguro que quiere eliminar el registro? Esto puede afectar a otros datos que se relacoinen con el");
+    }
+    
+    public void persist(Object object) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void delete(Object object) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.remove(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Object findInDB(Class type, long id) {
+        EntityManager em = emf.createEntityManager();
+        Object found = em.find(type, id);
+        return found;
+    }
+    
+    public Object findInDB(Class type, String identifier) {
+        EntityManager em = emf.createEntityManager();
+        Object found = null;
+        if(type == sitio.class) {
+            found = em.createQuery("FROM sitio s WHERE s.nombre = '" + identifier + "'").getSingleResult();
+        } else if(type == cliente.class) {
+            found = em.createQuery("FROM cliente c WHERE c.nombre = '" + identifier + "'").getSingleResult();
+        }
+        return found;
+    }
+    
+    public void setOnClose() {
+        ofertaPane.getScene().getWindow().setOnCloseRequest(event -> {
+            emf.close();
+        });
     }
     
     private class DateSetters{
