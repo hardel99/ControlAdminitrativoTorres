@@ -17,7 +17,6 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
     private final FloatProperty latitud;
     private final FloatProperty longitud;
     private final FloatProperty alturaDisponible;
-    private final StringProperty disponible;
     private final FloatProperty costosAlcadia;
     private final String documentoAlcaldia;
     private final FloatProperty costosArrendamiento;
@@ -31,7 +30,6 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
         this.latitud = new SimpleFloatProperty(latitud);
         this.longitud = new SimpleFloatProperty(longitud);
         this.alturaDisponible = new SimpleFloatProperty(alturaDisponible);
-        this.disponible = new SimpleStringProperty(disponible);
         this.costosAlcadia = new SimpleFloatProperty(costosAlcadia);
         this.costosArrendamiento = new SimpleFloatProperty(costosArrendamiento);
         this.coment = comentario;
@@ -46,7 +44,6 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
         this.latitud = new SimpleFloatProperty(sitio.getLatitud());
         this.longitud = new SimpleFloatProperty(sitio.getLongitud());
         this.alturaDisponible = new SimpleFloatProperty(sitio.getTorre().getAlturaPedida());
-        this.disponible = new SimpleStringProperty("Si");
         this.costosAlcadia = new SimpleFloatProperty(sitio.getLicencia().getMonto());
         this.costosArrendamiento = new SimpleFloatProperty(sitio.getArrendamiento().getCosto());
         this.coment = sitio.getComent();
@@ -69,10 +66,6 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
 
     public Float getAlturaDisponible() {
         return alturaDisponible.get();
-    }
-
-    public String getDisponible() {
-        return disponible.get();
     }
 
     public Float getCostosAlcadia() {

@@ -9,7 +9,9 @@ import java.time.LocalDate;
  */
 public class CustomTable extends RecursiveTreeObject<CustomTable>{
     //Campos posibles de sitio
+    private String cliente;
     private String lugar;
+    
     private Float costoAlcaldia;
     private Float costoArrendamiento;
     private String nombreArrendatario;
@@ -26,8 +28,7 @@ public class CustomTable extends RecursiveTreeObject<CustomTable>{
     /*private LocalDate fechaInicio;
     private LocalDate fechaFin;*/
     
-    //Campos posibles de cliente
-    private String cliente;
+    
     
     //Preguntar
     /*private LocalDate fechaRetiroLlave;

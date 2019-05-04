@@ -41,7 +41,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="776.0" layoutY="525.0" onAction="#exportIt" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #FFEE58;" text="Generar" textFill="#545454">
+            <JFXButton buttonType="RAISED" layoutX="754.0" layoutY="525.0" onAction="#exportIt" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #FFEE58;" text="Generar PDF" textFill="#545454">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -66,6 +66,11 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXDatePicker>
+            <JFXButton buttonType="RAISED" layoutX="635.0" layoutY="525.0" onAction="#exportIt" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3a9948;" text="Generar Excel" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
          </children>
       </AnchorPane>
    </children>

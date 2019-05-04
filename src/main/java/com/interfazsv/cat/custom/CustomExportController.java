@@ -1,5 +1,6 @@
 package com.interfazsv.cat.custom;
 
+import Entitys.cliente;
 import Entitys.oferta;
 import TableData.CustomTable;
 import com.interfazsv.cat.util.AlertFactory;
@@ -36,7 +37,11 @@ import javax.persistence.Persistence;
  * @author hardel
  */
 public class CustomExportController implements Initializable {
-    
+    /**TO-DO:
+     * ChipView to add client
+     * Calculus for canons
+     * Replace the other data
+     **/
     @FXML
     private StackPane root;
     
@@ -56,12 +61,18 @@ public class CustomExportController implements Initializable {
     
     private final JFXButton aceptBtn = new JFXButton("Ok");
     
+    @FXML
+    private JFXButton excel;
+    
     private List<String> headers = new ArrayList();
+    
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         customTable.setItems(dinamicList);
-        chipView.getSuggestions().addAll(
+        
+        /*chipView.getSuggestions().addAll(
                 "Lugar",
                 "Latitud", 
                 "Longitud", 
@@ -75,7 +86,8 @@ public class CustomExportController implements Initializable {
                 "Cliente", 
                 "Estado Oferta",
                 "Monto"
-        );
+        );*/
+        fillChipView(chipView);
         
         fromDP.setValue(LocalDate.now());
         toDP.setValue(LocalDate.now());
@@ -135,7 +147,12 @@ public class CustomExportController implements Initializable {
             data.add(row);
         });
         
-        CATUtil.initPDFExport(root, customTable, (Stage) customTable.getScene().getWindow(), data);
+        if(event.getSource() == excel) {
+            CATUtil.initExcelExport(root, customTable, (Stage) customTable.getScene().getWindow(), data);
+        } else{
+            CATUtil.initPDFExport(root, customTable, (Stage) customTable.getScene().getWindow(), data);
+        }
+        
         headers.clear();
     }
     
@@ -146,7 +163,6 @@ public class CustomExportController implements Initializable {
             String fromDate = fromDP.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
             String toDate = toDP.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
         
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
             EntityManager em = emf.createEntityManager();
 
             List<oferta> previewRows = em.createQuery("FROM oferta o WHERE o.Fecha BETWEEN '" + fromDate + "' AND '" + toDate + "'").getResultList();
@@ -156,7 +172,6 @@ public class CustomExportController implements Initializable {
             });
 
             em.close();
-            emf.close();
         } else{
             AlertFactory.showDialog(root, chipView.getParent(), Arrays.asList(aceptBtn), "Fechas erroneas", "Hay un problema con las fechas que ingreso, por favor asegurese de que estan correctas");
         }
@@ -274,5 +289,31 @@ public class CustomExportController implements Initializable {
         }
         
         return row;
+    }
+    
+    private void fillChipView(JFXChipView chip) {
+        EntityManager em = emf.createEntityManager();
+        List<String> clientes = em.createQuery("SELECT c.nombre FROM cliente c").getResultList();
+        chip.getSuggestions().addAll(clientes);
+    }
+
+    public void persist(Object object) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        try {
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void prepareToClose(){
+        root.getScene().getWindow().setOnCloseRequest(event -> {
+            emf.close();
+        });
     }
 }

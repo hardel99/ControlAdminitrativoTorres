@@ -1,6 +1,6 @@
 package com.interfazsv.cat.util;
 
-import TableData.ClientesTable;
+import TableData.VentasTable;
 import TableData.LlavesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
@@ -66,7 +66,7 @@ public class CATUtil {
             } else if(tableName.equalsIgnoreCase("sitio")){
                 cdc.initDataSitio((SitiosTable) rto, tableName);
             } else if(tableName.equalsIgnoreCase("cliente")){
-                cdc.initDataClient((ClientesTable) rto, tableName);
+                //thing for oferta
             } else if(tableName.equalsIgnoreCase("llave")){
                 cdc.initDataLlave((LlavesTable) rto, tableName);
             }

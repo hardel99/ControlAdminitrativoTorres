@@ -282,7 +282,7 @@ public class CreateRegisterController implements Initializable {
             emf.close();
         });
     }
-    
+    /*FOR SURE
     private void enablePasteFromClipboard(JFXTextField field){
         field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
             if(keyComb.match((KeyEvent) event)){
@@ -295,7 +295,7 @@ public class CreateRegisterController implements Initializable {
                 clip.setContent(content);
             }
         });
-    }
+    }*/
     
     private void setTooltips() {
         final Tooltip tool = new Tooltip();
@@ -327,7 +327,7 @@ public class CreateRegisterController implements Initializable {
         cantidadLlaves.setTextFormatter(new TextFormatter<>(filter));
         
         //enable clipping
-        enablePasteFromClipboard(nombreSitio);
+        /*enablePasteFromClipboard(nombreSitio);
         enablePasteFromClipboard(latitud);
         enablePasteFromClipboard(longitud);
         enablePasteFromClipboard(altura);
@@ -339,7 +339,7 @@ public class CreateRegisterController implements Initializable {
         enablePasteFromClipboard(telefonoLlave);
         enablePasteFromClipboard(duiLlave);
         enablePasteFromClipboard(canonAnualOferta);
-        enablePasteFromClipboard(cantidadLlaves);
+        enablePasteFromClipboard(cantidadLlaves);*/
     }
 
     @FXML

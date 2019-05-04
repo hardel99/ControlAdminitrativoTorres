@@ -4,9 +4,8 @@ import Entitys.cliente;
 import Entitys.llave;
 import Entitys.oferta;
 import Entitys.sitio;
-import Entitys.torre;
 import Entitys.venta;
-import TableData.ClientesTable;
+import TableData.VentasTable;
 import TableData.LlavesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
@@ -17,7 +16,6 @@ import com.interfazsv.cat.util.ControllerDataComunication;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -36,11 +34,8 @@ import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -70,7 +65,6 @@ public class DetailController extends ControllerDataComunication implements Init
     /*
     *TO-DO:
     *validate fields
-    *LlavesPane
     **/
     @FXML
     private StackPane root;
@@ -148,34 +142,34 @@ public class DetailController extends ControllerDataComunication implements Init
     private JFXDatePicker fechaOferta;
     
     @FXML
-    private JFXTextField nombreCliente;
-    
-    @FXML
-    private JFXListView<String> torresList;
+    private JFXComboBox<String> clienteLlave;
 
     @FXML
-    private JFXListView<String> llavesList;
+    private JFXComboBox<String> sitioLlave;
 
     @FXML
-    private JFXListView<String> ofertasList;
-    
+    private JFXComboBox<String> subempresaLlave;
+
     @FXML
-    private JFXComboBox<String> addOferta;
-    
+    private JFXTextField cantidadLlave;
+
     @FXML
-    private JFXButton eliminarOferta;
-    
+    private JFXDatePicker retiroLlave;
+
     @FXML
-    private JFXComboBox<String> addLlave;
-    
+    private JFXDatePicker devolucionLlave;
+
     @FXML
-    private JFXButton eliminarLlave;
-    
+    private JFXTextField nombreRetiraLlave;
+
     @FXML
-    private JFXComboBox<String> addTorre;
-    
+    private JFXTextField encargadoLlave;
+
     @FXML
-    private JFXButton eliminarTorre;
+    private JFXTextField telefonoLlave;
+
+    @FXML
+    private JFXTextField duiLlave;
     
     @FXML
     private JFXDatePicker fechaFinVenta;
@@ -186,7 +180,7 @@ public class DetailController extends ControllerDataComunication implements Init
     @FXML
     private JFXTextField canonActualVenta;
     
-    private String pathToAlcaldia, pathToArrendamiento, pathToOferta;
+    private String pathToAlcaldia, pathToArrendamiento, pathToOferta, pathToDUI;
     private File imageFolder;
     
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
@@ -233,7 +227,8 @@ public class DetailController extends ControllerDataComunication implements Init
         canonActualVenta.setText(rto.getCanon().toString());
         canonActualVenta.setTextFormatter(new TextFormatter<>(filter));
         
-        addImageToPane(imageDisplayOferta, rto.getImagePath(), scrollOferta);
+        //addImageToPane(imageDisplayOferta, rto.getImagePath(), scrollOferta);
+        addImageToPane(imageDisplayOferta, rto.getImagePath());
         imageFolder = new File(rto.getImagePath());
         pathToOferta = rto.getDocumentPath();
         
@@ -246,20 +241,16 @@ public class DetailController extends ControllerDataComunication implements Init
     private void fillComboBox() {
         EntityManager em = emf.createEntityManager();
         
+        List<String> sitios = em.createQuery("SELECT s.nombre FROM sitio s").getResultList();
+        List<String> clientes = em.createQuery("SELECT c.nombre FROM cliente").getResultList();
+            
         if(ofertaPane.isVisible()) {
-            List<String> sitios = em.createQuery("SELECT s.nombre FROM sitio s").getResultList();
-            List<String> clientes = em.createQuery("SELECT c.nombre FROM cliente").getResultList();
-
             sitioOferta.getItems().addAll(sitios);
             clienteOferta.getItems().addAll(clientes);
         } else if(clientePane.isVisible()) {
-            List<String> llaves = em.createQuery("SELECT l.sitioY.nombre FROM llave l WHERE l.clienteY.nombre = '" + nombreCliente.getText() + "'").getResultList();
-            List<String> torres = em.createQuery("SELECT t.localidad.nombre FROM torre t WHERE t.clienteT.nombre = '" + nombreCliente.getText() + "'").getResultList();
-            List<String> ofertas = em.createQuery("SELECT o.locacion.nombre FROM oferta o WHERE o.clienteOf.nombre = '" + nombreCliente.getText() + "'").getResultList();
-            
-            addOferta.getItems().addAll(ofertas);
-            addTorre.getItems().addAll(torres);
-            addLlave.getItems().addAll(llaves);
+            sitioLlave.getItems().addAll(sitios);
+            clienteLlave.getItems().addAll(clientes);
+            subempresaLlave.getItems().addAll("MULTITEC S.A DE C.V.", "INTESAL S.A.DE C.V.", "SERPROFIN S.A.DE C.V", "DHL S.A. DE C.V.");
         }
         
         em.close();
@@ -269,35 +260,25 @@ public class DetailController extends ControllerDataComunication implements Init
     public void initDataLlave(LlavesTable rto, String table) {
         tableDisplay.setText(table);
         idSelected = rto.getId();
-    }
-
-    @Override
-    public void initDataClient(ClientesTable rto, String table) {
-        tableDisplay.setText(table);
-        idSelected = rto.getId();
+        
         clientePane.setVisible(true);
         
-        nombreCliente.setText(rto.getNombre());
-        addItemsFromList(rto.getOfertas(), ofertasList);
-        addItemsFromList(rto.getLlaves(), llavesList);
-        addItemsFromList(rto.getTorres(), torresList);
+        llave ven = (llave) findInDB(llave.class, idSelected);
         
-        setSelectionConfigs(ofertasList, eliminarOferta);
-        setSelectionConfigs(llavesList, eliminarLlave);
-        setSelectionConfigs(torresList, eliminarTorre);
-    }
-    
-    private void setSelectionConfigs(JFXListView lv, JFXButton button){
-        lv.getSelectionModel().selectedItemProperty().addListener(new ChangeListener(){
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if(lv.getSelectionModel().getSelectedItem() != null){
-                    button.setDisable(false);
-                }else{
-                    button.setDisable(true);
-                }
-            }
-        });
+        clienteLlave.setValue(rto.getCliente());
+        sitioLlave.setValue(rto.getSitio());
+        subempresaLlave.setValue(rto.getSubempresa());
+        cantidadLlave.setText(String.valueOf(rto.getCantidadLlaves()));
+        cantidadLlave.setTextFormatter(new TextFormatter<>(filter));
+        retiroLlave.setValue(rto.getFechaRetiro());
+        devolucionLlave.setValue(rto.getFechaDevolucion());
+        nombreRetiraLlave.setText(rto.getPersonaReceptor());
+        encargadoLlave.setText(ven.getPersonaResponsable());
+        telefonoLlave.setText(ven.getTelefono());
+        telefonoLlave.setTextFormatter(new TextFormatter<>(filter));
+        duiLlave.setText(ven.getDUI());
+        
+        pathToDUI = ven.getDocumentPath();
     }
 
     @Override
@@ -320,14 +301,15 @@ public class DetailController extends ControllerDataComunication implements Init
         costoArrendamientoSitio.setText(rto.getCostosArrendamiento().toString());
         costoArrendamientoSitio.setTextFormatter(new TextFormatter<>(filter));
         
-        addImageToPane(imageDisplaySitio, rto.getImagePath(), scrollSitio);
+        //addImageToPane(imageDisplaySitio, rto.getImagePath(), scrollSitio);
+        addImageToPane(imageDisplaySitio, rto.getImagePath());
         imageFolder = new File(rto.getImagePath());
         
         pathToAlcaldia = rto.getDocumentoAlcaldia();
         pathToArrendamiento = rto.getDocumentoArrendamiento();
     }
     
-    private void addImageToPane(JFXMasonryPane pane, String imagePath, ScrollPane scroll) {
+    private void addImageToPane(JFXMasonryPane pane, String imagePath) {
         try {
             Stream<Path> paths = Files.walk(Paths.get(imagePath));
             paths.filter(Files::isRegularFile).forEach(image -> {
@@ -348,41 +330,6 @@ public class DetailController extends ControllerDataComunication implements Init
         }
     }
     
-    private void addItemsFromList(List list, JFXListView jfx){
-        if(!list.isEmpty()){
-            Object typing = list.get(0);
-            if(typing instanceof llave){
-                List<llave> realList = list;
-                for(int i=0; i< list.size(); i++){
-                    jfx.getItems().add(realList.get(i).getId());
-                }
-            } else if(typing instanceof oferta){
-                List<oferta> realList = list;
-                for(int i=0; i< list.size(); i++){
-                    jfx.getItems().add(realList.get(i).getLocacion().getNombre());
-                }
-            } else if(typing instanceof torre){
-                List<torre> realList = list;
-                for(int i=0; i< list.size(); i++){
-                    jfx.getItems().add(realList.get(i).getLocalidad());
-                }
-            }
-        }
-    }
-    
-    private void addItemManually(JFXComboBox<String> comboBox, JFXListView listView){
-        if(comboBox.getValue() != null){
-            listView.getItems().add(comboBox.getValue());
-        } else{
-            AlertFactory.showInfoMessage("Campo en blanco", "El regitro esta vacio, por favor completar");
-        }
-    }
-    
-    private void deleteItem(JFXListView list){
-        int selectedIndex = list.getSelectionModel().getSelectedIndex();
-        list.getItems().remove(selectedIndex);
-    }
-    
     @FXML
     void openAlcaldia(ActionEvent event) {
         CATUtil.openFileOnDesktop(new File(pathToAlcaldia));
@@ -394,6 +341,11 @@ public class DetailController extends ControllerDataComunication implements Init
     }
     
     @FXML
+    void openDUI(ActionEvent event) {
+        CATUtil.openFileOnDesktop(new File(pathToDUI));
+    }
+    
+    @FXML
     void openOferta(ActionEvent event) {
         CATUtil.openFileOnDesktop(new File(pathToOferta));
     }
@@ -401,36 +353,6 @@ public class DetailController extends ControllerDataComunication implements Init
     @FXML
     void openImageFolder(ActionEvent event) {
         CATUtil.openFileOnDesktop(imageFolder);
-    }
-    
-    @FXML
-    void addToLlavesList(ActionEvent event) {
-        addItemManually(addLlave, llavesList);
-    }
-
-    @FXML
-    void addToOfferList(ActionEvent event) {
-        addItemManually(addOferta, ofertasList);
-    }
-
-    @FXML
-    void addToTorreList(ActionEvent event) {
-        addItemManually(addTorre, torresList);
-    }
-    
-    @FXML
-    void deleteLlave(ActionEvent event) {
-        deleteItem(llavesList);
-    }
-
-    @FXML
-    void deleteOferta(ActionEvent event) {
-        deleteItem(ofertasList);
-    }
-
-    @FXML
-    void deleteTorre(ActionEvent event) {
-        deleteItem(torresList);
     }
     
     @FXML
@@ -448,7 +370,7 @@ public class DetailController extends ControllerDataComunication implements Init
                             vent.setOfertaVenta(ofer);
                             
                             persist(vent);
-                            
+                            callback.refreshVentaData(new VentasTable(vent));
                             AlertFactory.showDialog(root, ofertaPane, Arrays.asList(ok), "Guardado Exitosamente", "Se han guardado los cambios exitosamente");
                         } else{
                             AlertFactory.showDialog(root, ofertaPane, Arrays.asList(ok), "Cancelado", "Se han cancelado los cambios que estaba efectuando");
@@ -469,17 +391,26 @@ public class DetailController extends ControllerDataComunication implements Init
                 ofer.setFecha(fechaOferta.getValue());
                 
                 persist(ofer);
-                
+                callback.refreshMainData(new MainOfferTable(ofer));
                 AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
         } 
         } else if(clientePane.isVisible()){
-            cliente client = (cliente) findInDB(cliente.class, idSelected);
-            client.setNombre(nombreCliente.getText());
-            client.setLlaveC(llavesList.getItems().stream().collect(Collectors.toList()));
-            client.setTorreC(torresList.getItems().stream().collect(Collectors.toList()));
-            client.setOfertaC(ofertasList.getItems().stream().collect(Collectors.toList()));
+            llave llave = (llave) findInDB(venta.class, idSelected);
+            llave.setClienteY((cliente) findInDB(venta.class, clienteLlave.getValue()));
+            llave.setSitioY((sitio) findInDB(sitio.class, sitioLlave.getValue()));
+            llave.setCantidadLlaves(Integer.parseInt(cantidadLlave.getText()));
+            llave.setSubempresa(subempresaLlave.getValue());
+            llave.setFechaRetiro(retiroLlave.getValue());
+            llave.setFechaDevolucion(devolucionLlave.getValue());
+            llave.setNombreP(nombreRetiraLlave.getText());
+            llave.setPersonaResponsable(encargadoLlave.getText());
+            llave.setTelefono(telefonoLlave.getText());
+            llave.setDUI(duiLlave.getText());
+            llave.setDocumentPath(telefonoLlave.getText());
             
-            persist(client);
+            persist(llave);
+            callback.refreshLlaveData(new LlavesTable(llave));
+            
             AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
         } else if(sitioPane.isVisible()){
             sitio sit = (sitio) findInDB(sitio.class, idSelected);
@@ -491,6 +422,7 @@ public class DetailController extends ControllerDataComunication implements Init
             sit.setComent(comentarioSitio.getText());
             
             persist(sit);
+            callback.refreshSitioData(new SitiosTable(sit));
             AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
         }
     }

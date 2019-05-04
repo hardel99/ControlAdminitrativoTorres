@@ -3,7 +3,6 @@ C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\TableData\MainOffer
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\com\interfazsv\cat\util\CATUtil.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\callback\DataReturnCallback.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\com\interfazsv\cat\detail\DetailController.java
-C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\TableData\ClientesTable.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\com\interfazsv\cat\detail\DetailLoader.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\Entitys\sitio.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\Entitys\torre.java
@@ -16,6 +15,7 @@ C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\Entitys\licencia.ja
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\com\interfazsv\cat\util\ControllerDataComunication.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\Entitys\oferta.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\TableData\LlavesTable.java
+C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\TableData\VentasTable.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\Entitys\arrendamiento.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\Entitys\llave.java
 C:\Users\hardel\Documents\NetBeansProjects\CAT\src\main\java\com\interfazsv\cat\util\ListToPDF.java
