@@ -14,4 +14,6 @@ public interface DataReturnCallback {
     public void refreshSitioData(SitiosTable st);
     public void refreshVentaData(VentasTable ct);
     public void refreshLlaveData(LlavesTable lt);
+    
+    public void refreshAllTableData();
 }

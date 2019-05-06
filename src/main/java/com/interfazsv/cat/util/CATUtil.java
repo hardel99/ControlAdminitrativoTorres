@@ -1,6 +1,5 @@
 package com.interfazsv.cat.util;
 
-import TableData.VentasTable;
 import TableData.LlavesTable;
 import TableData.MainOfferTable;
 import TableData.SitiosTable;
@@ -137,7 +136,7 @@ public class CATUtil {
         }
     }
     
-    public static void initExcelExport(StackPane rootPane, Node contentPane, Stage stage, List<List> data) {
+    public static void initExcelExport(StackPane rootPane, Node contentPane, Stage stage, List<List> data, boolean numeric) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar como Archivo Excel");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
@@ -146,7 +145,7 @@ public class CATUtil {
         File saveLoc = fileChooser.showSaveDialog(stage);
         ListToPDF ltp = new ListToPDF();
         
-        boolean signal = ltp.printAsXSSL(data, saveLoc);
+        boolean signal = ltp.printAsXSSL(data, saveLoc, numeric);
         
         JFXButton okayBtn = new JFXButton("Ok");
         JFXButton openBtn = new JFXButton("Abrir");

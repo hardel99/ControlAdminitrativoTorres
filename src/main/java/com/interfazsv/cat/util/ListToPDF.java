@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -26,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ListToPDF {
     
     private int columnIndex = 1;
+    private int indexRow = 1;
     
     public boolean printIt(List<List> list, File saveItHere){
         try {
@@ -63,7 +65,7 @@ public class ListToPDF {
         return false;
     }
     
-    public boolean printAsXSSL(List<List> data, File saveItHere) {
+    public boolean printAsXSSL(List<List> data, File saveItHere, boolean numeric) {
         FileOutputStream fos = null;
         try {
             if(saveItHere == null){
@@ -73,41 +75,42 @@ public class ListToPDF {
             XSSFWorkbook book = new XSSFWorkbook();
             XSSFSheet sheet = book.createSheet();
             
-            XSSFFont normal = book.createFont();
-            normal.setFontName("Calibri");
-            normal.setFontHeight((short)16);
-            normal.setColor(IndexedColors.BLACK.getIndex());
-            
-            CellStyle normalCell = book.createCellStyle();
+            XSSFCellStyle normalCell = book.createCellStyle();
             normalCell.setAlignment(CellStyle.ALIGN_CENTER);
-            normalCell.setFillPattern(CellStyle.SOLID_FOREGROUND);
-            normalCell.setFont(normal);
+            normalCell.getCoreXf().unsetBorderId();
+            normalCell.getCoreXf().unsetFillId();
+            normalCell.getFont().setBold(false);
             
-            XSSFFont changed = normal;
-            changed.setBold(true);
-            
-            CellStyle changedCell = normalCell;
+            XSSFCellStyle changedCell = book.createCellStyle();
+            changedCell.cloneStyleFrom(normalCell);
             changedCell.setFillBackgroundColor(IndexedColors.LIGHT_GREEN.getIndex());
-            changedCell.setFont(changed);
+            changedCell.setFillPattern(XSSFCellStyle.BIG_SPOTS);
+            changedCell.getFont().setBold(true);
             
-            int indexRow = 1;
             data.forEach(listRow -> {
                 XSSFRow row = sheet.createRow(indexRow);
                 listRow.forEach(cell -> {
-                    row.createCell(columnIndex).setCellValue((String) cell);
-                    row.getCell(columnIndex).setCellStyle(normalCell);
-                    if(columnIndex > 1 && indexRow > 2) {
-                        if(row.getCell(columnIndex) != row.getCell(columnIndex - 1)) {
-                            row.getCell(columnIndex).setCellStyle(changedCell);
+                    if(numeric) {
+                        if(columnIndex > 1 && indexRow > 2) {
+                            row.createCell(columnIndex).setCellValue((float) cell);
+                            if(row.getCell(columnIndex) != row.getCell(columnIndex - 1)) {
+                                row.getCell(columnIndex).setCellStyle(changedCell);
+                            }
+                        } else{
+                            row.createCell(columnIndex).setCellValue((String) cell);
+                            row.getCell(columnIndex).setCellStyle(normalCell);
                         }
-                    } else if(indexRow == 1){
-                        sheet.autoSizeColumn(columnIndex);
-                        //sheet.setColumnWith(index, width)
+                    } else{
+                        row.createCell(columnIndex).setCellValue((String) cell);
+                        row.getCell(columnIndex).setCellStyle(normalCell);
                     }
+                    
+                    sheet.autoSizeColumn(columnIndex);
                     
                     columnIndex++;
                 });
                 columnIndex = 1;
+                indexRow++;
             });
             
             fos = new FileOutputStream(saveItHere);

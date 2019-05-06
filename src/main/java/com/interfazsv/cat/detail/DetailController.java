@@ -393,7 +393,7 @@ public class DetailController extends ControllerDataComunication implements Init
                 persist(ofer);
                 callback.refreshMainData(new MainOfferTable(ofer));
                 AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
-        } 
+            } 
         } else if(clientePane.isVisible()){
             llave llave = (llave) findInDB(venta.class, idSelected);
             llave.setClienteY((cliente) findInDB(venta.class, clienteLlave.getValue()));
@@ -533,6 +533,7 @@ public class DetailController extends ControllerDataComunication implements Init
             em.getTransaction().rollback();
         } finally {
             em.close();
+            callback.refreshAllTableData();
         }
     }
     

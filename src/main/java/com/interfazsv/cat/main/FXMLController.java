@@ -45,10 +45,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class FXMLController implements Initializable, DataReturnCallback {
-    /**
-     * TO-DO:
-     * Llaves ID = ID client
-    **/
     
     @FXML
     private StackPane canvas;
@@ -118,9 +114,6 @@ public class FXMLController implements Initializable, DataReturnCallback {
 
     @FXML
     private TableColumn<SitiosTable, Float> longitudSitioCol;
-
-    @FXML
-    private TableColumn<SitiosTable, String> dispSitioCol;
 
     @FXML
     private TableColumn<SitiosTable, Float> costosSitioCol;
@@ -280,7 +273,6 @@ public class FXMLController implements Initializable, DataReturnCallback {
         alturaDisSitioCol.setCellValueFactory(new PropertyValueFactory<>("alturaDisponible"));
         latitudSitioCol.setCellValueFactory(new PropertyValueFactory<>("latitud"));
         longitudSitioCol.setCellValueFactory(new PropertyValueFactory<>("longitud"));
-        dispSitioCol.setCellValueFactory(new PropertyValueFactory<>("disponible"));
         costosSitioCol.setCellValueFactory(new PropertyValueFactory<>("costosAlcadia"));
         costosArrendSitioCol.setCellValueFactory(new PropertyValueFactory<>("costosArrendamiento"));
         
@@ -360,10 +352,7 @@ public class FXMLController implements Initializable, DataReturnCallback {
         canonBox.getStyleClass().remove("itsSelected");
         llavesBox.getStyleClass().remove("itsSelected");
         
-        mainTable.getSelectionModel().clearSelection();
-        sitioTable.getSelectionModel().clearSelection();
-        ventasTable.getSelectionModel().clearSelection();
-        llavesTable.getSelectionModel().clearSelection();
+        clearSelections();
         
         mainTable.setVisible(false);
         sitioTable.setVisible(false);
@@ -512,7 +501,7 @@ public class FXMLController implements Initializable, DataReturnCallback {
         dataToPrint = mapDataToPrint(headers);
         
         if(event.getSource() == btnPrintActualTableExcel) {
-            CATUtil.initExcelExport(canvas, actualTable, (Stage) actualTable.getScene().getWindow(), dataToPrint);
+            CATUtil.initExcelExport(canvas, actualTable, (Stage) actualTable.getScene().getWindow(), dataToPrint, false);
         } else if(event.getSource() == btnPrintActualTable) {
             CATUtil.initPDFExport(canvas, actualTable, (Stage) actualTable.getScene().getWindow(), dataToPrint);
         }
@@ -638,22 +627,51 @@ public class FXMLController implements Initializable, DataReturnCallback {
 
     @Override
     public void refreshMainData(MainOfferTable mot) {
+        if(selected == mot.getIdOferta()) {
+            MainOfferTable venta = data.stream().filter(ven -> selected == ven.getIdOferta()).findAny().orElse(null);
+            data.remove(venta);
+        }
+        
         data.add(mot);
     }
 
     @Override
     public void refreshSitioData(SitiosTable st) {
+        if(selected == st.getId()) {
+            SitiosTable sit = dataSit.stream().filter(sitio -> selected == sitio.getId()).findAny().orElse(null);
+            dataSit.remove(sit);
+        }
+        
         dataSit.add(st);
     }
 
     @Override
     public void refreshLlaveData(LlavesTable lt) {
+        if(selected == lt.getId()) {
+            LlavesTable llave = dataLlaves.stream().filter(llaves -> selected == llaves.getId()).findAny().orElse(null);
+            dataLlaves.remove(llave);
+        }
+        
         dataLlaves.add(lt);
     }
 
     @Override
     public void refreshVentaData(VentasTable ct) {
+        if(selected == ct.getId()) {
+            VentasTable venta = dataVenta.stream().filter(ven -> selected == ven.getId()).findAny().orElse(null);
+            dataVenta.remove(venta);
+        }
+        
         dataVenta.add(ct);
     }
-    
+
+    @Override
+    public void refreshAllTableData() {
+        data.clear();
+        dataSit.clear();
+        dataLlaves.clear();
+        dataVenta.clear();
+        
+        getTheData();
+    }
 }
