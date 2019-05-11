@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.FloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +26,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -69,14 +67,14 @@ public class CustomExportController implements Initializable {
     
     private List<String> headers = new ArrayList();
     
-    private int index = 0;
+    private int index = 0, column;
     
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         customTable.setItems(dinamicList);
-        
+        chipView.getSuggestions().add("Todos");
         fillChipView(chipView);
         
         clienteCol.setCellValueFactory(new PropertyValueFactory<>("cliente"));
@@ -101,18 +99,19 @@ public class CustomExportController implements Initializable {
         
         if(chipView.getChips().size() > 0) {
             CustomTable ct = dinamicList.get(0);
-            
+           
+            //PREVIEW JUST GIVE ONE RESULT
             ct.getMonth().forEach(month -> {
                 String nombreColumna = setColumnName(index);
                 TableColumn<CustomTable, Float> tc = new TableColumn<>(nombreColumna);
-                ObservableValue<Float> ov = new SimpleFloatProperty(month.get()).asObject();
                 headers.add(nombreColumna);
-                //tc.setCellValueFactory(cellData -> cellData.getValue().getMonth().get(index));
-                tc.setCellValueFactory((Callback<TableColumn.CellDataFeatures<CustomTable, Float>, ObservableValue<Float>>) ov);
-                tc.setPrefWidth(170);
+                tc.setCellValueFactory(cellData -> month.asObject());
+                tc.setPrefWidth(150);
                 customTable.getColumns().add(tc);
                 index++;
             });
+            
+            index = 0;
             
             TableColumn<CustomTable, Float> total = new TableColumn<>("Total");
             total.setCellValueFactory(new PropertyValueFactory<>("total"));
@@ -193,9 +192,10 @@ public class CustomExportController implements Initializable {
             List<String> row = new ArrayList();
             row.add(mapper.getCliente());
             row.add(mapper.getLugar());
-            mapper.getMonth().forEach(column -> {   //may got error
+            mapper.getMonth().forEach((column) -> {
                 row.add(String.valueOf(column.get()));
             });
+            row.add(mapper.getTotal().toString());
             return row;
         }).forEachOrdered((row) -> {
             data.add(row);
@@ -204,65 +204,75 @@ public class CustomExportController implements Initializable {
         if(event.getSource() == excel) {
             CATUtil.initExcelExport(root, customTable, (Stage) customTable.getScene().getWindow(), data, true);
         } else{
-            CATUtil.initPDFExport(root, customTable, (Stage) customTable.getScene().getWindow(), data);
+            CATUtil.initPDFExport(root, customTable, (Stage) customTable.getScene().getWindow(), data, true);
         }
     }
     
     private void getPreviewData(){
         Period deltaT = Period.between(fromDP.getValue(), toDP.getValue());
-        if(deltaT.getMonths() > 0){
+        int realMonthValue = (deltaT.getYears() * 12) + deltaT.getMonths();
+        
+        if(realMonthValue > 0){
             dinamicList.clear();
             String fromDate = fromDP.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
             String toDate = toDP.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
         
             EntityManager em = emf.createEntityManager();
-            
-            List<venta> previewRows = em.createQuery("FROM venta v WHERE v.Fecha BETWEEN '" + fromDate + "' AND '" + toDate + "'").getResultList();
+            String stat = "(v.fechaFin >= '" + toDate + "' AND v.fechaInicio <= '" + fromDate + "') OR ";
+            String stat2 = "(v.fechaInicio BETWEEN '" + fromDate + "' AND '" + toDate + "')";
+            List<venta> previewRows = em.createQuery("FROM venta v WHERE " + stat + "(v.fechaFin BETWEEN '" + fromDate + "' AND '" + toDate + "') OR " + stat2).getResultList();
             List<venta> realList = new ArrayList();
             
             if(chipView.getChips().contains("Todos")) {
                 realList = previewRows;
             } else{
+                List<venta> cebo = new ArrayList();
                 if(chipView.getChips().contains("Tigo")) {
-                    List<venta> cebo = (List<venta>) previewRows.stream().filter(p -> p.getClienteV().getNombre().equals("Tigo")).findAny().orElse(null);
+                    previewRows.stream().filter((v) -> (v.getClienteV().getNombre().equals("Tigo"))).forEachOrdered((v) -> {
+                        cebo.add(v);
+                    });
                     realList.addAll(cebo);
                 }
                 if(chipView.getChips().contains("Tesco")) {
-                    List<venta> cebo = (List<venta>) previewRows.stream().filter(p -> p.getClienteV().getNombre().equals("Tesco")).findAny().orElse(null);
+                    previewRows.stream().filter((v) -> (v.getClienteV().getNombre().equals("Tesco"))).forEachOrdered((v) -> {
+                        cebo.add(v);
+                    });
                     realList.addAll(cebo);
                 }
                 if(chipView.getChips().contains("CableSal")) {
-                    List<venta> cebo = (List<venta>) previewRows.stream().filter(p -> p.getClienteV().getNombre().equals("CableSal")).findAny().orElse(null);
+                    previewRows.stream().filter((v) -> (v.getClienteV().getNombre().equals("CableSal"))).forEachOrdered((v) -> {
+                        cebo.add(v);
+                    });
                     realList.addAll(cebo);
                 }
                 if(chipView.getChips().contains("Movistar")) {
-                    List<venta> cebo = (List<venta>) previewRows.stream().filter(p -> p.getClienteV().getNombre().equals("Movistar")).findAny().orElse(null);
+                    previewRows.stream().filter((v) -> (v.getClienteV().getNombre().equals("Movistar"))).forEachOrdered((v) -> {
+                        cebo.add(v);
+                    });
                     realList.addAll(cebo);
                 }
                 if(chipView.getChips().contains("Digicel")) {
-                    List<venta> cebo = (List<venta>) previewRows.stream().filter(p -> p.getClienteV().getNombre().equals("Digicel")).findAny().orElse(null);
+                    previewRows.stream().filter((v) -> (v.getClienteV().getNombre().equals("Digicel"))).forEachOrdered((v) -> {
+                        cebo.add(v);
+                    });
                     realList.addAll(cebo);
                 }
                 if(chipView.getChips().contains("Claro")) {
-                    List<venta> cebo = (List<venta>) previewRows.stream().filter(p -> p.getClienteV().getNombre().equals("Claro")).findAny().orElse(null);
+                    previewRows.stream().filter((v) -> (v.getClienteV().getNombre().equals("Claro"))).forEachOrdered((v) -> {
+                        cebo.add(v);
+                    });
                     realList.addAll(cebo);
                 }
             }
             
             realList.forEach((row) ->{
-                dinamicList.add(customData(row, fromDP.getValue(), toDP.getValue(), deltaT.getMonths()));
+                dinamicList.add(new CustomTable(row, fromDP.getValue(), toDP.getValue(), realMonthValue));
             });
 
             em.close();
         } else{
             AlertFactory.showDialog(root, chipView.getParent(), Arrays.asList(aceptBtn), "Fechas erroneas", "Hay un problema con las fechas que ingreso, por favor asegurese de que estan correctas");
         }
-    }
-    
-    private CustomTable customData(venta row, LocalDate init, LocalDate end, int months){
-        CustomTable custom = new CustomTable(row, init, end, months);
-        
-        return custom;
     }
     
     private void fillChipView(JFXChipView chip) {

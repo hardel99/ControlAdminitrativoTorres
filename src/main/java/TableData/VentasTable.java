@@ -5,6 +5,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
@@ -43,13 +44,14 @@ public class VentasTable extends RecursiveTreeObject<VentasTable> {
     }
 
     public VentasTable(venta venta) {
+        Period p = Period.between(venta.getFechaInicio(), LocalDate.now());
         this.id = venta.getOfertaVenta().getId();
         this.cliente = new SimpleStringProperty(venta.getClienteV().getNombre());
         this.sitio = new SimpleStringProperty(venta.getSitioV().getNombre());
         this.duracion = new SimpleIntegerProperty(venta.getFechaFin().getYear() - venta.getFechaInicio().getYear());
-        this.ejecutado = new SimpleIntegerProperty(LocalDate.now().getYear() - venta.getFechaInicio().getYear());
-        this.restante = new SimpleIntegerProperty(venta.getFechaFin().getYear() - LocalDate.now().getYear());
-        this.canon = new SimpleFloatProperty(calcActualCanon(venta.getOfertaVenta().getCanon(), venta.getOfertaVenta().getMonto(), LocalDate.now().getYear() - venta.getFechaInicio().getYear()));
+        this.ejecutado = new SimpleIntegerProperty(p.getYears());
+        this.restante = new SimpleIntegerProperty(Period.between(LocalDate.now(), venta.getFechaFin()).getYears());
+        this.canon = new SimpleFloatProperty(calcActualCanon(venta.getOfertaVenta().getCanon(), venta.getOfertaVenta().getMonto(), p.getYears()));
         this.porcentaje = new SimpleFloatProperty(venta.getOfertaVenta().getCanon());
         this.desde = new SimpleStringProperty(venta.getFechaInicio().format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
         this.hasta = new SimpleStringProperty(venta.getFechaFin().format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
@@ -94,13 +96,13 @@ public class VentasTable extends RecursiveTreeObject<VentasTable> {
     public String getHasta() {
         return hasta.get();
     }
-    
+    //offset of 1 year plus here
     private float calcActualCanon(float canon, float monto, int yearDifference) {
         final DecimalFormat df = new DecimalFormat("##.##");
         df.setRoundingMode(RoundingMode.CEILING);
         
         if(yearDifference > 0) {
-            for(int i = 0; i < yearDifference; i++) {
+            for(int i = 0; i < yearDifference - 1; i++) {
                 monto += (monto * (canon/100));
             }
         }

@@ -40,7 +40,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -50,12 +49,9 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -72,6 +68,7 @@ public class CreateRegisterController implements Initializable {
 
     /**
      * Comment Area on sitio
+     * Cannon clean field
      */
     @FXML
     private StackPane root;
@@ -401,7 +398,7 @@ public class CreateRegisterController implements Initializable {
                 imagePort.setPrefSize(160, 160);
                 imagePort.setStyle("-fx-background-image: url('" + imageSelected.toURI().toString() + "');"
                         + "-fx-background-size: 100%;"
-                        + "-fx-background-repeat: no-reapeat;");
+                        + "-fx-background-repeat: no-repeat;");
                 imagePort.setCursor(Cursor.HAND);
                 imagePort.setOnMouseClicked((event) -> {
                     pane.getChildren().remove(imagePort);
@@ -558,7 +555,7 @@ public class CreateRegisterController implements Initializable {
                     
                     callback.refreshMainData(new MainOfferTable(ofertaRegister));
                     
-                    CATUtil.clearFields(Arrays.asList(alturaSolicitadaOferta, montoOferta));
+                    CATUtil.clearFields(Arrays.asList(alturaSolicitadaOferta, montoOferta, canonAnualOferta));
                     fechaOferta.setValue(LocalDate.now());
                     nombreSitioComboBoxOferta.getSelectionModel().clearSelection();
                     nombreClienteComboBoxOferta.getSelectionModel().clearSelection();

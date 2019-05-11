@@ -172,7 +172,7 @@
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="canonActualVenta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="canonInicialVenta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <JFXComboBox fx:id="sitioOferta" focusColor="#546e7a" prefHeight="25.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -230,6 +230,7 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label text="Fecha Inicio Contrato">
@@ -251,6 +252,12 @@
                      </cursor>
                   </JFXDatePicker>
                   <JFXDatePicker fx:id="fechaInicioVenta" GridPane.columnIndex="1" />
+                  <Label text="Canon Actual" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="canonActualVenta" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Label layoutX="644.0" layoutY="25.0" text="Imagen[es]">
@@ -265,7 +272,7 @@
             </ScrollPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="clientePane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" StackPane.alignment="BOTTOM_CENTER">
+      <AnchorPane fx:id="clientePane" focusTraversable="true" layoutX="11.0" layoutY="109.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="550.0" prefWidth="1200.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
          <children>
             <GridPane layoutX="35.0" layoutY="30.0" prefHeight="410.0" prefWidth="500.0">
                <columnConstraints>

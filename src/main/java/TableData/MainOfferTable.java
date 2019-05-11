@@ -2,6 +2,7 @@ package TableData;
 
 import Entitys.oferta;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import java.time.format.DateTimeFormatter;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -57,7 +58,7 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
         this.cliente = new SimpleStringProperty(oferta.getClienteOf().getNombre());
         this.monto = new SimpleFloatProperty(oferta.getMonto());
         this.altura = new SimpleFloatProperty(oferta.getAlturaTorre());
-        this.fecha = new SimpleStringProperty(oferta.getFecha().toString());
+        this.fecha = new SimpleStringProperty(oferta.getFecha().format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
         this.alturaDis = new SimpleFloatProperty(oferta.getLocacion().getTorre().getAlturaPedida());
         this.imagePath = oferta.getImagenRuta();
         this.canon = new SimpleFloatProperty(oferta.getCanon());

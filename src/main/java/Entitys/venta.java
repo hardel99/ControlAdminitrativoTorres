@@ -44,7 +44,7 @@ public class venta implements Serializable {
     @JoinColumn(name="id_cliente")
     private cliente clienteV;
     
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name="id_oferta")
     private oferta ofertaVenta;
     
@@ -52,11 +52,12 @@ public class venta implements Serializable {
         //TODO
     }
 
-    public venta(LocalDate fechaInicio, LocalDate fechaFin, sitio sitioV, cliente clienteV) {
+    public venta(LocalDate fechaInicio, LocalDate fechaFin, sitio sitioV, cliente clienteV, oferta oferta) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.sitioV = sitioV;
         this.clienteV = clienteV;
+        this.ofertaVenta = oferta;
     }
     
     public Long getId() {
