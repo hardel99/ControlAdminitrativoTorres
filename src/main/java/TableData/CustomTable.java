@@ -16,7 +16,7 @@ import javafx.beans.property.SimpleFloatProperty;
  * @author hardel
  */
 public class CustomTable extends RecursiveTreeObject<CustomTable> {
-    private final DecimalFormat df = new DecimalFormat("##.##");
+    private final DecimalFormat df = new DecimalFormat("##.00");
     private String cliente;
     private String lugar;
     private Float total = 0f;
@@ -31,26 +31,37 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
         float monto = v.getOfertaVenta().getMonto();
         float can = v.getOfertaVenta().getCanon();
         int transcurred = Period.between(v.getFechaInicio(), finPeriodo).getYears();
+        
+        if(Period.between(inicio, finPeriodo).getYears() > 0) {
+            //Por cada año extra hay que restar uno
+            for(int i=0; i < Period.between(inicio, finPeriodo).getYears(); i++) {
+                transcurred--;
+            }
+            System.out.println("MAS DE 12 MESES");
+        } else{
+            System.out.println("MENOS DE UN AÑO");
+        }
+        
+        System.out.println("TRANSCURRED TIME " + transcurred);
+        Period p = Period.between(v.getFechaInicio(), v.getFechaFin());
         for(int i=0; i < numeroMeses; i++) {
-            Period p;
+            
             if(inicio.plusMonths(i).getMonth() == v.getFechaInicio().getMonth()) {
                 transcurred++;
             }
             
             if(finPeriodo.isAfter(v.getFechaFin())) {
                 //Contrato expira enmedio del periodo solicitado
-                p = Period.between(v.getFechaFin(), finPeriodo);
                 
-                if(i <= p.getMonths()) {
+                if(transcurred <= p.getYears()) {
                     month.add(new SimpleFloatProperty(calculateCanon(monto, can, transcurred)));
                 } else{
                     month.add(new SimpleFloatProperty(0));
                 }
             } else if(v.getFechaInicio().isAfter(inicio)) {
                 //Contrato inicia en medio del periodo solicitado
-                p = Period.between(inicio, v.getFechaInicio());
                 
-                if(i > p.getMonths()) {
+                if(transcurred >= p.getYears()) {
                     month.add(new SimpleFloatProperty(calculateCanon(monto, can, transcurred)));
                 } else{
                     month.add(new SimpleFloatProperty(0));
@@ -58,10 +69,12 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
             } else{
                 month.add(new SimpleFloatProperty(calculateCanon(monto, can, transcurred)));
             }
+            
+            
+            System.out.println("TRANSCURRED TIME " + transcurred);
         }
         
         month.forEach(mont -> {
-            System.out.println("MONTO " + mont.get());
             this.total = this.total + mont.get();
         });
         total = Float.parseFloat(df.format(total));
@@ -92,8 +105,9 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
     }
     
     //Calculate monto in the real time, later quet the specific period
+    //isnt this bad?
     private float calculateCanon(float monto, float canon, int numYear) {
-        for(int i = 1; i < numYear; i++) {
+        for(int i = 0; i < numYear; i++) {
             monto += (monto * (canon/100));
         }
         
