@@ -115,15 +115,16 @@ public class ListToPDF {
                             row.getCell(columnIndex).setCellStyle(normalCell);
                         }
                         
-                        sheet.autoSizeColumn(columnIndex);
                     } else{
                         row.createCell(columnIndex).setCellValue((String) cell);
                         row.getCell(columnIndex).setCellStyle(normalCell);
-                        sheet.setColumnWidth(columnIndex, 150);
                     }
+                    
+                    sheet.autoSizeColumn(columnIndex);
                     columnIndex++;
                 });
-                sheet.setColumnWidth(columnIndex, 150);
+                sheet.autoSizeColumn(columnIndex);
+                
                 columnIndex = 1;
                 indexRow++;
             });

@@ -68,8 +68,6 @@ public class DetailController extends ControllerDataComunication implements Init
     /*
     *TO-DO:
     *validate fields
-    *setSelected for comboBox
-    *canon mal calculado
     **/
     @FXML
     private StackPane root;
@@ -322,12 +320,16 @@ public class DetailController extends ControllerDataComunication implements Init
         costoArrendamientoSitio.setText(rto.getCostosArrendamiento().toString());
         costoArrendamientoSitio.setTextFormatter(new TextFormatter<>(filter));
         
-        //addImageToPane(imageDisplaySitio, rto.getImagePath(), scrollSitio);
-        addImageToPane(imageDisplaySitio, rto.getImagePath());
-        imageFolder = new File(rto.getImagePath());
-        
-        pathToAlcaldia = rto.getDocumentoAlcaldia();
-        pathToArrendamiento = rto.getDocumentoArrendamiento();
+        if(rto.getImagePath() != null) {
+            addImageToPane(imageDisplaySitio, rto.getImagePath());
+            imageFolder = new File(rto.getImagePath());
+        }
+        if(rto.getDocumentoAlcaldia() != null) {
+            pathToAlcaldia = rto.getDocumentoAlcaldia();
+        }
+        if(rto.getDocumentoArrendamiento() != null) {
+            pathToArrendamiento = rto.getDocumentoArrendamiento();
+        }
     }
     
     private void addImageToPane(JFXMasonryPane pane, String imagePath) {
