@@ -33,9 +33,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -165,9 +167,6 @@ public class FXMLController implements Initializable, DataReturnCallback {
     
     @FXML
     private TableColumn<LlavesTable, String> fechaRetiroLlavesCol;
-
-    @FXML
-    private TableColumn<LlavesTable, String> fechaDevolucionLlavesCol;
     
     @FXML
     private JFXTextField searchBar;
@@ -292,7 +291,6 @@ public class FXMLController implements Initializable, DataReturnCallback {
         personaLlavesCol.setCellValueFactory(new PropertyValueFactory<>("personaReceptor"));
         cantidadLlavesCol.setCellValueFactory(new PropertyValueFactory<>("cantidadLlaves"));
         fechaRetiroLlavesCol.setCellValueFactory(new PropertyValueFactory<>("fechaRetiro"));
-        fechaDevolucionLlavesCol.setCellValueFactory(new PropertyValueFactory<>("fechaDevolucion"));
         
         offerBox.getStyleClass().add("itsSelected");
     }
@@ -303,7 +301,7 @@ public class FXMLController implements Initializable, DataReturnCallback {
         List<oferta> rows = (List<oferta>) em.createQuery("FROM oferta").getResultList();
         
         rows.forEach((cell)->{
-            data.add(new MainOfferTable(cell.getId(), cell.getEstado(),cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getMonto(), cell.getFecha().format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida(), cell.getImagenRuta(), cell.getCanon(), cell.getDocumentPath()));
+            data.add(new MainOfferTable(cell.getId(), cell.getEstado(),cell.getLocacion().getNombre(), cell.getClienteOf().getNombre(), cell.getAlturaTorre(), cell.getMonto(), cell.getFecha().plusDays(1L).format(DateTimeFormatter.ofPattern("uuuu/MM/d")), cell.getLocacion().getTorre().getAlturaPedida(), cell.getImagenRuta(), cell.getCanon(), cell.getDocumentPath()));
         });
         
         List<sitio> sitRow = (List<sitio>) em.createQuery("FROM sitio").getResultList();
@@ -321,8 +319,9 @@ public class FXMLController implements Initializable, DataReturnCallback {
         List<llave> llaveRow = (List<llave>)em.createQuery("FROM llave").getResultList();
         
         llaveRow.forEach((cell) -> {
-            dataLlaves.add(new LlavesTable(cell.getId(), cell.getPersonaResponsable(), cell.getNombreP(), cell.getSitioY().getNombre(), cell.getCantidadLlaves(), cell.getSubempresa(), cell.getFechaRetiro(), cell.getFechaDevolucion()));
+            dataLlaves.add(new LlavesTable(cell));
         });
+        colorizeRows();
         
         em.close();
         emf.close();
@@ -493,7 +492,6 @@ public class FXMLController implements Initializable, DataReturnCallback {
             headers.add("   Retirada Por   ");
             headers.add("    Llaves Retiradas    ");
             headers.add("    Fecha de Retiro   ");
-            headers.add("    Fecha de Devolucion   ");
             
             actualTable = llavesTable;
         }
@@ -566,7 +564,6 @@ public class FXMLController implements Initializable, DataReturnCallback {
                 row.add(mot.getPersonaReceptor());
                 row.add(String.valueOf(mot.getCantidadLlaves()));
                 row.add(mot.getFechaRetiro().toString());
-                row.add(mot.getFechaDevolucion().toString());
                 return row;            
             }).forEachOrdered((row) -> {
                 allRows.add(row);
@@ -578,6 +575,26 @@ public class FXMLController implements Initializable, DataReturnCallback {
     
     @FXML
     private void openDetail(ActionEvent event) {
+        openDetailWindow();
+    }
+    
+    private void colorizeRows() {
+        llavesTable.setRowFactory(row -> new TableRow<LlavesTable>(){
+            @Override
+            protected void updateItem(LlavesTable item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item == null) {
+                    setStyle("");
+                } else if(item.getFechaDevolucion() != null) {
+                    setStyle("-fx-background-color: #88b759;");
+                } else{
+                    setStyle("-fx-background-color: #c85151;");
+                }
+            }
+        });
+    }
+    
+    private void openDetailWindow() {
         Object cebo = null;
         String tableName = "";
         if(mainTable.isVisible()){
@@ -624,6 +641,13 @@ public class FXMLController implements Initializable, DataReturnCallback {
             crc.prepareFromClose();
         }
     }
+    
+    @FXML
+    private void doubleClick(MouseEvent event) {
+        if(event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+            openDetailWindow();
+        }
+    }
 
     @Override
     public void refreshMainData(MainOfferTable mot) {
@@ -653,6 +677,7 @@ public class FXMLController implements Initializable, DataReturnCallback {
         }
         
         dataLlaves.add(lt);
+        colorizeRows();
     }
 
     @Override
@@ -673,5 +698,6 @@ public class FXMLController implements Initializable, DataReturnCallback {
         dataVenta.clear();
         
         getTheData();
+        colorizeRows();
     }
 }

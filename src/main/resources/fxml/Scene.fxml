@@ -24,7 +24,7 @@
             <Insets bottom="35.0" right="45.0" />
          </StackPane.margin>
       </JFXButton>
-      <TableView fx:id="mainTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_RIGHT">
+      <TableView fx:id="mainTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_RIGHT">
         <columns>
             <TableColumn fx:id="estadoCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Estado" />
           <TableColumn fx:id="sitioCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Sitio" />
@@ -38,7 +38,7 @@
             <Insets right="10.0" />
          </StackPane.margin>
       </TableView>
-      <TableView fx:id="sitioTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
+      <TableView fx:id="sitioTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
          <columns>
             <TableColumn fx:id="nombreSitCol" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" text="Nombre" />
             <TableColumn fx:id="latitudSitioCol" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" text="Latitud" />
@@ -51,7 +51,7 @@
             <Insets right="10.0" />
          </StackPane.margin>
       </TableView>
-      <TableView fx:id="ventasTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
+      <TableView fx:id="ventasTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
          <columns>
             <TableColumn fx:id="clienteCanonCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Cliente" />
             <TableColumn fx:id="sitioCanonCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Sitio" />
@@ -67,15 +67,14 @@
             <Insets right="10.0" />
          </StackPane.margin>
       </TableView>
-      <TableView fx:id="llavesTable" layoutX="260.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
+      <TableView fx:id="llavesTable" layoutX="260.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
          <columns>
-            <TableColumn fx:id="clienteLlavesCol" maxWidth="105.0" minWidth="105.0" prefWidth="105.0" text="Cliente" />
-            <TableColumn fx:id="subempresaLlavesCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Sub-Empresa" />
+            <TableColumn fx:id="clienteLlavesCol" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Cliente" />
+            <TableColumn fx:id="subempresaLlavesCol" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Sub-Empresa" />
             <TableColumn fx:id="sitioLlavesCol" maxWidth="180.0" minWidth="180.0" prefWidth="180.0" text="Sitio" />
-            <TableColumn fx:id="personaLlavesCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Retirada por" />
-            <TableColumn fx:id="cantidadLlavesCol" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="Llaves Retiradas" />
-            <TableColumn fx:id="fechaRetiroLlavesCol" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Fecha Retiro" />
-            <TableColumn fx:id="fechaDevolucionLlavesCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Fecha Devolucion" />
+            <TableColumn fx:id="personaLlavesCol" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Retirada por" />
+            <TableColumn fx:id="cantidadLlavesCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="Llaves Retiradas" />
+            <TableColumn fx:id="fechaRetiroLlavesCol" maxWidth="105.0" minWidth="105.0" prefWidth="105.0" text="Fecha Retiro" />
          </columns>
          <StackPane.margin>
             <Insets right="10.0" />

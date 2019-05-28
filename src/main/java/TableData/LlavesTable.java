@@ -19,17 +19,16 @@ public class LlavesTable {
     private final IntegerProperty cantidadLlaves;
     private final StringProperty subempresa;
     private final LocalDate fechaRetiro;
-    private final LocalDate fechaDevolucion;
+    private LocalDate fechaDevolucion;
 
-    public LlavesTable(long id, String personaReceptor, String cliente, String sitio, int cantidadLlaves, String subempresa, LocalDate fechaRetiro, LocalDate fechaDevolucion) {
+    public LlavesTable(long id, String personaReceptor, String cliente, String sitio, int cantidadLlaves, String subempresa, LocalDate fechaRetiro) {
         this.id = id;
         this.personaReceptor = new SimpleStringProperty(personaReceptor);
         this.cliente = new SimpleStringProperty(cliente);
         this.sitio = new SimpleStringProperty(sitio);
         this.cantidadLlaves = new SimpleIntegerProperty(cantidadLlaves);
         this.subempresa = new SimpleStringProperty(subempresa);
-        this.fechaRetiro = fechaRetiro;
-        this.fechaDevolucion = fechaDevolucion;
+        this.fechaRetiro = fechaRetiro.plusDays(1L);
     }
 
     public LlavesTable(llave llave) {
@@ -39,8 +38,10 @@ public class LlavesTable {
         this.cantidadLlaves = new SimpleIntegerProperty(llave.getCantidadLlaves());
         this.sitio = new SimpleStringProperty(llave.getSitioY().getNombre());
         this.subempresa = new SimpleStringProperty(llave.getSubempresa());
-        this.fechaRetiro = llave.getFechaRetiro();
-        this.fechaDevolucion = llave.getFechaDevolucion();
+        this.fechaRetiro = llave.getFechaRetiro().plusDays(1L);
+        if(llave.getFechaDevolucion() != null) {
+            this.fechaDevolucion = llave.getFechaDevolucion().plusDays(1L);
+        }
     }
 
     public long getId() {

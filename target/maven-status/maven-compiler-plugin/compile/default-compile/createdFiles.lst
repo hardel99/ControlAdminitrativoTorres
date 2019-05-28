@@ -13,6 +13,7 @@ com\interfazsv\cat\util\ListToPDF.class
 TableData\MainOfferTable.class
 com\interfazsv\cat\util\AlertFactory.class
 Entitys\venta.class
+com\interfazsv\cat\main\FXMLController$2.class
 com\interfazsv\cat\util\ListToPDF$Orientation.class
 TableData\LlavesTable.class
 Entitys\oferta.class

@@ -192,16 +192,23 @@
                                     <Font name="Calibri" size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="593.0" layoutY="113.0" text="Fecha Fin Arrendamiento">
+                              <Label layoutX="593.0" layoutY="113.0" text="Duración Arrendamiento">
                                  <font>
                                     <Font name="Calibri" size="16.0" />
                                  </font>
                               </Label>
-                              <JFXDatePicker fx:id="fechaFinArrendamiento" defaultColor="#546e7a" layoutX="786.0" layoutY="109.0" prefHeight="25.0" prefWidth="224.0">
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </JFXDatePicker>
+                              <Label layoutX="797.0" layoutY="113.0" text="Años:">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="921.0" layoutY="113.0" text="Meses:">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <JFXTextField fx:id="duracionYear" focusColor="#536872" layoutX="842.0" layoutY="110.0" prefHeight="25.0" prefWidth="67.0" unFocusColor="#546e7a" />
+                              <JFXTextField fx:id="duracionMeses" focusColor="#536872" layoutX="988.0" layoutY="110.0" prefHeight="25.0" prefWidth="67.0" unFocusColor="#546e7a" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -348,22 +355,12 @@
                                        </font>
                                     </Label>
                                     <JFXTextField fx:id="cantidadLlaves" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Fecha de Devolucion de Llaves" GridPane.rowIndex="5">
-                                       <font>
-                                          <Font name="Calibri" size="16.0" />
-                                       </font>
-                                    </Label>
                                     <Label text="Fecha de Retiro de Llaves" GridPane.rowIndex="4">
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
                                     </Label>
                                     <JFXDatePicker fx:id="fechaRetiroLlaves" defaultColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </JFXDatePicker>
-                                    <JFXDatePicker fx:id="fechaDevolucionLlaves" defaultColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>

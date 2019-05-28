@@ -67,7 +67,9 @@ import javax.persistence.Persistence;
 public class DetailController extends ControllerDataComunication implements Initializable{
     /*
     *TO-DO:
-    *validate fields
+    *Eliminar Registros
+    *fecha fin oferta calculada por numero de meses y años que deben pasar
+    *cambio a cese de oferta(cambiar fecha fin?)
     **/
     @FXML
     private StackPane root;
@@ -218,7 +220,7 @@ public class DetailController extends ControllerDataComunication implements Init
         tableDisplay.setText(table);
         ofertaPane.setVisible(true);
         idSelected = rto.getIdOferta();
-        estadoComboBox.getItems().addAll("Completado", "Incompleto", "Pendiente");
+        estadoComboBox.getItems().addAll("Completado", "Incompleto", "Pendiente", "Cese");
         
         estadoComboBox.setValue(rto.getEstado());
         estado = rto.getEstado();
@@ -239,20 +241,19 @@ public class DetailController extends ControllerDataComunication implements Init
         addImageToPane(imageDisplayOferta, rto.getImagePath());
         imageFolder = new File(rto.getImagePath());
         pathToOferta = rto.getDocumentPath();
+        fechaOferta.setValue(LocalDate.parse(rto.getFecha(), DateTimeFormatter.ofPattern("uuuu/MM/d")));
         
-        if(estado.equals("Completado")) {
+        if(estado.equals("Completado") || estado.equals("Cese")) {
             ventaGrid.setVisible(true);
             ofertaGrid.setVisible(false);
             
             oferta o = (oferta) findInDB(oferta.class, rto.getIdOferta());
-            fechaInicioVenta.setValue(o.getVentaO().getFechaInicio());
-            fechaFinVenta.setValue(o.getVentaO().getFechaFin());
+            fechaInicioVenta.setValue(o.getVentaO().getFechaInicio().plusDays(1L));
+            fechaFinVenta.setValue(o.getVentaO().getFechaFin().plusDays(1L));
             canonActualVenta.setText(String.valueOf(calcActualCanon(rto.getCanon(), rto.getMonto(), Period.between(o.getVentaO().getFechaInicio(), LocalDate.now()).getYears())));
         } else{
             ventaGrid.setVisible(false);
             ofertaGrid.setVisible(true);
-            
-            fechaOferta.setValue(LocalDate.parse(rto.getFecha(), DateTimeFormatter.ofPattern("uuuu/MM/d")));
         }
     }
     
@@ -290,13 +291,16 @@ public class DetailController extends ControllerDataComunication implements Init
         cantidadLlave.setText(String.valueOf(rto.getCantidadLlaves()));
         cantidadLlave.setTextFormatter(new TextFormatter<>(filter));
         retiroLlave.setValue(rto.getFechaRetiro());
-        devolucionLlave.setValue(rto.getFechaDevolucion());
+        devolucionLlave.setValue(LocalDate.now());
         nombreRetiraLlave.setText(rto.getPersonaReceptor());
         encargadoLlave.setText(ven.getPersonaResponsable());
         telefonoLlave.setText(ven.getTelefono());
         telefonoLlave.setTextFormatter(new TextFormatter<>(filter));
         duiLlave.setText(ven.getDUI());
         
+        if(ven.getFechaDevolucion() != null) {
+            devolucionLlave.setValue(ven.getFechaDevolucion().plusDays(1L));
+        }
         pathToDUI = ven.getDocumentPath();
     }
 
@@ -404,9 +408,20 @@ public class DetailController extends ControllerDataComunication implements Init
                         ofer.getVentaO().setFechaFin(fechaFinVenta.getValue());
                     }
                 }
-                
-                //doesnt change the value of oferta state
-                
+            }
+            
+            switch(estadoComboBox.getValue()) {
+                case "Incompleto":
+                    ofer.setEstado('I');
+                    break;
+                case "Pendiente":
+                    ofer.setEstado('P');
+                    break;
+                case "Cese":
+                    ofer.setEstado('S');
+                    break;
+                default:
+                    break;
             }
             
             if(vent != null) {
@@ -426,21 +441,21 @@ public class DetailController extends ControllerDataComunication implements Init
             callback.refreshMainData(new MainOfferTable(ofer));
             AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
         } else if(clientePane.isVisible()){
-            llave llave = (llave) findInDB(venta.class, idSelected);
-            llave.setClienteY((cliente) findInDB(venta.class, clienteLlave.getValue()));
-            llave.setSitioY((sitio) findInDB(sitio.class, sitioLlave.getValue()));
-            llave.setCantidadLlaves(Integer.parseInt(cantidadLlave.getText()));
-            llave.setSubempresa(subempresaLlave.getValue());
-            llave.setFechaRetiro(retiroLlave.getValue());
-            llave.setFechaDevolucion(devolucionLlave.getValue());
-            llave.setNombreP(nombreRetiraLlave.getText());
-            llave.setPersonaResponsable(encargadoLlave.getText());
-            llave.setTelefono(telefonoLlave.getText());
-            llave.setDUI(duiLlave.getText());
-            llave.setDocumentPath(telefonoLlave.getText());
+            llave lave = (llave) findInDB(llave.class, idSelected);
+            lave.setCantidadLlaves(Integer.parseInt(cantidadLlave.getText()));
+            lave.setSubempresa(subempresaLlave.getValue());
+            lave.setFechaRetiro(retiroLlave.getValue());
+            lave.setFechaDevolucion(devolucionLlave.getValue());
+            lave.setNombreP(nombreRetiraLlave.getText());
+            lave.setPersonaResponsable(encargadoLlave.getText());
+            lave.setTelefono(telefonoLlave.getText());
+            lave.setDUI(duiLlave.getText());
+            lave.setDocumentPath(telefonoLlave.getText());
+            lave.setSitioY((sitio) findInDB(sitio.class, sitioLlave.getValue()));
+            lave.setClienteY((cliente) findInDB(cliente.class, clienteLlave.getValue()));
             
-            persist(llave);
-            callback.refreshLlaveData(new LlavesTable(llave));
+            persist(lave);
+            callback.refreshLlaveData(new LlavesTable(lave));
             
             AlertFactory.showDialog(root, sitioPane, Arrays.asList(ok), "Datos modificados", "Los datos fueron modificados exitosamente");
         } else if(sitioPane.isVisible()){
@@ -472,14 +487,23 @@ public class DetailController extends ControllerDataComunication implements Init
         
         Label init = new Label("Fecha de Inicio del Contrato :");
         JFXDatePicker fechaInit = new JFXDatePicker(LocalDate.now());
-        Label end = new Label("Fecha de Finalización del Contrato");
-        JFXDatePicker fechaEnd = new JFXDatePicker(LocalDate.now());
+        Label generalEnd = new Label("Duración del Contrato :");
+        Label yearsEnd = new Label("Años :");
+        JFXTextField years = new JFXTextField();
+        Label monthsEnd = new Label("Meses :");
+        JFXTextField months = new JFXTextField();
         
-        dialogPane.setContent(new VBox(30, init, fechaInit, end, fechaEnd));
+        //JFXDatePicker fechaEnd = new JFXDatePicker(LocalDate.now());
+        
+        dialogPane.setContent(new VBox(30, init, fechaInit, generalEnd, yearsEnd, years, monthsEnd, months));
         Platform.runLater(fechaInit::requestFocus);
         
         EventHandler<ActionEvent> filter = event -> {
-            if(fechaInit.getValue().isAfter(fechaEnd.getValue())) {
+            /*if(fechaInit.getValue().isAfter(fechaEnd.getValue())) {
+                AlertFactory.showInfoMessage("Error al ingresar las fechas", "Revise que la fecha de inicio sea antes que la fecha final");
+		event.consume();
+            }*/
+            if(Integer.parseInt(years.getText()) < 0) {
                 AlertFactory.showInfoMessage("Error al ingresar las fechas", "Revise que la fecha de inicio sea antes que la fecha final");
 		event.consume();
             }
@@ -487,12 +511,13 @@ public class DetailController extends ControllerDataComunication implements Init
         
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                if(fechaEnd.getValue().isAfter(fechaInit.getValue())){
-                    isChanged = true;
-                    fechaInicioVenta.setValue(fechaInit.getValue());
-                    fechaFinVenta.setValue(fechaEnd.getValue());
-                } 
-                return new DateSetters(fechaInit.getValue(), fechaEnd.getValue());
+                LocalDate endingDate = fechaInit.getValue().plusYears(Integer.parseInt(years.getText())).plusMonths(Integer.parseInt(months.getText()));
+                
+                isChanged = true;
+                fechaInicioVenta.setValue(fechaInit.getValue());
+                fechaFinVenta.setValue(endingDate.minusDays(1l));
+
+                return new DateSetters(fechaInit.getValue(), endingDate);
             }
             
             return null;
@@ -519,6 +544,7 @@ public class DetailController extends ControllerDataComunication implements Init
         JFXButton ok = new JFXButton("Si");
         JFXButton cancel = new JFXButton("No");
         
+        //dis isn't happen >:(
         ok.setOnAction(ae -> {
             if(ofertaPane.isVisible()) {
                 oferta er = (oferta) findInDB(oferta.class, idSelected);
@@ -546,7 +572,6 @@ public class DetailController extends ControllerDataComunication implements Init
         em.getTransaction().begin();
         try {
             em.merge(object);
-            System.out.println("NIGGA DIS TING ITS HAPENING");
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -560,8 +585,9 @@ public class DetailController extends ControllerDataComunication implements Init
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
-            em.remove(object);
+            em.remove(em.contains(object) ? object: em.merge(object));
             em.getTransaction().commit();
+            System.out.println("DI EM man : " + em.toString());
         } catch (Exception e) {
             e.printStackTrace();
             em.getTransaction().rollback();
@@ -571,20 +597,29 @@ public class DetailController extends ControllerDataComunication implements Init
         }
     }
     
-    public Object findInDB(Class type, long id) {
+    private Object findInDB(Class type, long id) {
         EntityManager em = emf.createEntityManager();
         Object found = em.find(type, id);
+        em.close();
         return found;
     }
     
-    public Object findInDB(Class type, String identifier) {
+    private Object findInDB(Class type, String identifier) {
         EntityManager em = emf.createEntityManager();
         Object found = null;
-        if(type == sitio.class) {
-            found = em.createQuery("FROM sitio s WHERE s.nombre = '" + identifier + "'").getSingleResult();
-        } else if(type == cliente.class) {
-            found = em.createQuery("FROM cliente c WHERE c.nombre = '" + identifier + "'").getSingleResult();
+        try{
+            if(type == sitio.class) {
+                found = (sitio) em.createQuery("FROM sitio s WHERE s.nombre = '" + identifier + "'").getSingleResult();
+            } else if(type == cliente.class) {
+                found = (cliente) em.createQuery("FROM cliente c WHERE c.nombre = '" + identifier + "'").getSingleResult();
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.out.println("donnou men :(((");
         }
+        em.close();
+        
+        System.out.println("OBJECT FOUNDED = " + found.toString());
         return found;
     }
     
@@ -608,12 +643,11 @@ public class DetailController extends ControllerDataComunication implements Init
     }
     
     private class DateSetters{
-        LocalDate inicio;
-        LocalDate fin;
+        LocalDate inicio, finaL;
 
-        public DateSetters(LocalDate inicio, LocalDate fin) {
+        public DateSetters(LocalDate inicio, LocalDate finaL) {
             this.inicio = inicio;
-            this.fin = fin;
+            this.finaL = finaL;
         }
     }
 }

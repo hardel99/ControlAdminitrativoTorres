@@ -19,7 +19,7 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
     private final StringProperty cliente;
     private final FloatProperty altura;
     private final FloatProperty monto;
-    private final FloatProperty canon;
+    private FloatProperty canon;
     private final StringProperty fecha;
     private final FloatProperty alturaDis;
     private final String imagePath;
@@ -47,6 +47,10 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
             case 'C':
                 this.estado = new SimpleStringProperty("Completado");
                 break;
+            case 'S':
+                this.estado = new SimpleStringProperty("Cese");
+                this.canon = new SimpleFloatProperty(0);
+                break;
             default:
                 break;
         }
@@ -58,7 +62,7 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
         this.cliente = new SimpleStringProperty(oferta.getClienteOf().getNombre());
         this.monto = new SimpleFloatProperty(oferta.getMonto());
         this.altura = new SimpleFloatProperty(oferta.getAlturaTorre());
-        this.fecha = new SimpleStringProperty(oferta.getFecha().format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
+        this.fecha = new SimpleStringProperty(oferta.getFecha().plusDays(1L).format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
         this.alturaDis = new SimpleFloatProperty(oferta.getLocacion().getTorre().getAlturaPedida());
         this.imagePath = oferta.getImagenRuta();
         this.canon = new SimpleFloatProperty(oferta.getCanon());
@@ -73,6 +77,10 @@ public class MainOfferTable extends RecursiveTreeObject<MainOfferTable>{
                 break;
             case 'C':
                 this.estado = new SimpleStringProperty("Completado");
+                break;
+            case 'S':
+                this.estado = new SimpleStringProperty("Cese");
+                this.canon = new SimpleFloatProperty(0);
                 break;
             default:
                 break;

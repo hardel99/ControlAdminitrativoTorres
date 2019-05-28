@@ -40,6 +40,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -49,9 +50,12 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -67,8 +71,8 @@ import javax.persistence.Persistence;
 public class CreateRegisterController implements Initializable {
 
     /**
-     * Comment Area on sitio
-     * Cannon clean field
+     * Fecha fin de arrendamiento por numero de meses y años
+     * Fecha Devolucion Llaves its doesnt knowed
      */
     @FXML
     private StackPane root;
@@ -108,7 +112,10 @@ public class CreateRegisterController implements Initializable {
     private JFXDatePicker fechaInicioArrendamiento;
 
     @FXML
-    private JFXDatePicker fechaFinArrendamiento;
+    private JFXTextField duracionYear;
+    
+    @FXML
+    private JFXTextField duracionMeses;
     
     @FXML
     private JFXMasonryPane imagesPaneSitio;
@@ -170,9 +177,6 @@ public class CreateRegisterController implements Initializable {
     private JFXDatePicker fechaRetiroLlaves;
 
     @FXML
-    private JFXDatePicker fechaDevolucionLlaves;
-
-    @FXML
     private JFXTextField nombrePersonaRetira;
 
     @FXML
@@ -210,11 +214,9 @@ public class CreateRegisterController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        fechaDevolucionLlaves.setValue(LocalDate.now());
         fechaRetiroLlaves.setValue(LocalDate.now());
         fechaOferta.setValue(LocalDate.now());
         fechaInicioArrendamiento.setValue(LocalDate.now());
-        fechaFinArrendamiento.setValue(LocalDate.now());
         
         selectedPane = "Sitio";
         
@@ -279,7 +281,8 @@ public class CreateRegisterController implements Initializable {
             emf.close();
         });
     }
-    /*FOR SURE
+    /*FOR SURE*/
+    //whats up if just doesnt work good on my machine?
     private void enablePasteFromClipboard(JFXTextField field){
         field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
             if(keyComb.match((KeyEvent) event)){
@@ -292,7 +295,7 @@ public class CreateRegisterController implements Initializable {
                 clip.setContent(content);
             }
         });
-    }*/
+    }
     
     private void setTooltips() {
         final Tooltip tool = new Tooltip();
@@ -317,6 +320,8 @@ public class CreateRegisterController implements Initializable {
         altura.setTextFormatter(new TextFormatter<>(filter));
         montoArrendamiento.setTextFormatter(new TextFormatter<>(filter));
         montoAlcaldia.setTextFormatter(new TextFormatter<>(filter));
+        duracionYear.setTextFormatter(new TextFormatter<>(filter));
+        duracionMeses.setTextFormatter(new TextFormatter<>(filter));
         alturaSolicitadaOferta.setTextFormatter(new TextFormatter<>(filter));
         montoOferta.setTextFormatter(new TextFormatter<>(filter));
         telefonoLlave.setTextFormatter(new TextFormatter<>(filter));
@@ -324,7 +329,7 @@ public class CreateRegisterController implements Initializable {
         cantidadLlaves.setTextFormatter(new TextFormatter<>(filter));
         
         //enable clipping
-        /*enablePasteFromClipboard(nombreSitio);
+        enablePasteFromClipboard(nombreSitio);
         enablePasteFromClipboard(latitud);
         enablePasteFromClipboard(longitud);
         enablePasteFromClipboard(altura);
@@ -336,7 +341,7 @@ public class CreateRegisterController implements Initializable {
         enablePasteFromClipboard(telefonoLlave);
         enablePasteFromClipboard(duiLlave);
         enablePasteFromClipboard(canonAnualOferta);
-        enablePasteFromClipboard(cantidadLlaves);*/
+        enablePasteFromClipboard(cantidadLlaves);
     }
 
     @FXML
@@ -423,10 +428,9 @@ public class CreateRegisterController implements Initializable {
     private void clearAllFields(){
         switch (selectedPane) {
             case "Sitio":
-                CATUtil.clearFields(Arrays.asList(nombreSitio, latitud, longitud, altura, montoAlcaldia, montoArrendamiento, documentoArrendamientoSitio, documentoAlcaldiaSitio));
+                CATUtil.clearFields(Arrays.asList(nombreSitio, latitud, longitud, altura, montoAlcaldia, montoArrendamiento, documentoArrendamientoSitio, documentoAlcaldiaSitio, duracionYear, duracionMeses));
                 
                 fechaInicioArrendamiento.setValue(LocalDate.now());
-                fechaFinArrendamiento.setValue(LocalDate.now());
                 scrollSitio.setVisible(false);
                 imagesPaneSitio.getChildren().clear();
                 selectImageSitio.setVisible(true);
@@ -447,7 +451,6 @@ public class CreateRegisterController implements Initializable {
                 nombreSitioComboBoxLlave.getSelectionModel().clearSelection();
                 nombreSubordinadoComboBoxLlave.getSelectionModel().clearSelection();
                 fechaRetiroLlaves.setValue(LocalDate.now());
-                fechaDevolucionLlaves.setValue(LocalDate.now());
                 break;
             default:
                 System.out.print("nigga this thing is very creizi");
@@ -468,11 +471,12 @@ public class CreateRegisterController implements Initializable {
                 if(validateFields(selectedPane)){
                     torre torreRegister = new torre(Float.valueOf(altura.getText()), null);
                     
+                    LocalDate fechaFin = fechaInicioArrendamiento.getValue().plusYears(Integer.parseInt(duracionYear.getText()));
                     arrendamiento arrendamientoRegister = new arrendamiento();
                     arrendamientoRegister.setCosto(Float.parseFloat(montoArrendamiento.getText()));
                     arrendamientoRegister.setDocumentPath(documentoArrendamientoSitio.getText());
                     arrendamientoRegister.setFechaInicioArrendamiento(fechaInicioArrendamiento.getValue());
-                    arrendamientoRegister.setFechaFinArrendamiento(fechaFinArrendamiento.getValue());
+                    arrendamientoRegister.setFechaFinArrendamiento(fechaFin.plusMonths(Integer.parseInt(duracionMeses.getText())));
                     
                     licencia licenciaRegister = new licencia();
                     licenciaRegister.setMonto(Float.valueOf(montoAlcaldia.getText()));
@@ -513,9 +517,8 @@ public class CreateRegisterController implements Initializable {
                     callback.refreshSitioData(new SitiosTable(sitioRegister));
                     nombreSitioComboBoxOferta.getItems().add(sitioRegister.getNombre());
                     
-                    CATUtil.clearFields(Arrays.asList(nombreSitio, latitud, longitud, altura, montoAlcaldia, montoArrendamiento, documentoArrendamientoSitio, documentoAlcaldiaSitio));
+                    CATUtil.clearFields(Arrays.asList(nombreSitio, latitud, longitud, altura, montoAlcaldia, montoArrendamiento, documentoArrendamientoSitio, documentoAlcaldiaSitio, duracionYear, duracionMeses));
                     fechaInicioArrendamiento.setValue(LocalDate.now());
-                    fechaFinArrendamiento.setValue(LocalDate.now());
                     scrollSitio.setVisible(false);
                     imagesPaneSitio.getChildren().clear();
                     selectImageSitio.setVisible(true);
@@ -569,10 +572,17 @@ public class CreateRegisterController implements Initializable {
                 break;
             case "Retiro de Llaves":
                 if(validateFields(selectedPane)) {
-                    llave llaveRegister = new llave(nombrePersonaRetira.getText(), nombrePersonaEntrega.getText(), telefonoLlave.getText(), 
-                                                    nombreSubordinadoComboBoxLlave.getValue(), Integer.parseInt(cantidadLlaves.getText()), duiLlave.getText(), fechaRetiroLlaves.getValue(), 
-                                                    fechaDevolucionLlaves.getValue(), (cliente) findElement(nombreClienteComboBoxLlave.getValue(), cliente.class),
-                                                    (sitio) findElement(nombreSitioComboBoxLlave.getValue(), sitio.class));
+                    llave llaveRegister = new llave();
+                    
+                    llaveRegister.setNombreP(nombrePersonaRetira.getText());
+                    llaveRegister.setPersonaResponsable(nombrePersonaEntrega.getText());
+                    llaveRegister.setTelefono(telefonoLlave.getText());
+                    llaveRegister.setSubempresa(nombreSubordinadoComboBoxLlave.getValue());
+                    llaveRegister.setCantidadLlaves(Integer.parseInt(cantidadLlaves.getText()));
+                    llaveRegister.setDUI(duiLlave.getText());
+                    llaveRegister.setFechaRetiro(fechaRetiroLlaves.getValue());
+                    llaveRegister.setClienteY((cliente) findElement(nombreClienteComboBoxLlave.getValue(), cliente.class));
+                    llaveRegister.setSitioY((sitio) findElement(nombreSitioComboBoxLlave.getValue(), sitio.class));
                     
                     moveDocuments(documentoPersonalLlave, llaveRegister, saveLocationDocument);
                     
@@ -587,7 +597,6 @@ public class CreateRegisterController implements Initializable {
                     nombreSitioComboBoxLlave.getSelectionModel().clearSelection();
                     nombreSubordinadoComboBoxLlave.getSelectionModel().clearSelection();
                     fechaRetiroLlaves.setValue(LocalDate.now());
-                    fechaDevolucionLlaves.setValue(LocalDate.now());
                 } else{
                     AlertFactory.showDialog(root, tabPane, Arrays.asList(ok), "Falta Información", "Para continuar es necesario que todos los campos sin un * sean llenados con la informacion debida");
                 }
@@ -637,7 +646,8 @@ public class CreateRegisterController implements Initializable {
                             !montoAlcaldia.getText().isEmpty() &&
                             !montoArrendamiento.getText().isEmpty() &&
                             fechaInicioArrendamiento.getValue() != null &&
-                            fechaFinArrendamiento.getValue() != null);
+                            !duracionYear.getText().isEmpty() &&
+                            !duracionMeses.getText().isEmpty());
                 break;
             case "Oferta":
                 isReady = (nombreSitioComboBoxOferta.getValue() != null &&
@@ -658,7 +668,6 @@ public class CreateRegisterController implements Initializable {
                             !telefonoLlave.getText().isEmpty() && 
                             !duiLlave.getText().isEmpty() && 
                             fechaRetiroLlaves.getValue() != null && 
-                            fechaDevolucionLlaves.getValue() != null &&
                             !cantidadLlaves.getText().isEmpty());
                 break;
             default:

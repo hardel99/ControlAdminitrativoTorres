@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXChipView?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import java.net.URL?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -66,16 +67,23 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXDatePicker>
-            <JFXDatePicker fx:id="toDP" defaultColor="#546e7a" layoutX="572.0" layoutY="43.0" prefHeight="25.0" prefWidth="243.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXDatePicker>
             <JFXButton fx:id="excel" buttonType="RAISED" layoutX="635.0" layoutY="525.0" onAction="#exportIt" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3a9948;" text="Generar Excel" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
+            <Label layoutX="576.0" layoutY="44.0" text="Años:">
+               <font>
+                  <Font name="Calibri Light" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="714.0" layoutY="44.0" text="Meses:">
+               <font>
+                  <Font name="Calibri Light" size="20.0" />
+               </font>
+            </Label>
+            <JFXTextField fx:id="futureYears" focusColor="#546e7a" layoutX="622.0" layoutY="43.0" prefHeight="25.0" prefWidth="80.0" />
+            <JFXTextField fx:id="futureMonths" focusColor="#546e7a" layoutX="776.0" layoutY="43.0" prefHeight="25.0" prefWidth="80.0" />
          </children>
       </AnchorPane>
    </children>

@@ -319,11 +319,26 @@
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="retiroLlave" defaultColor="#546e7a" prefHeight="25.0" prefWidth="221.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <JFXDatePicker fx:id="devolucionLlave" defaultColor="#546e7a" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <JFXComboBox fx:id="sitioLlave" focusColor="#546e7a" prefHeight="25.0" prefWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXComboBox fx:id="clienteLlave" focusColor="#546e7a" prefHeight="25.0" prefWidth="296.0" GridPane.columnIndex="1" />
-                  <JFXComboBox fx:id="subempresaLlave" focusColor="#546e7a" layoutX="165.0" layoutY="98.0" prefHeight="25.0" prefWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXDatePicker fx:id="retiroLlave" defaultColor="#546e7a" prefHeight="25.0" prefWidth="221.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXDatePicker>
+                  <JFXDatePicker fx:id="devolucionLlave" defaultColor="#546e7a" prefHeight="25.0" prefWidth="225.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXDatePicker>
+                  <JFXComboBox fx:id="sitioLlave" focusColor="#546e7a" prefHeight="25.0" prefWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXComboBox>
+                  <JFXComboBox fx:id="clienteLlave" focusColor="#546e7a" prefHeight="25.0" prefWidth="296.0" GridPane.columnIndex="1">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXComboBox>
+                  <JFXComboBox fx:id="subempresaLlave" focusColor="#546e7a" layoutX="165.0" layoutY="98.0" prefHeight="25.0" prefWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></JFXComboBox>
                </children>
             </GridPane>
             <GridPane layoutX="577.0" layoutY="37.0" prefHeight="372.0" prefWidth="542.0">

@@ -104,7 +104,7 @@ public class ListToPDF {
                         if(columnIndex > 2 && indexRow > 1) {
                             row.createCell(columnIndex).setCellValue(Double.parseDouble((String) cell));
                             if(columnIndex > 4){
-                                if(row.getCell(columnIndex).getNumericCellValue() != row.getCell(columnIndex - 1).getNumericCellValue()) {
+                                if(row.getCell(columnIndex).getNumericCellValue() > row.getCell(columnIndex - 1).getNumericCellValue()) {
                                     row.getCell(columnIndex).setCellStyle(changedCell);
                                 } else{
                                     row.getCell(columnIndex).setCellStyle(normalCell);

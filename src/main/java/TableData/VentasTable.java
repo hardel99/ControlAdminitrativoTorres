@@ -53,8 +53,8 @@ public class VentasTable extends RecursiveTreeObject<VentasTable> {
         this.restante = new SimpleIntegerProperty(Period.between(LocalDate.now(), venta.getFechaFin()).getYears());
         this.canon = new SimpleFloatProperty(calcActualCanon(venta.getOfertaVenta().getCanon(), venta.getOfertaVenta().getMonto(), p.getYears()));
         this.porcentaje = new SimpleFloatProperty(venta.getOfertaVenta().getCanon());
-        this.desde = new SimpleStringProperty(venta.getFechaInicio().format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
-        this.hasta = new SimpleStringProperty(venta.getFechaFin().format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
+        this.desde = new SimpleStringProperty(venta.getFechaInicio().plusDays(1L).format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
+        this.hasta = new SimpleStringProperty(venta.getFechaFin().plusDays(1L).format(DateTimeFormatter.ofPattern("uuuu-MM-d")));
     }
 
     public long getId() {

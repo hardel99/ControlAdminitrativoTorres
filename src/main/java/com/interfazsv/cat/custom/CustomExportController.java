@@ -7,6 +7,7 @@ import com.interfazsv.cat.util.CATUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXChipView;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
@@ -35,15 +36,24 @@ import javax.persistence.Persistence;
  * @author hardel
  */
 public class CustomExportController implements Initializable {
-    
+    /**
+     * TO-DO:
+     * Si el contrato inicia ese dia canon no debe aplicarsele ese año
+     * Registro de costos (costo alcaldia + costo arrendamiento) --- May Be easy caus the value its the same yall know
+     * Registro de Ganancia Neta (ganancia - (costo alcaldia + costo arrendamiento))
+     * Si el contrato termina/inicia en determinado mes, calcular la ganancia por cada dia del mes en el que termino/inicio
+     **/
     @FXML
     private StackPane root;
     
     @FXML
     private JFXDatePicker fromDP;
+    
+    @FXML
+    private JFXTextField futureYears;
 
     @FXML
-    private JFXDatePicker toDP;
+    private JFXTextField futureMonths;
     
     @FXML
     private JFXChipView<String> chipView;
@@ -66,7 +76,9 @@ public class CustomExportController implements Initializable {
     
     private List<String> headers = new ArrayList();
     
-    private int index = 0, column;
+    private int index = 0;
+    
+    private int realMonthValue = 0;
     
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
 
@@ -80,7 +92,6 @@ public class CustomExportController implements Initializable {
         sitioCol.setCellValueFactory(new PropertyValueFactory<>("lugar"));
         
         fromDP.setValue(LocalDate.now());
-        toDP.setValue(LocalDate.now());
         
         headers.add("Cliente");
         headers.add("Sitio");
@@ -95,7 +106,7 @@ public class CustomExportController implements Initializable {
         customTable.getItems().clear();
         
         getPreviewData();
-        
+        realMonthValue = 0;
         if(chipView.getChips().size() > 0) {
             CustomTable ct = dinamicList.get(0);
            
@@ -208,13 +219,18 @@ public class CustomExportController implements Initializable {
     }
     
     private void getPreviewData(){
-        Period deltaT = Period.between(fromDP.getValue(), toDP.getValue());
-        int realMonthValue = (deltaT.getYears() * 12) + deltaT.getMonths();
+        //Period deltaT = Period.between(fromDP.getValue(), toDP.getValue());
+        if(!futureYears.getText().isEmpty()) {
+            realMonthValue += (Integer.parseInt(futureYears.getText()) * 12);
+        }
+        if(!futureMonths.getText().isEmpty()) {
+            realMonthValue += Integer.parseInt(futureMonths.getText());
+        }
         
         if(realMonthValue > 0){
             dinamicList.clear();
             String fromDate = fromDP.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
-            String toDate = toDP.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
+            String toDate = fromDP.getValue().plusMonths(realMonthValue).format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
         
             EntityManager em = emf.createEntityManager();
             String stat = "(v.fechaFin >= '" + toDate + "' AND v.fechaInicio <= '" + fromDate + "') OR ";
@@ -265,7 +281,7 @@ public class CustomExportController implements Initializable {
             }
             
             realList.forEach((row) ->{
-                dinamicList.add(new CustomTable(row, fromDP.getValue(), toDP.getValue(), realMonthValue));
+                dinamicList.add(new CustomTable(row, fromDP.getValue(), fromDP.getValue().plusMonths(realMonthValue), realMonthValue));
             });
 
             em.close();
