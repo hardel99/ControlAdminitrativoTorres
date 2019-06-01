@@ -6,6 +6,7 @@
 <?import com.jfoenix.controls.JFXMasonryPane?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -41,8 +42,8 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="96.0" minHeight="10.0" prefHeight="92.0" valignment="TOP" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <Label text="Nombre">
@@ -69,6 +70,9 @@
                                        <font>
                                           <Font name="Calibri" size="16.0" />
                                        </font>
+                                       <GridPane.margin>
+                                          <Insets top="15.0" />
+                                       </GridPane.margin>
                                     </Label>
                                     <Label alignment="CENTER" text="Arrendamiento" GridPane.rowIndex="5">
                                        <font>
@@ -82,7 +86,7 @@
                                     <JFXTextField fx:id="latitud" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <JFXTextField fx:id="longitud" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <JFXTextField fx:id="altura" focusColor="#536872" unFocusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <children>
                                           <Label text="Monto">
                                              <font>
@@ -92,7 +96,7 @@
                                                 <Insets right="10.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <JFXTextField fx:id="montoAlcaldia" focusColor="#536872" prefHeight="25.0" prefWidth="60.0" unFocusColor="#546e7a" />
+                                          <JFXTextField fx:id="montoArrendamiento" focusColor="#536872" prefHeight="25.0" prefWidth="60.0" unFocusColor="#546e7a" />
                                           <Label text="Documento*">
                                              <font>
                                                 <Font name="Calibri" size="14.0" />
@@ -101,8 +105,8 @@
                                                 <Insets left="20.0" right="10.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <JFXTextField fx:id="documentoAlcaldiaSitio" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="110.0" unFocusColor="#546e7a" />
-                                          <JFXButton fx:id="openAlcaldia" onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
+                                          <JFXTextField fx:id="documentoArrendamientoSitio" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="110.0" unFocusColor="#546e7a" />
+                                          <JFXButton fx:id="openArrendamiento" onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
                                              <graphic>
                                                 <FontAwesomeIconView glyphName="FILE" size="1.2em" />
                                              </graphic>
@@ -115,7 +119,7 @@
                                           </JFXButton>
                                        </children>
                                     </HBox>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                              <children>
@@ -127,7 +131,7 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <JFXTextField fx:id="montoArrendamiento" focusColor="#536872" prefHeight="25.0" prefWidth="60.0" unFocusColor="#546e7a" />
+                                                <JFXTextField fx:id="montoAlcaldia" focusColor="#536872" prefHeight="25.0" prefWidth="60.0" unFocusColor="#546e7a" />
                                                 <Label text="Documento*">
                                                    <font>
                                                       <Font name="Calibri" size="14.0" />
@@ -136,8 +140,8 @@
                                                       <Insets left="20.0" right="10.0" />
                                                    </HBox.margin>
                                                 </Label>
-                                                <JFXTextField fx:id="documentoArrendamientoSitio" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="110.0" unFocusColor="#546e7a" />
-                                                <JFXButton fx:id="openArrendamiento" onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
+                                                <JFXTextField fx:id="documentoAlcaldiaSitio" disable="true" focusColor="#536872" prefHeight="25.0" prefWidth="110.0" unFocusColor="#546e7a" />
+                                                <JFXButton fx:id="openAlcaldia" onAction="#agregarDocumento" style="-fx-background-color: #e0d151ff;" text=" ">
                                                    <graphic>
                                                       <FontAwesomeIconView glyphName="FILE" size="1.2em" />
                                                    </graphic>
@@ -150,19 +154,21 @@
                                                 </JFXButton>
                                              </children>
                                           </HBox>
-                                          <!--HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                                              <children>
-                                                <Label text="Nombre Arrendatario">
+                                                <Label text="Costo Licencia">
                                                    <font>
                                                       <Font name="Calibri" size="14.0" />
                                                    </font>
-                                                   <HBox.margin>
-                                                      <Insets right="10.0" />
-                                                   </HBox.margin>
                                                 </Label>
-                                                <JFXTextField fx:id="montoArrendamiento1" focusColor="#536872" prefHeight="25.0" prefWidth="215.0" unFocusColor="#546e7a" />
+                                                <JFXTextField fx:id="costoLicenciaAlcaldia" focusColor="#536872" prefHeight="25.0" prefWidth="60.0" unFocusColor="#546e7a">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" />
+                                                   </HBox.margin>
+                                                </JFXTextField>
+                                                <JFXToggleButton fx:id="pagoAnual" prefHeight="30.0" prefWidth="143.0" text="Pago Anual" toggleColor="#536872" />
                                              </children>
-                                          </HBox-->
+                                          </HBox>
                                        </children>
                                     </VBox>
                                  </children>
@@ -452,6 +458,20 @@
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Sub-empresas">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="48.0" layoutY="80.0" text="Nombre :">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <JFXTextField fx:id="nombreSubempresa" focusColor="#536872" layoutX="126.0" layoutY="77.0" prefHeight="25.0" prefWidth="426.0" unFocusColor="#546e7a" />
+                           </children>
+                        </AnchorPane>
                     </content>
                   </Tab>
                </tabs>

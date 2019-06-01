@@ -29,8 +29,14 @@ public class licencia implements Serializable {
     @Column(name="Monto")
     private float monto;
     
+    @Column(name="Licencia")
+    private float costoLicencia;
+    
     @Column(name="Documento")
     private String documentPath;
+    
+    @Column(name="Anual")
+    private boolean anual;
     
     @OneToOne(mappedBy="licencia", fetch = FetchType.LAZY)
     private sitio sitioLic;
@@ -39,9 +45,10 @@ public class licencia implements Serializable {
         //TODO
     }
 
-    public licencia( float monto, String documentPath) {
+    public licencia(float monto, String documentPath, float costoLicencia) {
         this.monto = monto;
         this.documentPath = documentPath;
+        this.costoLicencia = costoLicencia;
     }
 
     public Long getId() {
@@ -64,6 +71,10 @@ public class licencia implements Serializable {
         return sitioLic;
     }
 
+    public boolean isAnual() {
+        return anual;
+    }
+
     public void setMonto(float monto) {
         this.monto = monto;
     }
@@ -74,6 +85,18 @@ public class licencia implements Serializable {
 
     public void setSitioLic(sitio sitioLic) {
         this.sitioLic = sitioLic;
+    }
+
+    public float getCostoLicencia() {
+        return costoLicencia;
+    }
+
+    public void setAnual(boolean anual) {
+        this.anual = anual;
+    }
+
+    public void setCostoLicencia(float costoLicencia) {
+        this.costoLicencia = costoLicencia;
     }
 
     @Override

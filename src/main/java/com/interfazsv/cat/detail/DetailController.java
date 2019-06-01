@@ -4,6 +4,7 @@ import Entitys.cliente;
 import Entitys.llave;
 import Entitys.oferta;
 import Entitys.sitio;
+import Entitys.subempresa;
 import Entitys.venta;
 import TableData.VentasTable;
 import TableData.LlavesTable;
@@ -19,6 +20,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import java.io.File;
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -40,6 +42,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,8 +52,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -91,9 +99,6 @@ public class DetailController extends ControllerDataComunication implements Init
     
     @FXML
     private GridPane ventaGrid;
-    
-    @FXML
-    private ScrollPane scrollSitio;
 
     @FXML
     private JFXMasonryPane imageDisplaySitio;
@@ -115,6 +120,12 @@ public class DetailController extends ControllerDataComunication implements Init
 
     @FXML
     private JFXTextField costoAlcaldiaSitio;
+    
+    @FXML
+    private JFXTextField costoLicenciaSitio;
+
+    @FXML
+    private JFXToggleButton pagoAnualSitio;
 
     @FXML
     private JFXTextField costoArrendamientoSitio;
@@ -136,9 +147,6 @@ public class DetailController extends ControllerDataComunication implements Init
     
     @FXML
     private JFXTextField alturaSolicOferta;
-    
-    @FXML
-    private ScrollPane scrollOferta;
 
     @FXML
     private JFXMasonryPane imageDisplayOferta;
@@ -190,6 +198,9 @@ public class DetailController extends ControllerDataComunication implements Init
     
     private String pathToAlcaldia, pathToArrendamiento, pathToOferta, pathToDUI;
     private File imageFolder;
+    
+    final KeyCombination keyComb = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+    final KeyCombination keyCombCopy = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
     
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
     private long idSelected;
@@ -250,11 +261,16 @@ public class DetailController extends ControllerDataComunication implements Init
             oferta o = (oferta) findInDB(oferta.class, rto.getIdOferta());
             fechaInicioVenta.setValue(o.getVentaO().getFechaInicio().plusDays(1L));
             fechaFinVenta.setValue(o.getVentaO().getFechaFin().plusDays(1L));
-            canonActualVenta.setText(String.valueOf(calcActualCanon(rto.getCanon(), rto.getMonto(), Period.between(o.getVentaO().getFechaInicio(), LocalDate.now()).getYears())));
+            canonActualVenta.setText(String.valueOf(calcActualCanon(rto.getCanon(), rto.getMonto(), Period.between(o.getVentaO().getFechaInicio(), LocalDate.now()).getYears(), o.getVentaO())));
         } else{
             ventaGrid.setVisible(false);
             ofertaGrid.setVisible(true);
         }
+        
+        enablePasteFromClipboard(montoOferta);
+        enablePasteFromClipboard(alturaDisOferta);
+        enablePasteFromClipboard(alturaSolicOferta);
+        enablePasteFromClipboard(canonInicialVenta);
     }
     
     private void fillComboBox() {
@@ -262,6 +278,7 @@ public class DetailController extends ControllerDataComunication implements Init
         
         List<String> sitios = em.createQuery("SELECT s.nombre FROM sitio s").getResultList();
         List<String> clientes = em.createQuery("SELECT c.nombre FROM cliente c").getResultList();
+        List<String> subempresas = em.createQuery(("SELECT s.nombre FROM subempresa s")).getResultList();
             
         if(ofertaPane.isVisible()) {
             sitioOferta.getItems().addAll(sitios);
@@ -269,10 +286,38 @@ public class DetailController extends ControllerDataComunication implements Init
         } else if(clientePane.isVisible()) {
             sitioLlave.getItems().addAll(sitios);
             clienteLlave.getItems().addAll(clientes);
-            subempresaLlave.getItems().addAll("MULTITEC S.A DE C.V.", "INTESAL S.A.DE C.V.", "SERPROFIN S.A.DE C.V", "DHL S.A. DE C.V.");
+            subempresaLlave.getItems().addAll(subempresas);
         }
         
         em.close();
+    }
+    
+    private void enablePasteFromClipboard(JFXTextField field){
+        field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
+            if(keyComb.match((KeyEvent) event)){
+                Clipboard clip = Clipboard.getSystemClipboard();
+                field.setText(clip.getString());
+            } else if(keyCombCopy.match((KeyEvent) event)) {
+                Clipboard clip = Clipboard.getSystemClipboard();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(field.getSelectedText());
+                clip.setContent(content);
+            }
+        });
+    }
+    
+    private void enablePasteFromClipboard(JFXTextArea field){
+        field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
+            if(keyComb.match((KeyEvent) event)){
+                Clipboard clip = Clipboard.getSystemClipboard();
+                field.setText(clip.getString());
+            } else if(keyCombCopy.match((KeyEvent) event)) {
+                Clipboard clip = Clipboard.getSystemClipboard();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(field.getSelectedText());
+                clip.setContent(content);
+            }
+        });
     }
     
     @Override
@@ -302,6 +347,12 @@ public class DetailController extends ControllerDataComunication implements Init
             devolucionLlave.setValue(ven.getFechaDevolucion().plusDays(1L));
         }
         pathToDUI = ven.getDocumentPath();
+        
+        enablePasteFromClipboard(cantidadLlave);
+        enablePasteFromClipboard(nombreRetiraLlave);
+        enablePasteFromClipboard(encargadoLlave);
+        enablePasteFromClipboard(telefonoLlave);
+        enablePasteFromClipboard(duiLlave);
     }
 
     @Override
@@ -310,7 +361,7 @@ public class DetailController extends ControllerDataComunication implements Init
         idSelected = rto.getId();
         sitioPane.setVisible(true);
         
-        float costoTotal = rto.getCostosAlcadia() + rto.getCostosArrendamiento();
+        float costoTotal = rto.getCostosAlcadia() + rto.getCostosArrendamiento() + rto.getCostosLicencia();
         
         nombreSitio.setText(rto.getNombre());
         latitudSitio.setText(rto.getLatitud().toString());
@@ -321,8 +372,11 @@ public class DetailController extends ControllerDataComunication implements Init
         totalCostSitio.setText(costoTotal + "");
         costoAlcaldiaSitio.setText(rto.getCostosAlcadia().toString());
         costoAlcaldiaSitio.setTextFormatter(new TextFormatter<>(filter));
+        costoLicenciaSitio.setText(rto.getCostosLicencia().toString());
+        costoLicenciaSitio.setTextFormatter(new TextFormatter<>(filter));
         costoArrendamientoSitio.setText(rto.getCostosArrendamiento().toString());
         costoArrendamientoSitio.setTextFormatter(new TextFormatter<>(filter));
+        pagoAnualSitio.setSelected(rto.isAnual());
         
         if(rto.getImagePath() != null) {
             addImageToPane(imageDisplaySitio, rto.getImagePath());
@@ -334,6 +388,14 @@ public class DetailController extends ControllerDataComunication implements Init
         if(rto.getDocumentoArrendamiento() != null) {
             pathToArrendamiento = rto.getDocumentoArrendamiento();
         }
+        
+        enablePasteFromClipboard(nombreSitio);
+        enablePasteFromClipboard(latitudSitio);
+        enablePasteFromClipboard(longitudSitio);
+        enablePasteFromClipboard(comentarioSitio);
+        enablePasteFromClipboard(costoAlcaldiaSitio);
+        enablePasteFromClipboard(costoLicenciaSitio);
+        enablePasteFromClipboard(costoArrendamientoSitio);
     }
     
     private void addImageToPane(JFXMasonryPane pane, String imagePath) {
@@ -443,7 +505,7 @@ public class DetailController extends ControllerDataComunication implements Init
         } else if(clientePane.isVisible()){
             llave lave = (llave) findInDB(llave.class, idSelected);
             lave.setCantidadLlaves(Integer.parseInt(cantidadLlave.getText()));
-            lave.setSubempresa(subempresaLlave.getValue());
+            lave.setSubempresa((subempresa) findInDB(subempresa.class ,subempresaLlave.getValue()));
             lave.setFechaRetiro(retiroLlave.getValue());
             lave.setFechaDevolucion(devolucionLlave.getValue());
             lave.setNombreP(nombreRetiraLlave.getText());
@@ -465,7 +527,9 @@ public class DetailController extends ControllerDataComunication implements Init
             sit.setLongitud(Float.parseFloat(longitudSitio.getText()));
             sit.getArrendamiento().setCosto(Float.parseFloat(costoArrendamientoSitio.getText()));
             sit.getLicencia().setMonto(Float.parseFloat(costoAlcaldiaSitio.getText()));
+            sit.getLicencia().setCostoLicencia(Float.parseFloat(costoLicenciaSitio.getText()));
             sit.setComent(comentarioSitio.getText());
+            sit.getLicencia().setAnual(pagoAnualSitio.isSelected());
             
             persist(sit);
             callback.refreshSitioData(new SitiosTable(sit));
@@ -540,7 +604,7 @@ public class DetailController extends ControllerDataComunication implements Init
     }
     
     @FXML
-    void deleteThis(ActionEvent event) {
+    private void deleteThis(ActionEvent event) {
         JFXButton ok = new JFXButton("Si");
         JFXButton cancel = new JFXButton("No");
         
@@ -587,7 +651,6 @@ public class DetailController extends ControllerDataComunication implements Init
         try {
             em.remove(em.contains(object) ? object: em.merge(object));
             em.getTransaction().commit();
-            System.out.println("DI EM man : " + em.toString());
         } catch (Exception e) {
             e.printStackTrace();
             em.getTransaction().rollback();
@@ -612,6 +675,8 @@ public class DetailController extends ControllerDataComunication implements Init
                 found = (sitio) em.createQuery("FROM sitio s WHERE s.nombre = '" + identifier + "'").getSingleResult();
             } else if(type == cliente.class) {
                 found = (cliente) em.createQuery("FROM cliente c WHERE c.nombre = '" + identifier + "'").getSingleResult();
+            } else if(type == subempresa.class) {
+                found = em.createQuery("FROM subempresa s WHERE s.nombre = '" + identifier + "'").getSingleResult();
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -629,13 +694,21 @@ public class DetailController extends ControllerDataComunication implements Init
         });
     }
     
-    private float calcActualCanon(float canon, float monto, int yearDifference) {
+    private float calcActualCanon(float canon, float monto, int yearDifference, venta ven) {
         final DecimalFormat df = new DecimalFormat("##.##");
         df.setRoundingMode(RoundingMode.CEILING);
         
         if(yearDifference > 0) {
             for(int i = 0; i < yearDifference - 1; i++) {
                 monto += (monto * (canon/100));
+            }
+        }
+        
+        if(ven != null) {
+            if(ven.getFechaFin().plusDays(1L).getYear() == LocalDate.now().getYear() && ven.getFechaFin().plusDays(1L).getMonth() == LocalDate.now().getMonth()) {
+                monto = (monto / LocalDate.now().lengthOfMonth()) * ven.getFechaFin().plusDays(1L).getDayOfMonth();
+            } else if(ven.getFechaInicio().plusDays(1L).getYear() == LocalDate.now().getYear() && ven.getFechaInicio().plusDays(1L).getMonth() == LocalDate.now().getMonth()) {
+                monto = (monto / LocalDate.now().lengthOfMonth()) * (LocalDate.now().lengthOfMonth() - ven.getFechaInicio().plusDays(1L).getDayOfMonth());
             }
         }
         

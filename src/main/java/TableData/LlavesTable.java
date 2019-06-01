@@ -37,7 +37,7 @@ public class LlavesTable {
         this.cliente = new SimpleStringProperty(llave.getClienteY().getNombre());
         this.cantidadLlaves = new SimpleIntegerProperty(llave.getCantidadLlaves());
         this.sitio = new SimpleStringProperty(llave.getSitioY().getNombre());
-        this.subempresa = new SimpleStringProperty(llave.getSubempresa());
+        this.subempresa = new SimpleStringProperty(llave.getSubempresa().getNombre());
         this.fechaRetiro = llave.getFechaRetiro().plusDays(1L);
         if(llave.getFechaDevolucion() != null) {
             this.fechaDevolucion = llave.getFechaDevolucion().plusDays(1L);

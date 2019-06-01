@@ -6,6 +6,7 @@
 <?import com.jfoenix.controls.JFXMasonryPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Hyperlink?>
@@ -14,6 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
@@ -98,7 +100,22 @@
                      <GridPane.margin>
                         <Insets bottom="10.0" />
                      </GridPane.margin></JFXTextField>
-                  <JFXTextField fx:id="costoAlcaldiaSitio" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <JFXTextField fx:id="costoAlcaldiaSitio" focusColor="#546e7a" prefHeight="25.0" prefWidth="60.0" />
+                        <Label text="Licencia :">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <JFXTextField fx:id="costoLicenciaSitio" focusColor="#546e7a" layoutX="10.0" layoutY="21.0" prefHeight="25.0" prefWidth="47.0">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </JFXTextField>
+                        <JFXToggleButton fx:id="pagoAnualSitio" prefHeight="58.0" prefWidth="132.0" text="Pago Anual" toggleColor="#546e7a" />
+                     </children>
+                  </HBox>
                   <JFXTextField fx:id="costoArrendamientoSitio" focusColor="#546e7a" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Hyperlink onAction="#openAlcaldia" text="Abrir Documento Alcaldía" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Hyperlink onAction="#openArrendamiento" text="Abrir Documento Arrendamiento" GridPane.columnIndex="1" GridPane.rowIndex="4" />

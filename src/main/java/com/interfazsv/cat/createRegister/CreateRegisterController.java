@@ -6,6 +6,7 @@ import Entitys.licencia;
 import Entitys.llave;
 import Entitys.oferta;
 import Entitys.sitio;
+import Entitys.subempresa;
 import Entitys.torre;
 import TableData.LlavesTable;
 import TableData.MainOfferTable;
@@ -19,6 +20,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -101,6 +103,12 @@ public class CreateRegisterController implements Initializable {
     
     @FXML
     private JFXButton openAlcaldia;
+    
+    @FXML
+    private JFXTextField costoLicenciaAlcaldia;
+
+    @FXML
+    private JFXToggleButton pagoAnual;
     
     @FXML
     private JFXTextField montoArrendamiento;
@@ -191,6 +199,10 @@ public class CreateRegisterController implements Initializable {
     @FXML
     private JFXTextField documentoPersonalLlave;
     
+    //Subempresa
+    @FXML
+    private JFXTextField nombreSubempresa;
+    
     //atributtes
     private String selectedPane;
     private DataReturnCallback callback;
@@ -238,6 +250,7 @@ public class CreateRegisterController implements Initializable {
         
         List<sitio> sitios = em.createQuery("FROM sitio").getResultList();
         List clientes = em.createQuery("SELECT c.nombre FROM cliente c").getResultList();
+        List subempresas = em.createQuery("Select s.nombre FROM subempresa s").getResultList();
         
         ObservableList<String> sitiosName = FXCollections.observableArrayList();
         
@@ -251,7 +264,7 @@ public class CreateRegisterController implements Initializable {
         nombreClienteComboBoxOferta.getItems().addAll(clientes);
         nombreSitioComboBoxLlave.setItems(sitiosName);
         nombreClienteComboBoxLlave.getItems().addAll(clientes);
-        nombreSubordinadoComboBoxLlave.getItems().addAll("MULTITEC S.A DE C.V.", "INTESAL S.A.DE C.V.", "SERPROFIN S.A.DE C.V", "DHL S.A. DE C.V.");
+        nombreSubordinadoComboBoxLlave.getItems().addAll(subempresas);
  
         em.close();
     }
@@ -306,6 +319,7 @@ public class CreateRegisterController implements Initializable {
         altura.setTooltip(tool);
         montoArrendamiento.setTooltip(tool);
         montoAlcaldia.setTooltip(tool);
+        costoLicenciaAlcaldia.setTooltip(tool);
         
         alturaSolicitadaOferta.setTooltip(tool);
         montoOferta.setTooltip(tool);
@@ -320,6 +334,7 @@ public class CreateRegisterController implements Initializable {
         altura.setTextFormatter(new TextFormatter<>(filter));
         montoArrendamiento.setTextFormatter(new TextFormatter<>(filter));
         montoAlcaldia.setTextFormatter(new TextFormatter<>(filter));
+        costoLicenciaAlcaldia.setTextFormatter(new TextFormatter<>(filter));
         duracionYear.setTextFormatter(new TextFormatter<>(filter));
         duracionMeses.setTextFormatter(new TextFormatter<>(filter));
         alturaSolicitadaOferta.setTextFormatter(new TextFormatter<>(filter));
@@ -334,6 +349,7 @@ public class CreateRegisterController implements Initializable {
         enablePasteFromClipboard(longitud);
         enablePasteFromClipboard(altura);
         enablePasteFromClipboard(montoAlcaldia);
+        enablePasteFromClipboard(costoLicenciaAlcaldia);
         enablePasteFromClipboard(montoArrendamiento);
         enablePasteFromClipboard(alturaSolicitadaOferta);
         enablePasteFromClipboard(nombrePersonaRetira);
@@ -342,6 +358,7 @@ public class CreateRegisterController implements Initializable {
         enablePasteFromClipboard(duiLlave);
         enablePasteFromClipboard(canonAnualOferta);
         enablePasteFromClipboard(cantidadLlaves);
+        enablePasteFromClipboard(nombreSubempresa);
     }
 
     @FXML
@@ -428,12 +445,13 @@ public class CreateRegisterController implements Initializable {
     private void clearAllFields(){
         switch (selectedPane) {
             case "Sitio":
-                CATUtil.clearFields(Arrays.asList(nombreSitio, latitud, longitud, altura, montoAlcaldia, montoArrendamiento, documentoArrendamientoSitio, documentoAlcaldiaSitio, duracionYear, duracionMeses));
+                CATUtil.clearFields(Arrays.asList(nombreSitio, latitud, longitud, altura, montoAlcaldia, costoLicenciaAlcaldia, montoArrendamiento, documentoArrendamientoSitio, documentoAlcaldiaSitio, duracionYear, duracionMeses));
                 
                 fechaInicioArrendamiento.setValue(LocalDate.now());
                 scrollSitio.setVisible(false);
                 imagesPaneSitio.getChildren().clear();
                 selectImageSitio.setVisible(true);
+                pagoAnual.setSelected(false);
                 break;
             case "Oferta":
                 CATUtil.clearFields(Arrays.asList(alturaSolicitadaOferta, montoOferta, documentoOferta, canonAnualOferta));
@@ -451,6 +469,9 @@ public class CreateRegisterController implements Initializable {
                 nombreSitioComboBoxLlave.getSelectionModel().clearSelection();
                 nombreSubordinadoComboBoxLlave.getSelectionModel().clearSelection();
                 fechaRetiroLlaves.setValue(LocalDate.now());
+                break;
+            case "Sub-empresas":
+                CATUtil.clearFields(Arrays.asList(nombreSubempresa));
                 break;
             default:
                 System.out.print("nigga this thing is very creizi");
@@ -480,6 +501,8 @@ public class CreateRegisterController implements Initializable {
                     
                     licencia licenciaRegister = new licencia();
                     licenciaRegister.setMonto(Float.valueOf(montoAlcaldia.getText()));
+                    licenciaRegister.setCostoLicencia(Float.parseFloat(costoLicenciaAlcaldia.getText()));
+                    licenciaRegister.setAnual(pagoAnual.isSelected());
                     
                     moveDocuments(documentoArrendamientoSitio, arrendamientoRegister, saveLocationDocument);
                     moveDocuments(documentoAlcaldiaSitio, licenciaRegister, saveLocationDocument);
@@ -577,7 +600,7 @@ public class CreateRegisterController implements Initializable {
                     llaveRegister.setNombreP(nombrePersonaRetira.getText());
                     llaveRegister.setPersonaResponsable(nombrePersonaEntrega.getText());
                     llaveRegister.setTelefono(telefonoLlave.getText());
-                    llaveRegister.setSubempresa(nombreSubordinadoComboBoxLlave.getValue());
+                    llaveRegister.setSubempresa((subempresa) findElement(nombreSubordinadoComboBoxLlave.getValue(), subempresa.class));
                     llaveRegister.setCantidadLlaves(Integer.parseInt(cantidadLlaves.getText()));
                     llaveRegister.setDUI(duiLlave.getText());
                     llaveRegister.setFechaRetiro(fechaRetiroLlaves.getValue());
@@ -601,6 +624,13 @@ public class CreateRegisterController implements Initializable {
                     AlertFactory.showDialog(root, tabPane, Arrays.asList(ok), "Falta Información", "Para continuar es necesario que todos los campos sin un * sean llenados con la informacion debida");
                 }
                 break;
+            case "Sub-empresas":
+                if(validateFields(selectedPane)) {
+                    subempresa sub = new subempresa(nombreSubempresa.getText());
+                    persist(sub);
+                    CATUtil.clearFields(Arrays.asList(nombreSubempresa));
+                }
+                break;
             default:
                 System.out.print("nigga this thing is very creizi");
                 break;
@@ -614,6 +644,8 @@ public class CreateRegisterController implements Initializable {
             found = (sitio) em.createQuery("FROM sitio s WHERE s.nombre = '" + element + "'").getSingleResult();
         } else if(type == cliente.class) {
             found = (cliente) em.createQuery("FROM cliente c WHERE c.nombre = '" + element + "'").getSingleResult();
+        } else if(type == subempresa.class) {
+            found = (subempresa) em.createQuery("FROM subempresa s WHERE s.nombre='" + element + "'").getSingleResult();
         }
         em.close();
         
@@ -647,7 +679,8 @@ public class CreateRegisterController implements Initializable {
                             !montoArrendamiento.getText().isEmpty() &&
                             fechaInicioArrendamiento.getValue() != null &&
                             !duracionYear.getText().isEmpty() &&
-                            !duracionMeses.getText().isEmpty());
+                            !duracionMeses.getText().isEmpty() && 
+                            !costoLicenciaAlcaldia.getText().isEmpty());
                 break;
             case "Oferta":
                 isReady = (nombreSitioComboBoxOferta.getValue() != null &&
@@ -669,6 +702,9 @@ public class CreateRegisterController implements Initializable {
                             !duiLlave.getText().isEmpty() && 
                             fechaRetiroLlaves.getValue() != null && 
                             !cantidadLlaves.getText().isEmpty());
+                break;
+            case "Sub-empresas":
+                isReady = (!nombreSubempresa.getText().isEmpty());
                 break;
             default:
                 System.out.print("nigga this thing is very creizi");

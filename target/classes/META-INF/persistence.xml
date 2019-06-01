@@ -10,6 +10,7 @@
     <class>Entitys.llave</class>
     <class>Entitys.arrendamiento</class>
     <class>Entitys.licencia</class>
+    <class>Entitys.subempresa</class>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/CAT?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>

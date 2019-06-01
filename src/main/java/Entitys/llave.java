@@ -3,6 +3,7 @@ package Entitys;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -46,8 +48,9 @@ public class llave implements Serializable {
     @Column(name = "DUI_Path")
     private String documentPath;
     
-    @Column(name = "Subempresa")
-    private String subempresa;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name="ID_Subempresa")
+    private subempresa subempresa;
     
     @Column(name = "Nombre_Persona_Responsable")
     private String personaResponsable;
@@ -67,10 +70,10 @@ public class llave implements Serializable {
         //TODO
     }
 
-    public llave(String nombreP, String personaResponsable, String telefono, String subempresa, int cantidadLlaves, String DUI, LocalDate fechaRetiro, LocalDate fechaDevolucion, cliente clienteY, sitio sitioY) {
+    public llave(String nombreP, String personaResponsable, String telefono, subempresa sub,int cantidadLlaves, String DUI, LocalDate fechaRetiro, LocalDate fechaDevolucion, cliente clienteY, sitio sitioY) {
         this.nombreP = nombreP;
         this.telefono = telefono;
-        this.subempresa = subempresa;
+        this.subempresa = sub;
         this.personaResponsable = personaResponsable;
         this.DUI = DUI;
         this.fechaRetiro = fechaRetiro;
@@ -152,16 +155,8 @@ public class llave implements Serializable {
         this.documentPath = documentPath;
     }
 
-    public String getSubempresa() {
-        return subempresa;
-    }
-
     public String getPersonaResponsable() {
         return personaResponsable;
-    }
-
-    public void setSubempresa(String subempresa) {
-        this.subempresa = subempresa;
     }
 
     public void setPersonaResponsable(String personaResponsable) {
@@ -174,6 +169,14 @@ public class llave implements Serializable {
 
     public int getCantidadLlaves() {
         return cantidadLlaves;
+    }
+
+    public void setSubempresa(subempresa subempresa) {
+        this.subempresa = subempresa;
+    }
+
+    public subempresa getSubempresa() {
+        return subempresa;
     }
 
     @Override

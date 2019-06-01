@@ -3,6 +3,7 @@ TableData\SitiosTable.class
 com\interfazsv\cat\util\CATUtil.class
 Entitys\torre.class
 com\interfazsv\cat\main\MainApp.class
+Entitys\subempresa.class
 Entitys\llave.class
 com\interfazsv\cat\createRegister\CreateRegisterController.class
 com\interfazsv\cat\detail\DetailController$DateSetters.class

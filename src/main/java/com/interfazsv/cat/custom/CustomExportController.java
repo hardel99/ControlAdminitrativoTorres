@@ -1,5 +1,6 @@
 package com.interfazsv.cat.custom;
 
+import Entitys.sitio;
 import Entitys.venta;
 import TableData.CustomTable;
 import com.interfazsv.cat.util.AlertFactory;
@@ -7,10 +8,11 @@ import com.interfazsv.cat.util.CATUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXChipView;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,10 +40,8 @@ import javax.persistence.Persistence;
 public class CustomExportController implements Initializable {
     /**
      * TO-DO:
-     * Si el contrato inicia ese dia canon no debe aplicarsele ese año
      * Registro de costos (costo alcaldia + costo arrendamiento) --- May Be easy caus the value its the same yall know
      * Registro de Ganancia Neta (ganancia - (costo alcaldia + costo arrendamiento))
-     * Si el contrato termina/inicia en determinado mes, calcular la ganancia por cada dia del mes en el que termino/inicio
      **/
     @FXML
     private StackPane root;
@@ -67,6 +67,18 @@ public class CustomExportController implements Initializable {
     @FXML
     private TableColumn<CustomTable, String> sitioCol;
     
+    @FXML
+    private JFXRadioButton gananciaButton;
+
+    @FXML
+    private JFXRadioButton costosButton;
+
+    @FXML
+    private JFXRadioButton gananciaNetaButton;
+    
+    @FXML
+    private JFXToggleButton primerPagoLicencia;
+    
     private final ObservableList<CustomTable> dinamicList = FXCollections.observableArrayList();
     
     private final JFXButton aceptBtn = new JFXButton("Ok");
@@ -86,6 +98,7 @@ public class CustomExportController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         customTable.setItems(dinamicList);
         chipView.getSuggestions().add("Todos");
+        primerPagoLicencia.setSelected(false);
         fillChipView(chipView);
         
         clienteCol.setCellValueFactory(new PropertyValueFactory<>("cliente"));
@@ -105,7 +118,13 @@ public class CustomExportController implements Initializable {
         
         customTable.getItems().clear();
         
-        getPreviewData();
+        CustomTable.sitiosPrevios.clear();
+        if(gananciaButton.isSelected() || gananciaNetaButton.isSelected()) {
+            getPreviewData(gananciaNetaButton.isSelected());
+        }else if(costosButton.isSelected()) {
+            getPreviewData();
+        }
+        
         realMonthValue = 0;
         if(chipView.getChips().size() > 0) {
             CustomTable ct = dinamicList.get(0);
@@ -218,8 +237,7 @@ public class CustomExportController implements Initializable {
         }
     }
     
-    private void getPreviewData(){
-        //Period deltaT = Period.between(fromDP.getValue(), toDP.getValue());
+    private void getPreviewData(boolean realMoney) {
         if(!futureYears.getText().isEmpty()) {
             realMonthValue += (Integer.parseInt(futureYears.getText()) * 12);
         }
@@ -280,8 +298,46 @@ public class CustomExportController implements Initializable {
                 }
             }
             
-            realList.forEach((row) ->{
-                dinamicList.add(new CustomTable(row, fromDP.getValue(), fromDP.getValue().plusMonths(realMonthValue), realMonthValue));
+            realList.forEach((row) -> {
+                dinamicList.add(new CustomTable(row, fromDP.getValue(), fromDP.getValue().plusMonths(realMonthValue), realMonthValue, realMoney, primerPagoLicencia.isSelected()));
+            });
+
+            em.close();
+        } else{
+            AlertFactory.showDialog(root, chipView.getParent(), Arrays.asList(aceptBtn), "Fechas erroneas", "Hay un problema con las fechas que ingreso, por favor asegurese de que estan correctas");
+        }
+    }
+    
+    @FXML
+    private void activateToogle(ActionEvent event) {
+        if(event.getSource() == costosButton || event.getSource() == gananciaNetaButton) {
+            primerPagoLicencia.setVisible(true);
+        } else{
+            primerPagoLicencia.setVisible(false);
+            primerPagoLicencia.setSelected(false);
+        }
+    }
+    
+    private void getPreviewData() {
+        if(!futureYears.getText().isEmpty()) {
+            realMonthValue += (Integer.parseInt(futureYears.getText()) * 12);
+        }
+        if(!futureMonths.getText().isEmpty()) {
+            realMonthValue += Integer.parseInt(futureMonths.getText());
+        }
+        
+        if(realMonthValue > 0){
+            dinamicList.clear();
+            String fromDate = fromDP.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
+            String toDate = fromDP.getValue().plusMonths(realMonthValue).format(DateTimeFormatter.ofPattern("yyyy-MM-d"));
+        
+            EntityManager em = emf.createEntityManager();
+            String stat = "(s.arrendamiento.fechaFinArrendamiento >= '" + toDate + "' AND s.arrendamiento.fechaInicioArrendamiento <= '" + fromDate + "') OR ";
+            String stat2 = "(s.arrendamiento.fechaInicioArrendamiento BETWEEN '" + fromDate + "' AND '" + toDate + "')";
+            List<sitio> previewRows = em.createQuery("FROM sitio s WHERE " + stat + "(s.arrendamiento.fechaInicioArrendamiento BETWEEN '" + fromDate + "' AND '" + toDate + "') OR " + stat2).getResultList();
+            
+            previewRows.forEach((row) -> {
+                dinamicList.add(new CustomTable(row, realMonthValue, primerPagoLicencia.isSelected()));
             });
 
             em.close();
@@ -310,7 +366,7 @@ public class CustomExportController implements Initializable {
         }
     }
     
-    public void prepareToClose(){
+    public void prepareToClose() {
         root.getScene().getWindow().setOnCloseRequest(event -> {
             emf.close();
         });
