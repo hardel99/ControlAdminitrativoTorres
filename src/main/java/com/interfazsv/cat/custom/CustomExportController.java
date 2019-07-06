@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,11 +39,7 @@ import javax.persistence.Persistence;
  * @author hardel
  */
 public class CustomExportController implements Initializable {
-    /**
-     * TO-DO:
-     * Registro de costos (costo alcaldia + costo arrendamiento) --- May Be easy caus the value its the same yall know
-     * Registro de Ganancia Neta (ganancia - (costo alcaldia + costo arrendamiento))
-     **/
+    
     @FXML
     private StackPane root;
     
@@ -120,9 +117,9 @@ public class CustomExportController implements Initializable {
         
         CustomTable.sitiosPrevios.clear();
         if(gananciaButton.isSelected() || gananciaNetaButton.isSelected()) {
-            getPreviewData(gananciaNetaButton.isSelected());
-        }else if(costosButton.isSelected()) {
             getPreviewData();
+        }else if(costosButton.isSelected()) {
+            getPreviewCostosData();
         }
         
         realMonthValue = 0;
@@ -215,6 +212,7 @@ public class CustomExportController implements Initializable {
     @FXML
     private void exportIt(ActionEvent event) {
         List<List> data = new ArrayList();
+        List<List> morData = new ArrayList();
         data.add(headers);
         
         dinamicList.stream().map((mapper) -> {
@@ -230,14 +228,30 @@ public class CustomExportController implements Initializable {
             data.add(row);
         });
         
+        if(gananciaNetaButton.isSelected()) {
+            getPreviewCostosData();
+            
+            DecimalFormat df = new DecimalFormat("##.00");
+            List<Double> niuList = new ArrayList();
+            for(int i = 0; i < dinamicList.get(0).getMonth().size(); i++) { //all got the same size
+                double acumulado = 0;
+                for(int j = 0; j < dinamicList.size(); j++) {  
+                    acumulado += dinamicList.get(j).getMonth().get(i).get();
+                }
+                
+                niuList.add(Double.parseDouble(df.format(acumulado)));
+            }
+            morData.add(niuList);
+        }
+        
         if(event.getSource() == excel) {
-            CATUtil.initExcelExport(root, customTable, (Stage) customTable.getScene().getWindow(), data, true);
+            CATUtil.initExcelExport(root, customTable, (Stage) customTable.getScene().getWindow(), data, morData, true);
         } else{
             CATUtil.initPDFExport(root, customTable, (Stage) customTable.getScene().getWindow(), data, true);
         }
     }
     
-    private void getPreviewData(boolean realMoney) {
+    private void getPreviewData() {
         if(!futureYears.getText().isEmpty()) {
             realMonthValue += (Integer.parseInt(futureYears.getText()) * 12);
         }
@@ -299,7 +313,7 @@ public class CustomExportController implements Initializable {
             }
             
             realList.forEach((row) -> {
-                dinamicList.add(new CustomTable(row, fromDP.getValue(), fromDP.getValue().plusMonths(realMonthValue), realMonthValue, realMoney, primerPagoLicencia.isSelected()));
+                dinamicList.add(new CustomTable(row, fromDP.getValue(), fromDP.getValue().plusMonths(realMonthValue), realMonthValue, primerPagoLicencia.isSelected()));
             });
 
             em.close();
@@ -318,7 +332,7 @@ public class CustomExportController implements Initializable {
         }
     }
     
-    private void getPreviewData() {
+    private void getPreviewCostosData() {
         if(!futureYears.getText().isEmpty()) {
             realMonthValue += (Integer.parseInt(futureYears.getText()) * 12);
         }
@@ -334,12 +348,16 @@ public class CustomExportController implements Initializable {
             EntityManager em = emf.createEntityManager();
             String stat = "(s.arrendamiento.fechaFinArrendamiento >= '" + toDate + "' AND s.arrendamiento.fechaInicioArrendamiento <= '" + fromDate + "') OR ";
             String stat2 = "(s.arrendamiento.fechaInicioArrendamiento BETWEEN '" + fromDate + "' AND '" + toDate + "')";
-            List<sitio> previewRows = em.createQuery("FROM sitio s WHERE " + stat + "(s.arrendamiento.fechaInicioArrendamiento BETWEEN '" + fromDate + "' AND '" + toDate + "') OR " + stat2).getResultList();
+            String stat3 = "";
+            if(gananciaNetaButton.isSelected()) {
+                stat3 = " AND s.idVenta.size > 0";
+            }
+            List<sitio> previewRows = em.createQuery("FROM sitio s WHERE (" + stat + "(s.arrendamiento.fechaInicioArrendamiento BETWEEN '" + fromDate + "' AND '" + toDate + "') OR " + stat2 + ") " + stat3).getResultList();
             
             previewRows.forEach((row) -> {
                 dinamicList.add(new CustomTable(row, realMonthValue, primerPagoLicencia.isSelected()));
             });
-
+            
             em.close();
         } else{
             AlertFactory.showDialog(root, chipView.getParent(), Arrays.asList(aceptBtn), "Fechas erroneas", "Hay un problema con las fechas que ingreso, por favor asegurese de que estan correctas");

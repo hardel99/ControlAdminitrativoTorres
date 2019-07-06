@@ -18,6 +18,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -37,7 +38,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -95,7 +95,7 @@ public class FXMLController implements Initializable, DataReturnCallback {
     
     @FXML
     private TableColumn<MainOfferTable, Float> montoCol;
-
+    
     @FXML
     private TableColumn<MainOfferTable, Float> alturaCol;
 
@@ -116,6 +116,9 @@ public class FXMLController implements Initializable, DataReturnCallback {
 
     @FXML
     private TableColumn<SitiosTable, Float> longitudSitioCol;
+    
+    @FXML
+    private TableColumn<SitiosTable, Integer> antenaSitioCol;
 
     @FXML
     private TableColumn<SitiosTable, Float> costosSitioCol;
@@ -274,6 +277,7 @@ public class FXMLController implements Initializable, DataReturnCallback {
         longitudSitioCol.setCellValueFactory(new PropertyValueFactory<>("longitud"));
         costosSitioCol.setCellValueFactory(new PropertyValueFactory<>("costosAlcadia"));
         costosArrendSitioCol.setCellValueFactory(new PropertyValueFactory<>("costosArrendamiento"));
+        antenaSitioCol.setCellValueFactory(new PropertyValueFactory<>("antena"));
         
         clienteCanonCol.setCellValueFactory(new PropertyValueFactory<>("cliente"));
         sitioCanonCol.setCellValueFactory(new PropertyValueFactory<>("sitio"));
@@ -499,7 +503,7 @@ public class FXMLController implements Initializable, DataReturnCallback {
         dataToPrint = mapDataToPrint(headers);
         
         if(event.getSource() == btnPrintActualTableExcel) {
-            CATUtil.initExcelExport(canvas, actualTable, (Stage) actualTable.getScene().getWindow(), dataToPrint, false);
+            CATUtil.initExcelExport(canvas, actualTable, (Stage) actualTable.getScene().getWindow(), dataToPrint, Arrays.asList(), false);
         } else if(event.getSource() == btnPrintActualTable) {
             CATUtil.initPDFExport(canvas, actualTable, (Stage) actualTable.getScene().getWindow(), dataToPrint);
         }

@@ -210,9 +210,6 @@ public class CreateRegisterController implements Initializable {
     private List<File> imagesOnOfertaCache;
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("CAT");
     
-    final KeyCombination keyComb = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
-    final KeyCombination keyCombCopy = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-    
     private final String ICON_PATH = "/icons/delete.png";
     private final String IMAGES_PATH = System.getProperty("user.home") + "/Documents/CAT/Files/Imagenes/";
     private final String DOCUMENTS_PATH = System.getProperty("user.home") + "/Documents/CAT/Files/Documentos/";
@@ -294,21 +291,6 @@ public class CreateRegisterController implements Initializable {
             emf.close();
         });
     }
-    /*FOR SURE*/
-    //whats up if just doesnt work good on my machine?
-    private void enablePasteFromClipboard(JFXTextField field){
-        field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
-            if(keyComb.match((KeyEvent) event)){
-                Clipboard clip = Clipboard.getSystemClipboard();
-                field.setText(clip.getString());
-            } else if(keyCombCopy.match((KeyEvent) event)) {
-                Clipboard clip = Clipboard.getSystemClipboard();
-                ClipboardContent content = new ClipboardContent();
-                content.putString(field.getSelectedText());
-                clip.setContent(content);
-            }
-        });
-    }
     
     private void setTooltips() {
         final Tooltip tool = new Tooltip();
@@ -344,21 +326,21 @@ public class CreateRegisterController implements Initializable {
         cantidadLlaves.setTextFormatter(new TextFormatter<>(filter));
         
         //enable clipping
-        enablePasteFromClipboard(nombreSitio);
-        enablePasteFromClipboard(latitud);
-        enablePasteFromClipboard(longitud);
-        enablePasteFromClipboard(altura);
-        enablePasteFromClipboard(montoAlcaldia);
-        enablePasteFromClipboard(costoLicenciaAlcaldia);
-        enablePasteFromClipboard(montoArrendamiento);
-        enablePasteFromClipboard(alturaSolicitadaOferta);
-        enablePasteFromClipboard(nombrePersonaRetira);
-        enablePasteFromClipboard(nombrePersonaEntrega);
-        enablePasteFromClipboard(telefonoLlave);
-        enablePasteFromClipboard(duiLlave);
-        enablePasteFromClipboard(canonAnualOferta);
-        enablePasteFromClipboard(cantidadLlaves);
-        enablePasteFromClipboard(nombreSubempresa);
+        CATUtil.enablePasteFromClipboard(nombreSitio);
+        CATUtil.enablePasteFromClipboard(latitud);
+        CATUtil.enablePasteFromClipboard(longitud);
+        CATUtil.enablePasteFromClipboard(altura);
+        CATUtil.enablePasteFromClipboard(montoAlcaldia);
+        CATUtil.enablePasteFromClipboard(costoLicenciaAlcaldia);
+        CATUtil.enablePasteFromClipboard(montoArrendamiento);
+        CATUtil.enablePasteFromClipboard(alturaSolicitadaOferta);
+        CATUtil.enablePasteFromClipboard(nombrePersonaRetira);
+        CATUtil.enablePasteFromClipboard(nombrePersonaEntrega);
+        CATUtil.enablePasteFromClipboard(telefonoLlave);
+        CATUtil.enablePasteFromClipboard(duiLlave);
+        CATUtil.enablePasteFromClipboard(canonAnualOferta);
+        CATUtil.enablePasteFromClipboard(cantidadLlaves);
+        CATUtil.enablePasteFromClipboard(nombreSubempresa);
     }
 
     @FXML

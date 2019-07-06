@@ -14,6 +14,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -74,7 +76,7 @@ public class ListToPDF {
     }
     
     @SuppressWarnings("null")
-    public boolean printAsXSSL(List<List> data, File saveItHere, boolean numeric) {
+    public boolean printAsXSSL(List<List> data, List<List> morData, File saveItHere, boolean numeric) {
         FileOutputStream fos = null;
         try {
             if(saveItHere == null){
@@ -97,6 +99,7 @@ public class ListToPDF {
             changedCell.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
             changedCell.getFont().setBold(true);
             
+            boolean moment = false;
             data.forEach(listRow -> {
                 XSSFRow row = sheet.createRow(indexRow);
                 listRow.forEach(cell -> {
@@ -105,7 +108,11 @@ public class ListToPDF {
                             row.createCell(columnIndex).setCellValue(Double.parseDouble((String) cell));
                             if(columnIndex > 4){
                                 if(row.getCell(columnIndex).getNumericCellValue() > row.getCell(columnIndex - 1).getNumericCellValue()) {
-                                    row.getCell(columnIndex).setCellStyle(changedCell);
+                                    if(!row.getCell(columnIndex - 1).getCellStyle().equals(changedCell)) {
+                                        row.getCell(columnIndex).setCellStyle(changedCell);
+                                    } else{
+                                        row.getCell(columnIndex).setCellStyle(normalCell);
+                                    }
                                 } else{
                                     row.getCell(columnIndex).setCellStyle(normalCell);
                                 }
@@ -123,11 +130,42 @@ public class ListToPDF {
                     sheet.autoSizeColumn(columnIndex);
                     columnIndex++;
                 });
+                row.getCell(columnIndex - 1).setCellStyle(changedCell);
                 sheet.autoSizeColumn(columnIndex);
                 
                 columnIndex = 1;
                 indexRow++;
             });
+            int lastIndex = indexRow;
+            
+            if(!morData.isEmpty()) {
+                indexRow++;
+                XSSFRow rowCostos = sheet.createRow(indexRow);
+                rowCostos.createCell(columnIndex).setCellValue("Costos");
+                columnIndex = 3;
+                
+                morData.forEach(costoColumn -> {
+                    costoColumn.forEach(costo -> {
+                        if(columnIndex > 2) {
+                            rowCostos.createCell(columnIndex).setCellValue((double) costo);
+                        }
+                        columnIndex++;
+                    });
+                    columnIndex = 3;
+                });
+                indexRow++;
+                
+                XSSFRow totales = sheet.createRow(indexRow);
+                totales.createCell(1).setCellValue("Totales :");
+                morData.get(0).forEach(costo -> {
+                    String col = CellReference.convertNumToColString(columnIndex);
+                    XSSFCell celda = totales.createCell(columnIndex);
+                    celda.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+                    celda.setCellFormula("SUM(" + col + "3: " + col + lastIndex +") - " + col + (lastIndex + 2));
+                    columnIndex++;
+                });
+                totales.getCell(columnIndex).setCellStyle(changedCell);
+            }
             
             fos = new FileOutputStream(saveItHere);
             book.write(fos);
@@ -143,7 +181,6 @@ public class ListToPDF {
                     fos.close();
             } catch (IOException ex) {
                 Logger.getLogger(ListToPDF.class.getName()).log(Level.SEVERE, null, ex);
-                ex.printStackTrace();
             }
         }
         

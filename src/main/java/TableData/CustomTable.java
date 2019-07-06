@@ -17,23 +17,27 @@ import javafx.beans.property.SimpleFloatProperty;
  * @author hardel
  */
 public class CustomTable extends RecursiveTreeObject<CustomTable> {
+    /**TO-DO:
+     * 
+     * make another object with the cost and add it to the xslx file
+     * make the another row for costos
+     **/
     private final DecimalFormat df = new DecimalFormat("##.00");
     private String cliente;
     private String lugar;
     private Float total = 0f;
-    private boolean restar, primerPago;
+    private boolean primerPago;
     private float sustraendo, pagoLic;
     private LocalDate vInit, vFin;
     private final List<FloatProperty> month = new ArrayList();
     public static List<String> sitiosPrevios = new ArrayList();
 
-    public CustomTable(venta v, LocalDate inicio, LocalDate finPeriodo, int numeroMeses, boolean restar, boolean primerPago) {
+    public CustomTable(venta v, LocalDate inicio, LocalDate finPeriodo, int numeroMeses, boolean primerPago) {
         df.setRoundingMode(RoundingMode.CEILING);
         this.cliente = v.getClienteV().getNombre();
         this.lugar = v.getSitioV().getNombre();
         
         this.primerPago = primerPago;
-        this.restar = restar;
         this.sustraendo = v.getSitioV().getArrendamiento().getCosto() + v.getSitioV().getLicencia().getMonto();
         this.pagoLic = v.getSitioV().getLicencia().getCostoLicencia();
         
@@ -42,7 +46,9 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
         
         float monto = v.getOfertaVenta().getMonto();
         float can = v.getOfertaVenta().getCanon();
+        float bfMonto = 0;
         int transcurred = Period.between(vInit, finPeriodo).getYears();
+        boolean changingMonth = false;
         
         if(Period.between(inicio, finPeriodo).getYears() > 0) {
             //Por cada año extra hay que restar uno
@@ -53,28 +59,33 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
             System.out.println("MENOS DE UN AÑO");
         }
         
-        if(Period.between(vInit, inicio).getYears() == 0) {
-            transcurred--;
-        }
-        
         Period p = Period.between(vInit, vFin);
         for(int i=0; i <= numeroMeses; i++) {
             
             if(inicio.plusMonths(i).getMonth() == vInit.getMonth()) {
                 transcurred++;
+                changingMonth = true;
+                if(month.isEmpty()) {
+                    bfMonto = calculateCanon(monto, can, transcurred - 1);
+                }
             }
             float value = calculateCanon(monto, can, transcurred);
+            
             
             if(finPeriodo.isAfter(vFin)) {
                 //Contrato expira enmedio del periodo solicitado
                 
-                if(transcurred <= p.getYears()) {
+                if(transcurred <= p.getYears() || vFin.getMonth() == inicio.plusMonths(i).getMonth() && vFin.getYear() == inicio.plusMonths(i).getYear()) {
                     if(vFin.getMonth() == inicio.plusMonths(i).getMonth() &&
                             vFin.getYear() == inicio.plusMonths(i).getYear()) {
                         
                         month.add(new SimpleFloatProperty(value - calculateDailyCanon(value, vInit.minusDays(1L))));
                     } else{
-                        month.add(new SimpleFloatProperty(value));
+                        float changedValue = 0;
+                        if(changingMonth) {
+                            changedValue = calculateChanginCanon(bfMonto, value, inicio.plusMonths(i));
+                        }
+                        month.add(new SimpleFloatProperty((changingMonth)? changedValue: value));
                     }
                 } else{
                     month.add(new SimpleFloatProperty(0));
@@ -82,15 +93,20 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
             } else if(vInit.isAfter(inicio)) {
                 //Contrato inicia en medio del periodo solicitado
                 
-                if(transcurred >= p.getYears()) {
-                    month.add(new SimpleFloatProperty(value));
-                } else{
+                if(transcurred < p.getYears()) {
+                    
                     if(vInit.getMonth() == inicio.plusMonths(i).getMonth() && 
                             vInit.getYear() == inicio.plusMonths(i).getYear()) {
                         
                         month.add(new SimpleFloatProperty(calculateDailyCanon(value, vFin)));
-                        System.out.println("THERE IT IS!!");
+                    } else{
+                        float changedValue = 0;
+                        if(changingMonth) {
+                            changedValue = calculateChanginCanon(bfMonto, value, inicio.plusMonths(i));
+                        }
+                        month.add(new SimpleFloatProperty((changingMonth)? changedValue: value));
                     }
+                } else{
                     month.add(new SimpleFloatProperty(0));
                 }
             } else{
@@ -103,9 +119,17 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
                     
                     month.add(new SimpleFloatProperty(value - calculateDailyCanon(value, vInit.minusDays(1L))));
                 } else{
-                    month.add(new SimpleFloatProperty(value));
+                    float changedValue = 0;
+                    if(changingMonth) {
+                        changedValue = calculateChanginCanon(bfMonto, value, inicio.plusMonths(i));
+                    }
+                    
+                    month.add(new SimpleFloatProperty((changingMonth)? changedValue: value));
                 }
             }
+            
+            changingMonth = false;
+            bfMonto = value;
         }
         
         month.forEach(mont -> {
@@ -134,6 +158,7 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
                 month.add(new SimpleFloatProperty(formatted));
             }
         }
+        
         
         month.forEach(mont -> {
             this.total = this.total + mont.get();
@@ -173,7 +198,7 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
         }
         
         float result = monto;
-        
+        /*Not here but still been util
         if(!sitiosPrevios.contains(lugar)) {
             if(restar) {
                 if(primerPago) {
@@ -183,9 +208,8 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
                     result = monto - sustraendo;
                 }
             }
-            
             sitiosPrevios.add(lugar);
-        }
+        }*/
         
         String s = df.format(result);
         return Float.parseFloat(s);
@@ -197,5 +221,18 @@ public class CustomTable extends RecursiveTreeObject<CustomTable> {
         
         String s = df.format(realMonthValue);
         return Float.parseFloat(s);
+    }
+    
+    private float calculateChanginCanon(float monto, float montoActualizado, LocalDate meta) {
+        int normal, canonActualizado;
+        float daily, actualDaily;
+        
+        normal = vInit.minusDays(1L).getDayOfMonth();
+        canonActualizado = meta.lengthOfMonth() - normal;
+        daily = monto / meta.lengthOfMonth();
+        actualDaily = montoActualizado / meta.lengthOfMonth();
+        
+        float resultado = (normal * daily) + (canonActualizado * actualDaily);
+        return Float.parseFloat(df.format(resultado));
     }
 }

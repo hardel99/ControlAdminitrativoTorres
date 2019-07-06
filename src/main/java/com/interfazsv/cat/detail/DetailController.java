@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,12 +52,9 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -76,7 +72,6 @@ public class DetailController extends ControllerDataComunication implements Init
     /*
     *TO-DO:
     *Eliminar Registros
-    *fecha fin oferta calculada por numero de meses y años que deben pasar
     *cambio a cese de oferta(cambiar fecha fin?)
     **/
     @FXML
@@ -267,10 +262,10 @@ public class DetailController extends ControllerDataComunication implements Init
             ofertaGrid.setVisible(true);
         }
         
-        enablePasteFromClipboard(montoOferta);
-        enablePasteFromClipboard(alturaDisOferta);
-        enablePasteFromClipboard(alturaSolicOferta);
-        enablePasteFromClipboard(canonInicialVenta);
+        CATUtil.enablePasteFromClipboard(montoOferta);
+        CATUtil.enablePasteFromClipboard(alturaDisOferta);
+        CATUtil.enablePasteFromClipboard(alturaSolicOferta);
+        CATUtil.enablePasteFromClipboard(canonInicialVenta);
     }
     
     private void fillComboBox() {
@@ -290,34 +285,6 @@ public class DetailController extends ControllerDataComunication implements Init
         }
         
         em.close();
-    }
-    
-    private void enablePasteFromClipboard(JFXTextField field){
-        field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
-            if(keyComb.match((KeyEvent) event)){
-                Clipboard clip = Clipboard.getSystemClipboard();
-                field.setText(clip.getString());
-            } else if(keyCombCopy.match((KeyEvent) event)) {
-                Clipboard clip = Clipboard.getSystemClipboard();
-                ClipboardContent content = new ClipboardContent();
-                content.putString(field.getSelectedText());
-                clip.setContent(content);
-            }
-        });
-    }
-    
-    private void enablePasteFromClipboard(JFXTextArea field){
-        field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
-            if(keyComb.match((KeyEvent) event)){
-                Clipboard clip = Clipboard.getSystemClipboard();
-                field.setText(clip.getString());
-            } else if(keyCombCopy.match((KeyEvent) event)) {
-                Clipboard clip = Clipboard.getSystemClipboard();
-                ClipboardContent content = new ClipboardContent();
-                content.putString(field.getSelectedText());
-                clip.setContent(content);
-            }
-        });
     }
     
     @Override
@@ -348,11 +315,11 @@ public class DetailController extends ControllerDataComunication implements Init
         }
         pathToDUI = ven.getDocumentPath();
         
-        enablePasteFromClipboard(cantidadLlave);
-        enablePasteFromClipboard(nombreRetiraLlave);
-        enablePasteFromClipboard(encargadoLlave);
-        enablePasteFromClipboard(telefonoLlave);
-        enablePasteFromClipboard(duiLlave);
+        CATUtil.enablePasteFromClipboard(cantidadLlave);
+        CATUtil.enablePasteFromClipboard(nombreRetiraLlave);
+        CATUtil.enablePasteFromClipboard(encargadoLlave);
+        CATUtil.enablePasteFromClipboard(telefonoLlave);
+        CATUtil.enablePasteFromClipboard(duiLlave);
     }
 
     @Override
@@ -389,13 +356,13 @@ public class DetailController extends ControllerDataComunication implements Init
             pathToArrendamiento = rto.getDocumentoArrendamiento();
         }
         
-        enablePasteFromClipboard(nombreSitio);
-        enablePasteFromClipboard(latitudSitio);
-        enablePasteFromClipboard(longitudSitio);
-        enablePasteFromClipboard(comentarioSitio);
-        enablePasteFromClipboard(costoAlcaldiaSitio);
-        enablePasteFromClipboard(costoLicenciaSitio);
-        enablePasteFromClipboard(costoArrendamientoSitio);
+        CATUtil.enablePasteFromClipboard(nombreSitio);
+        CATUtil.enablePasteFromClipboard(latitudSitio);
+        CATUtil.enablePasteFromClipboard(longitudSitio);
+        CATUtil.enablePasteFromClipboard(comentarioSitio);
+        CATUtil.enablePasteFromClipboard(costoAlcaldiaSitio);
+        CATUtil.enablePasteFromClipboard(costoLicenciaSitio);
+        CATUtil.enablePasteFromClipboard(costoArrendamientoSitio);
     }
     
     private void addImageToPane(JFXMasonryPane pane, String imagePath) {
@@ -617,8 +584,8 @@ public class DetailController extends ControllerDataComunication implements Init
                 sitio si = (sitio) findInDB(sitio.class, idSelected);
                 delete(si);
             } else if(clientePane.isVisible()) {
-                cliente cl = (cliente) findInDB(sitio.class, idSelected);
-                delete(cl);
+                llave ll = (llave) findInDB(llave.class, idSelected);
+                delete(ll);
             }
             
             AlertFactory.showInfoMessage("Registro Eliminado", "El registro ha sido completamente eliminado");
@@ -649,8 +616,10 @@ public class DetailController extends ControllerDataComunication implements Init
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         try {
-            em.remove(em.contains(object) ? object: em.merge(object));
-            em.getTransaction().commit();
+            if(object != null) {
+                em.remove(em.contains(object) ? object: em.merge(object));
+                em.getTransaction().commit();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             em.getTransaction().rollback();

@@ -3,7 +3,9 @@ package TableData;
 import Entitys.sitio;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.FloatProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -25,8 +27,9 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
     private final String coment;
     private final String imagePath;
     private final boolean anual;
+    private final IntegerProperty antena;
 
-    public SitiosTable(long id, String nombre, float latitud, float longitud, float alturaDisponible, String disponible, float costosAlcadia, float costosLicencia, String docAlcaldia, float costosArrendamiento, String docArrendamiento, String comentario, String imagePath, boolean anual) {
+    public SitiosTable(long id, String nombre, float latitud, float longitud, int antena, float alturaDisponible, String disponible, float costosAlcadia, float costosLicencia, String docAlcaldia, float costosArrendamiento, String docArrendamiento, String comentario, String imagePath, boolean anual) {
         this.id = id;
         this.nombre = new SimpleStringProperty(nombre);
         this.latitud = new SimpleFloatProperty(latitud);
@@ -40,6 +43,7 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
         this.documentoArrendamiento = docArrendamiento;
         this.imagePath = imagePath;
         this.anual = anual;
+        this.antena = new SimpleIntegerProperty(antena);
     }
 
     public SitiosTable(sitio sitio) {
@@ -56,6 +60,7 @@ public class SitiosTable extends RecursiveTreeObject<SitiosTable>{
         this.documentoArrendamiento = sitio.getArrendamiento().getDocumentPath();
         this.imagePath = sitio.getImagePath();
         this.anual = sitio.getLicencia().isAnual();
+        this.antena = new SimpleIntegerProperty(sitio.getIdVenta().size());
     }
 
     public String getNombre() {

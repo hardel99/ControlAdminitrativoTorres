@@ -38,10 +38,6 @@ public class torre implements Serializable {
     @OneToOne(mappedBy="torre", fetch = FetchType.LAZY)
     private sitio localidad;
     
-    /*@ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="id_antena")
-    private antena antenaT;*/
-    
     @ManyToMany(cascade=CascadeType.ALL)
     //@JoinColumn(name = "Cliente")
     private List<cliente> clienteT;
@@ -49,14 +45,6 @@ public class torre implements Serializable {
     public torre(){
         //TODO
     }
-
-    /*public torre(Long id, float alturaPedida, String cotizacion, sitio localidad, antena antenaT) {
-        this.id = id;
-        this.alturaPedida = alturaPedida;
-        this.cotizacion = cotizacion;
-        this.localidad = localidad;
-        //this.antenaT = antenaT;
-    }*/
     
     public torre(float alturaPedida, String cotizacion) {
         this.alturaPedida = alturaPedida;
@@ -94,14 +82,6 @@ public class torre implements Serializable {
     public void setLocalidad(sitio localidad) {
         this.localidad = localidad;
     }
-
-    /*public antena getAntenaT() {
-        return antenaT;
-    }
-
-    public void setAntenaT(antena antenaT) {
-        this.antenaT = antenaT;
-    }*/
 
     public List<cliente> getClienteT() {
         return clienteT;

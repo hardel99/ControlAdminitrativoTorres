@@ -5,6 +5,7 @@ import TableData.MainOfferTable;
 import TableData.SitiosTable;
 import com.interfazsv.cat.util.ListToPDF.Orientation;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.awt.Desktop;
 import java.io.File;
@@ -15,11 +16,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -32,6 +40,8 @@ import javafx.stage.StageStyle;
 public class CATUtil {
     public static final String ICON_PATH = "/icons/icon.png";
     private static Stage stage = null;
+    private static final KeyCombination KEYCOMB = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+    private static final KeyCombination KEYCOMBCOPY = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
     
     public static void setStageIcon(Stage stage){
         stage.getIcons().add(new Image(ICON_PATH));
@@ -180,7 +190,7 @@ public class CATUtil {
         }
     }
     
-    public static void initExcelExport(StackPane rootPane, Node contentPane, Stage stage, List<List> data, boolean numeric) {
+    public static void initExcelExport(StackPane rootPane, Node contentPane, Stage stage, List<List> data, List<List> morData, boolean numeric) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar como Archivo Excel");
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
@@ -189,7 +199,7 @@ public class CATUtil {
         File saveLoc = fileChooser.showSaveDialog(stage);
         ListToPDF ltp = new ListToPDF();
         
-        boolean signal = ltp.printAsXSSL(data, saveLoc, numeric);
+        boolean signal = ltp.printAsXSSL(data, morData, saveLoc, numeric);
         
         JFXButton okayBtn = new JFXButton("Ok");
         JFXButton openBtn = new JFXButton("Abrir");
@@ -222,5 +232,33 @@ public class CATUtil {
         fields.forEach(field -> {
             field.setText("");
         });
+    }
+    
+    public static void enablePasteFromClipboard(JFXTextField field) {   //Comented for now
+        /*field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
+            if(KEYCOMB.match((KeyEvent) event)){
+                Clipboard clip = Clipboard.getSystemClipboard();
+                field.setText(clip.getString());
+            } else if(KEYCOMBCOPY.match((KeyEvent) event)) {
+                Clipboard clip = Clipboard.getSystemClipboard();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(field.getSelectedText());
+                clip.setContent(content);
+            }
+        });*/
+    }
+    
+    public static void enablePasteFromClipboard(JFXTextArea field) {   //Comented for now
+        /*field.addEventFilter(KeyEvent.KEY_PRESSED, (Event event) -> {
+            if(KEYCOMB.match((KeyEvent) event)){
+                Clipboard clip = Clipboard.getSystemClipboard();
+                field.setText(clip.getString());
+            } else if(KEYCOMBCOPY.match((KeyEvent) event)) {
+                Clipboard clip = Clipboard.getSystemClipboard();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(field.getSelectedText());
+                clip.setContent(content);
+            }
+        });*/
     }
 }

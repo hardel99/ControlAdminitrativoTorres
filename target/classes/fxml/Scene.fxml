@@ -24,27 +24,28 @@
             <Insets bottom="35.0" right="45.0" />
          </StackPane.margin>
       </JFXButton>
-      <TableView fx:id="mainTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_RIGHT">
+      <TableView fx:id="mainTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
         <columns>
             <TableColumn fx:id="estadoCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Estado" />
-          <TableColumn fx:id="sitioCol" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" text="Sitio" />
-          <TableColumn fx:id="clienteCol" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" text="Cliente" />
+          <TableColumn fx:id="sitioCol" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" text="Sitio" />
+          <TableColumn fx:id="clienteCol" maxWidth="140.0" minWidth="140.0" prefWidth="140.0" text="Cliente" />
             <TableColumn fx:id="montoCol" maxWidth="80.0" minWidth="80.0" text="Monto" />
-            <TableColumn fx:id="alturaCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="Altura Solicitada" />
-            <TableColumn fx:id="alturaDisCol" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="AlturaDisponible" />
+            <TableColumn fx:id="alturaCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Altura Solicitada" />
+            <TableColumn fx:id="alturaDisCol" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="AlturaDisponible" />
             <TableColumn fx:id="fechaCol" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" text="Fecha Oferta" />
         </columns>
          <StackPane.margin>
             <Insets right="10.0" />
          </StackPane.margin>
       </TableView>
-      <TableView fx:id="sitioTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" visible="false" StackPane.alignment="CENTER_RIGHT">
+      <TableView fx:id="sitioTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#doubleClick" prefHeight="460.0" prefWidth="940.0" stylesheets="@../styles/Styles.css" StackPane.alignment="CENTER_RIGHT">
          <columns>
             <TableColumn fx:id="nombreSitCol" maxWidth="260.0" minWidth="260.0" prefWidth="260.0" text="Nombre" />
-            <TableColumn fx:id="latitudSitioCol" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" text="Latitud" />
-            <TableColumn fx:id="longitudSitioCol" maxWidth="115.0" minWidth="115.0" prefWidth="115.0" text="Longitud" />
+            <TableColumn fx:id="latitudSitioCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Latitud" />
+            <TableColumn fx:id="longitudSitioCol" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Longitud" />
+            <TableColumn fx:id="antenaSitioCol" maxWidth="65.0" minWidth="65.0" prefWidth="65.0" text="Antenas" />
             <TableColumn fx:id="alturaDisSitioCol" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Altura Disponible" />
-            <TableColumn fx:id="costosSitioCol" maxWidth="135.0" minWidth="135.0" prefWidth="135.0" text="Costos Alcaldía" />
+            <TableColumn fx:id="costosSitioCol" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Costos Alcaldía" />
             <TableColumn fx:id="costosArrendSitioCol" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" text="Costos Arrendamiento" />
          </columns>
          <StackPane.margin>
